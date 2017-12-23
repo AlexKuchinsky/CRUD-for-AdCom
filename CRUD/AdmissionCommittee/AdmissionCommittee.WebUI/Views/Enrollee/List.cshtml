@@ -1,0 +1,15 @@
+﻿@using AdmissionCommittee.Domain.Entities
+@model IEnumerable<Enrollee>
+
+@{
+    ViewBag.Title = "Enrollees";
+}
+
+@foreach (var p in Model)
+{
+    <div>
+        <h3>@(p.LastName + " " + p.FirstName + " " + p.Patronymic)</h3>
+        @p.PassportNumber
+        <h4>@p.City</h4>
+    </div>
+}
