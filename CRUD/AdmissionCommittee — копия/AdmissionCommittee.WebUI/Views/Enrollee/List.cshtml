@@ -1,0 +1,16 @@
+﻿<!--@using AdmissionCommittee.WebUI.HtmlHelpers
+@model AdmissionCommittee.WebUI.Models.EnrolleesListViewModel
+
+@{
+    ViewBag.Title = "Enrollees";
+}
+
+@foreach (var p in Model.Enrollees)
+{
+    @Html.Partial("EnrolleePartial", p)
+}
+
+<div class="btn-group pull-right">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List",
+        new { page = x/*, category = Model.CurrentCategoryOfEducation */}))
+</div>-->

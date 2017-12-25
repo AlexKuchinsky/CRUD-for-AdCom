@@ -1,0 +1,10 @@
+﻿@model AdmissionCommittee.Domain.Entities.Enrollee
+@using AdmissionCommittee.Domain.Entities
+<div class="well">
+    <h3>
+        <strong>@(Model.LastName + Model.FirstName + Model.Patronymic)</strong>
+        <span class="pull-right label label-primary">@Model.GetCTSum()</span>
+    </h3>
+    <span class="lead"></span>
+</div>
+
