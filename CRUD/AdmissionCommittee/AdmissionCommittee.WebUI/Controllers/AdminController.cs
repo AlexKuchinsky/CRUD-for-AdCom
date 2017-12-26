@@ -53,18 +53,12 @@ namespace SportsStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangeEducationLevel(EducationLevel edLevel)
-        {
-            return RedirectToAction("Index", new {edLevel });
-        }
-
-        [HttpPost]
         public ActionResult Edit(Enrollee enrollee)
         {
             if (ModelState.IsValid)
             {
                 repository.SaveEnrollee(enrollee);
-                TempData["message"] = string.Format("{0} has been saved", enrollee.LastName + " " + enrollee.LastName);
+                TempData["message"] = string.Format("{0} has been saved", enrollee.LastName + " " + enrollee.FirstName);
                 return RedirectToAction("Index");
             }
             else
