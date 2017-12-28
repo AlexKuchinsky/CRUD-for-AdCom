@@ -10,59 +10,40 @@ namespace AdmissionCommittee.WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                null,
+                name: null,
+                url: "{controller}/{action}/{enrolleeId}"
+            );
+
+            routes.MapRoute(
+                name: null,
+                url: "{controller}/{action}/{edLevel}/{page}",
+                defaults: new
+                {
+                    edLevel = "AnyLevel"
+                }
+                
+            );
+
+            routes.MapRoute(
+                name: null,
+                url: "{controller}/{action}/{page}"
+            );
+
+            routes.MapRoute(
+                name: null,
                 url: "{controller}/{action}"
             );
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{edLevel}/{id}",
+                name: null,
+                url: "{controller}/{action}",
                 defaults: new
                 {
                     controller = "Admin",
-                    action = "Index",
-                    edLevel = UrlParameter.Optional,
-                    id = UrlParameter.Optional,
+                    action = "Index"
                 }
             );
- 
-            /*
-            routes.MapRoute
-            (
-                null,
-                "{controller}/{action}"
-            );
-
-            routes.MapRoute
-            (
-                null,
-                "{controller}/{action}/{enrolleeId}",
-                new { controller = "Admin", action = "Index" }
-            );
             
-            routes.MapRoute
-            (
-                null,
-                "{controller}/{action}/{edLevel}/{page}",
-                new { controller = "Admin", action = "Index", page = UrlParameter.Optional, edLevel = UrlParameter.Optional }
-            );
-            
-            routes.MapRoute
-            (
-                null,
-                "Page{page}",
-                new { controller = "Admin", action = "Index" },
-                new { page = @"\d+" }
-            );
-
-            routes.MapRoute
-            (
-                null,
-                "",
-                new { controller = "Admin", action = "Index" }
-            );
-
-            routes.MapRoute(null, "{controller}/{action}");*/
         }
     }
 }

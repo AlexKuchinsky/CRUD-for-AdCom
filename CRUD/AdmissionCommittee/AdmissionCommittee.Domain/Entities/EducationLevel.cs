@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdmissionCommittee.Domain.Entities
 {
     public enum EducationLevel
     {
+        [Display(Name = "Preschool education")]
         [Description("Preschool education")]
         PreschoolEducation,
         [Description("General secondary education")]

@@ -10,6 +10,8 @@
     <div class="panel-heading">
         <h3>Edit @(Model.LastName + " " + Model.FirstName + " " + Model.Patronymic)</h3>
     </div>
+    @{Html.EnableClientValidation();}
+    @{Html.EnableUnobtrusiveJavaScript();}
     @using (Html.BeginForm("Edit", "Admin"))
     {
         <div class="panel-body">

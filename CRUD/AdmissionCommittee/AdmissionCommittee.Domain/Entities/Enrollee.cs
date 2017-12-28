@@ -24,7 +24,6 @@ namespace AdmissionCommittee.Domain.Entities
         [Display(Name = "Number and series of passport")]
         public string PassportNumber { get; set; }
 
-        //[RegularExpression("\\d{2}\\.\\d{2}\\.\\d{4}", ErrorMessage = "Please enter the date in the format \"DD.MM.YYYY\"")]
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
 

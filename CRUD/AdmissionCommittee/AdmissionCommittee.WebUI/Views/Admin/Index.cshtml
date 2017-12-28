@@ -51,7 +51,18 @@
                                 @Html.Hidden("ProductID", item.EnrolleeID)
                                 <input type="submit"
                                        class="btn btn-default btn-xs"
-                                       value="Delete" />
+                                       value="Delete" 
+                                       onclick="return ConfirmDeleteEnrollee()"/>
+                                <script language="javascript" type="text/javascript">
+                                    function ConfirmDeleteEnrollee()
+                                    {
+                                        var x = confirm("Are you sure you want to delete this enrollee?");
+                                        if (x)
+                                            return true;
+                                        else
+                                            return false;
+                                    }
+                                </script>
                             }
                         </div>
                     </td>
@@ -64,7 +75,7 @@
             @Html.ActionLink("Add a new enrollee", "Create", null, new { @class = "btn btn-default" })
         </div>
         <div style="float:right">
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { Model.CurrentCategoryOfEducation, page = x }))
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", "Admin", new { edLevel = Model.CurrentCategoryOfEducation, page = x }))
         </div>
     </div>
 </div>
