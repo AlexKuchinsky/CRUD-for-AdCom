@@ -71,8 +71,11 @@
     <Compile Include="Abstract\IEnrolleeRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFEnrolleeRepository.cs" />
+    <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\EducationLevel.cs" />
     <Compile Include="Entities\Enrollee.cs" />
+    <Compile Include="Entities\EnrolleeToSubject.cs" />
+    <Compile Include="Entities\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

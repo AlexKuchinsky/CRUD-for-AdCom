@@ -16,32 +16,106 @@
     {
         <div class="panel-body">
             @Html.HiddenFor(m => m.EnrolleeID)
-            @foreach (var property in ViewData.ModelMetadata.Properties)
+            <h3>Main information</h3>
+            <div class="form-group">
+                <label>Last name</label>
+                @Html.TextBoxFor(m => m.LastName, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LastName)
+            </div>
+            <div class="form-group">
+                <label>First name</label>
+                @Html.TextBoxFor(m => m.FirstName, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+            <div class="form-group">
+                <label>Patronymic</label>
+                @Html.TextBoxFor(m => m.Patronymic, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Patronymic)
+            </div>
+            <div class="form-group">
+                <label>Passport number</label>
+                @Html.TextBoxFor(m => m.PassportNumber, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PassportNumber)
+            </div>
+            <div class="form-group">
+                <label>Date of birth</label>
+                @Html.TextBoxFor(m => m.DateOfBirth, Model.DateOfBirth.ToString("d"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DateOfBirth)
+            </div>
+            <div class="form-group">
+                <label>Education level</label>
+                @Html.EnumDropDownListFor(m => m.EducationLevel, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                @Html.TextBoxFor(m => m.Phone, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Phone)
+            </div>
+
+            <h3>Address</h3>
+            <div class="form-group">
+                <label>Country</label>
+                @Html.TextBoxFor(m => m.Address.Country, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.Country)
+            </div>
+            <div class="form-group">
+                <label>Region</label>
+                @Html.TextBoxFor(m => m.Address.Region, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.Region)
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                @Html.TextBoxFor(m => m.Address.City, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.City)
+            </div>
+            <div class="form-group">
+                <label>Street</label>
+                @Html.TextBoxFor(m => m.Address.Street, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.Street)
+            </div>
+            <div class="form-group">
+                <label>Building number</label>
+                @Html.TextBoxFor(m => m.Address.BuildingNumber, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.BuildingNumber)
+            </div>
+            <div class="form-group">
+                <label>Apartment number</label>
+                @Html.TextBoxFor(m => m.Address.ApartmentNumber, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.ApartmentNumber)
+            </div>
+            <div class="form-group">
+                <label>Postal code</label>
+                @Html.TextBoxFor(m => m.Address.PostalCode, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Address.PostalCode)
+            </div>
+
+            <h3>CT results</h3>
+            <div class="form-group">
+                <label>Language</label>
+                @Html.TextBoxFor(m => m.CTLanguage, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CTLanguage)
+            </div>
+            <div class="form-group">
+                <label>First subject</label>
+                @Html.TextBoxFor(m => m.CTFirstSubject, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CTFirstSubject)
+            </div>
+            <div class="form-group">
+                <label>Second subject</label>
+                @Html.TextBoxFor(m => m.CTSecondSubject, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CTSecondSubject)
+            </div>       
+
+            <h3>Certificate</h3>
+            @for(int i = 0; i < Model.Marks.Count; i++)
             {
-                if (property.PropertyName != "EnrolleeID" && property.PropertyName != "EducationLevel" && property.PropertyName != "DateOfBirth")
-                {
-                    <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
-                }
-                if (property.PropertyName == "DateOfBirth")
-                {
-                    <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        @Html.TextBox(property.PropertyName, ((DateTime)property.Model).ToString("d"), new { @class = "form-control" })
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
-                }
-                if (property.PropertyName == "EducationLevel")
-                {
-                    <div class="form-group">
-                        <label>Education level</label>
-                        @Html.EnumDropDownListFor(m => m.EducationLevel, new { @class = "form-control" })
-                    </div>
-                }
+                <div class="form-group">
+                    <label>@Model.Marks[i].Subject.Name</label>
+                    @Html.TextBoxFor(m => m.Marks[i].Mark, null, new { @class = "form-control" })
+                </div>
             }
+
+        }
             
         </div>
 

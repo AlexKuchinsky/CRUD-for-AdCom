@@ -1,33 +1,69 @@
-﻿@model AdmissionCommittee.Domain.Entities.Enrollee
+﻿@using AdmissionCommittee.Domain.Entities;
+@model AdmissionCommittee.Domain.Entities.Enrollee
+
 
 @{
     ViewBag.Title = "Show";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="panel">
+<div class="en-container-central">
     <div class="panel-heading">
-        <h3>@(Model.LastName + " " + Model.FirstName + " " + Model.Patronymic)</h3>
+        <h2>@(Model.LastName + " " + Model.FirstName + " " + Model.Patronymic)</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body en-container-central">
+        <h3>Main information</h3>
         <table class="table table-striped table-condensed table-bordered">
-            @foreach (var property in ViewData.ModelMetadata.Properties)
-            {
-                if (property.PropertyName != "EnrolleeID" && property.PropertyName != "DateOfBirth")
-                {
-                    <tr>
-                        <td><label>@(property.DisplayName ?? property.PropertyName)</label></td>
-                        <td>@property.Model</td>
-                    </tr>
-                }
-                if (property.PropertyName == "DateOfBirth")
-                {
-                    <tr>
-                        <td><label>@(property.DisplayName ?? property.PropertyName)</label></td>
-                        <td>@(((DateTime)property.Model).ToString("d"))</td>
-                    </tr>
-                }
-            }
+            <tr>
+                <td><label>Passport number</label></td>
+                <td>@Model.PassportNumber</td>
+            </tr>
+            <tr>
+                <td><label>Date of birth</label></td>
+                <td>@Model.DateOfBirth.ToString("d")</td>
+            </tr>
+            <tr>
+                <td><label>Education level</label></td>
+                <td>@Model.EducationLevel.Description()</td>
+            </tr>
+            <tr>
+                <td><label>Phone</label></td>
+                <td>@Model.Phone</td>
+            </tr>
+        </table>
+        <h3>Address</h3>
+        <table class="table table-striped table-condensed table-bordered">         
+            <tr><td><label>
+                @(
+                Model.Address.PostalCode + " " + Model.Address.Country + ", " +
+                Model.Address.Region + ", " + Model.Address.City + ", " +
+                Model.Address.Street + " " + Model.Address.BuildingNumber + "-" +
+                Model.Address.ApartmentNumber
+                )
+                </label></td></tr>
+        </table>
+        <h3>CT results</h3>
+        <table class="table table-striped table-condensed table-bordered">
+            <tr>
+                <td><label>First subject</label></td>
+                <td>@Model.CTFirstSubject</td>
+            </tr>
+            <tr>
+                <td><label>Second subject</label></td>
+                <td>@Model.CTSecondSubject</td>
+            </tr>
+            <tr>
+                <td><label>Language</label></td>
+                <td>@Model.CTLanguage</td>
+            </tr>
+            <tr>
+                <td><label>GPA</label></td>
+                <td>@Model.GetGPA()</td>
+            </tr>
+            <tr>
+                <td><label>Total sum:</label></td>
+                <td><label>@Model.GetCTSum()</label></td>
+            </tr>
         </table>
     </div>
     <div class="panel-footer">

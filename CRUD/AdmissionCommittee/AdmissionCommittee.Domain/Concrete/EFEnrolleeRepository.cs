@@ -32,11 +32,19 @@ namespace AdmissionCommittee.Domain.Concrete
                     dbEntry.CTFirstSubject = enrollee.CTFirstSubject;
                     dbEntry.CTSecondSubject = enrollee.CTSecondSubject;
                     dbEntry.DateOfBirth = enrollee.DateOfBirth;
-                    dbEntry.City = enrollee.City;
-                    dbEntry.Address = enrollee.Address;
-                    dbEntry.GPA = enrollee.GPA;
+                    dbEntry.Address.Country = enrollee.Address.Country;
+                    dbEntry.Address.City = enrollee.Address.City;
+                    dbEntry.Address.Region = enrollee.Address.Region;
+                    dbEntry.Address.Street = enrollee.Address.Street;
+                    dbEntry.Address.BuildingNumber = enrollee.Address.BuildingNumber;
+                    dbEntry.Address.ApartmentNumber = enrollee.Address.ApartmentNumber;
+                    dbEntry.Address.PostalCode = enrollee.Address.PostalCode;
                     dbEntry.Phone = enrollee.Phone;
                     dbEntry.EducationLevel = enrollee.EducationLevel;
+                    for(int i = 0; i < dbEntry.Marks.Count; i++)
+                    {
+                        dbEntry.Marks[i].Mark = enrollee.Marks[i].Mark;
+                    }
                 }
             }
             context.SaveChanges();
