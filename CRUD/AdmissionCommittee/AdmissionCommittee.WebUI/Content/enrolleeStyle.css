@@ -1,0 +1,60 @@
+﻿.en-container_main {
+    width: 1080px;
+    margin: 0 auto;
+}
+
+.en-card{
+    background-color: white;
+    margin-top: 20px;
+    height:auto;
+}
+
+.en-card_content {
+    padding: 20px;
+}
+
+.en-bg_color {
+    background-color: #f0f0f0;
+}
+
+.en-full_width{
+    width:100%;
+}
+
+.en-button_square{
+    height:20px;
+    width:20px;
+    min-height: 20px;
+    min-width:20px;
+    padding:0;
+}
+
+.en-button_conteiner_240{
+    width: 240px;
+}
+
+.en-block_header{
+    width: 980px;
+    height:60px;
+    position:relative;
+    float:left;
+}
+
+.en-block_add{
+    width: 60px;
+    height: 60px;
+    float:left;
+    position:relative;
+}
+
+.en-float_left{
+    float:left;
+}
+
+.en-float_right {
+    float: right;
+}
+
+.en-overflow{
+    overflow:auto;
+}

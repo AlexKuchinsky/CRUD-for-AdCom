@@ -7,7 +7,7 @@ namespace AdmissionCommittee.WebUI.HtmlHelpers
 {
     public static class PagingHelpers
     {
-        public static MvcHtmlString PageLinks(this HtmlHelper html, PagingInfo pagingInfo, Func<int, string> pageUrl)
+        public static MvcHtmlString PageLinks(this HtmlHelper html, PagingInfo pagingInfo, Func<int, string> pageUrl, string cssClasses)
         {
             StringBuilder result = new StringBuilder();
             for (int i = 1; i <= pagingInfo.TotalPages; i++)
@@ -17,10 +17,9 @@ namespace AdmissionCommittee.WebUI.HtmlHelpers
                 tag.InnerHtml = i.ToString();
                 if (i == pagingInfo.CurrentPage)
                 {
-                    tag.AddCssClass("selected");
-                    tag.AddCssClass("btn-primary");
+                    tag.AddCssClass("mdl-button--colored");
                 }
-                tag.AddCssClass("btn btn-default");
+                tag.AddCssClass(cssClasses);
                 result.Append(tag.ToString());
             }
             return MvcHtmlString.Create(result.ToString());

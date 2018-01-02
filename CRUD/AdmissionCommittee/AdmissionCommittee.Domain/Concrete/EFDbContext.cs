@@ -29,7 +29,7 @@ namespace AdmissionCommittee.Domain.Concrete
 
             //relationships
 
-            //many-to-many
+            //one-to-many
             modelBuilder.Entity<Enrollee>().
                 HasMany(en => en.Marks).
                 WithRequired(s => s.Enrollee).
@@ -40,21 +40,10 @@ namespace AdmissionCommittee.Domain.Concrete
                 WithRequired(en => en.Subject).
                 HasForeignKey(ens => ens.SubjectID);
 
+            //one-to-one
             modelBuilder.Entity<Address>().
                 HasRequired(ad => ad.Enrollee).
                 WithRequiredPrincipal(en => en.Address);
-            //one-to-many
-            /*modelBuilder.Entity<Enrollee>().
-                HasRequired(en => en.CTFirstSubject).
-                WithRequiredPrincipal(m => m.Enrollee);
-
-            modelBuilder.Entity<Enrollee>().
-                HasRequired(en => en.CTSecondSubject).
-                WithRequiredPrincipal(m => m.Enrollee);
-
-            modelBuilder.Entity<Enrollee>().
-                HasRequired(en => en.CTLanguage).
-                WithRequiredPrincipal(m => m.Enrollee);*/
         }
     }
 }

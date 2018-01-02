@@ -9,7 +9,7 @@ namespace SportsStore.WebUI.Controllers
     public class AdminController : Controller
     {
         private IEnrolleeRepository repository;
-        public int PageSize = 5;
+        public int PageSize = 100;
 
         public AdminController(IEnrolleeRepository repo)
         {

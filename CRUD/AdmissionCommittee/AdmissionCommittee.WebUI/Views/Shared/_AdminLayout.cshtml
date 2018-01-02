@@ -3,17 +3,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />*@
     <link href="~/Content/ErrorStyles.css" rel="stylesheet" />
-    <link href="~/Content/EnrolleeStyles.css" rel="stylesheet"/>
+    <link href="~/Content/enrolleeStyle.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="~/Content/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Content/material.min.js"></script>
     <title></title>
 </head>
-<body>
-    <div>
+<body class="en-bg_color">
+    <div class="en-container_main">
         @if (TempData["message"] != null)
         {
             <div class="alert alert-success">@TempData["message"]</div>

@@ -7,76 +7,75 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
-
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <div><h3>All enrollees</h3></div> 
-        @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @class = "form-control", @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
+<div class="en-card mdl-shadow--2dp en-card_content en-overflow">
+    <div class="en-block_header">
+        <div class="mdl-card__title-text">All enrollees</div>
+        @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
         <script language="javascript" type="text/javascript">
-            function CallChangeFunc(val) {
-                window.location.href = "@Url.Action("Index", "Admin")/" + val + "/1";
-            }
+        function CallChangeFunc(val) {
+            window.location.href = "@Url.Action("Index", "Admin")/" + val + "/1";
+        }
         </script>
     </div>
-    <div class="panel-body">
-        <table class="table table-striped table-condensed table-bordered">
-            <tr>
-                <th class="text-right">ID</th>
-                <th class="text-left">Full Name</th>
-                <th class="text-center">Passport number</th>
-                <th class="text-center">Date of birth</th>
-                <th class="text-center">Sum CT</th>
-                <th class="text-right">Education level</th>
-                <th class="text-center">Actions</th>
-            </tr>
-            @foreach (var item in Model.Enrollees)
-            {
-                <tr>
-                    <td class="text-right">@item.EnrolleeID</td>
-                    <td class="text-left">@Html.ActionLink((item.LastName + " " + item.FirstName + " " + item.Patronymic),
-                                         "Show", new { item.EnrolleeID })</td>
-                    <td class="text-center">@item.PassportNumber</td>
-                    <td class="text-center">@item.DateOfBirth.ToString("d")</td>
-                    <td class="text-center">@item.GetCTSum()</td>
-                    <td class="text-right">@item.EducationLevel.Description()</td>
-                    <td width="100px">
-                        <div style="float:left">
-                            @Html.ActionLink("Edit", "Edit", new { item.EnrolleeID }, new { @class = "btn btn-default btn-xs" })
-                        </div>
-                        <div style="float:right">
-                            @using (Html.BeginForm("Delete", "Admin", new { item.EnrolleeID }))
-                            {
-                                @Html.Hidden("ProductID", item.EnrolleeID)
-                                <input type="submit"
-                                       class="btn btn-default btn-xs"
-                                       value="Delete" 
-                                       onclick="return ConfirmDeleteEnrollee()"/>
-                                <script language="javascript" type="text/javascript">
-                                    function ConfirmDeleteEnrollee()
-                                    {
-                                        var x = confirm("Are you sure you want to delete this enrollee?");
-                                        if (x)
-                                            return true;
-                                        else
-                                            return false;
-                                    }
-                                </script>
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-    <div class="panel-footer" style="height:55px">
-        <div style="float:left">
-            @Html.ActionLink("Add a new enrollee", "Create", null, new { @class = "btn btn-default" })
-        </div>
-        <div style="float:right">
-            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", "Admin", new { edLevel = Model.CurrentCategoryOfEducation, page = x }))
-        </div>
+    <div class="en-block_add">
+        @Html.ActionLink("+", "Create", null, new { @class = "mdl-button mdl-js-button mdl-button--fab mdl-button--accent" })
     </div>
 </div>
+
+<div class="mdl-shadow--2dp en-card">
+    <table class="mdl-data-table en-full_width">
+        <tr>
+            <th class="mdl-data-table__cell--non-numeric">Full Name</th>
+            <th>Date of birth</th>
+            <th>Sum CT</th>
+            <th class="mdl-data-table__cell--non-numeric">Education level</th>
+            <th class="en-button_conteiner_240"></th>
+        </tr>
+        @foreach (var item in Model.Enrollees)
+        {
+            <tr>
+                <td class="mdl-data-table__cell--non-numeric">@Html.ActionLink((item.LastName + " " + item.FirstName + " " + item.Patronymic),
+                                        "Show", new { item.EnrolleeID })</td>
+                <td>@item.DateOfBirth.ToString("d")</td>
+                <td>@item.GetCTSum()</td>
+                <td class="mdl-data-table__cell--non-numeric">@item.EducationLevel.Description()</td>
+                <td class="mdl-data-table__cell--non-numeric en-button_conteiner_240">
+                    <div class="en-float_left">
+                        @Html.ActionLink("Edit", "Edit", new { item.EnrolleeID }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" })
+                    </div>
+                    <div class="en-float_right">
+                        @using (Html.BeginForm("Delete", "Admin", new { item.EnrolleeID }))
+                        {
+                            @Html.Hidden("ProductID", item.EnrolleeID)
+                            <input type="submit"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                    value="Delete" 
+                                    onclick="return ConfirmDeleteEnrollee()"/>
+                            <script language="javascript" type="text/javascript">
+                                function ConfirmDeleteEnrollee()
+                                {
+                                    var x = confirm("Are you sure you want to delete this enrollee?");
+                                    if (x)
+                                        return true;
+                                    else
+                                        return false;
+                                }
+                            </script>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@*<div class="en-card mdl-shadow--2dp en-card_content">
+    <div style="float:left">
+        @Html.ActionLink("Add", "Create", null, new { @class = "mdl-button mdl-js-button mdl-button--fab" })
+    </div>
+    <div style="float:right">
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", "Admin", new { edLevel = Model.CurrentCategoryOfEducation, page = x }), "mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab")
+    </div>
+</div>*@
+
 
