@@ -7,14 +7,49 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="en-card mdl-shadow--2dp en-card_content en-overflow">
+<div class="en-card mdl-shadow--2dp en-overflow">
     <div class="en-block_header">
-        <div class="mdl-card__title-text">All enrollees</div>
-        @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
-        <script language="javascript" type="text/javascript">
+        <div class="en-header_big">All enrollees</div>
+        <div class="en-padding_dropdown">
+            @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
+        </div>
+        <script>
         function CallChangeFunc(val) {
-            window.location.href = "@Url.Action("Index", "Admin")/" + val + "/1";
+            window.location.href = "@Url.RouteUrl(new { controller = "Admin", action = "Index"})/" + val + "/1";
         }
+        </script>
+        <ul class="ul-treefree ul-dropfree">
+            <li>
+                Древовидный список;
+                <ul>
+                    <li>У каждого элемента списка есть родитель, кроме элементов первого уровня;</li>
+                    <li>Каждый следующий уровень вложенности смещается внутрь на фиксированное расстояние; </li>
+                    <li>
+                        Наличие соединяющих линий;
+                        <ul>
+                            <li>Все элементы "братья" должны соединяться линией;</li>
+                            <li>Все элементы "дети" должны соединяться линией с родителем;</li>
+                        </ul>
+                    </li>
+                    <li>Элементы древовидного списка не должны иметь фоновую заливку для возможности отображения списка над любым градиентным фоном;</li>
+                </ul>
+            </li>
+            <li>
+                Раскрывающийся древовидный список;
+                <ul>
+                    <li>Все то же что и у простого древовидного списка;</li>
+                    <li>
+                        Наличие управляющих кнопок плюсиков;
+                        <ul>
+                            <li>Каждый элемент являющийся родителем слева от себя должен иметь управляющую кнопку плюсик;</li>
+                            <li>При нажатии на эту кнопку дочерние элементы показываются, а кнопка приобретает вид минуса, при повторном нажатии дочернии элементы скрываются, кнопка приобретает свой первоначальный вид.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <script>
+            
         </script>
     </div>
     <div class="en-block_add">

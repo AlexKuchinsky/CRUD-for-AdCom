@@ -7,67 +7,55 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="en-container-central">
-    <div class="panel-heading">
-        <h2>@(Model.LastName + " " + Model.FirstName + " " + Model.Patronymic)</h2>
+<div class="en-card mdl-shadow--2dp">
+    <div class="en-header_big">@(Model.LastName + " " + Model.FirstName + " " + Model.Patronymic)</div>
+</div>
+
+<div class="en-card en-card_left mdl-shadow--2dp">
+    <div class="en-header_middle">Main information</div>
+    <div class="en-body_inf">
+            <div class="en-text_inf en-text_inf_label">Passport number</div>
+            <div class="en-text_inf">@Model.PassportNumber</div>
+            <div class="en-text_inf en-text_inf_label">Date of birth</div>
+            <div class="en-text_inf">@Model.DateOfBirth.ToString("d")</div>
+            <div class="en-text_inf en-text_inf_label">Education level</div>
+            <div class="en-text_inf">@Model.EducationLevel.Description()</div>
+            <div class="en-text_inf en-text_inf_label">Phone</div>
+            <div class="en-text_inf">@Model.Phone</div>
     </div>
-    <div class="panel-body en-container-central">
-        <h3>Main information</h3>
-        <table class="table table-striped table-condensed table-bordered">
-            <tr>
-                <td><label>Passport number</label></td>
-                <td>@Model.PassportNumber</td>
-            </tr>
-            <tr>
-                <td><label>Date of birth</label></td>
-                <td>@Model.DateOfBirth.ToString("d")</td>
-            </tr>
-            <tr>
-                <td><label>Education level</label></td>
-                <td>@Model.EducationLevel.Description()</td>
-            </tr>
-            <tr>
-                <td><label>Phone</label></td>
-                <td>@Model.Phone</td>
-            </tr>
-        </table>
-        <h3>Address</h3>
-        <table class="table table-striped table-condensed table-bordered">         
-            <tr><td><label>
-                @(
-                Model.Address.PostalCode + " " + Model.Address.Country + ", " +
-                Model.Address.Region + ", " + Model.Address.City + ", " +
-                Model.Address.Street + " " + Model.Address.BuildingNumber + "-" +
-                Model.Address.ApartmentNumber
-                )
-                </label></td></tr>
-        </table>
-        <h3>CT results</h3>
-        <table class="table table-striped table-condensed table-bordered">
-            <tr>
-                <td><label>First subject</label></td>
-                <td>@Model.CTFirstSubject</td>
-            </tr>
-            <tr>
-                <td><label>Second subject</label></td>
-                <td>@Model.CTSecondSubject</td>
-            </tr>
-            <tr>
-                <td><label>Language</label></td>
-                <td>@Model.CTLanguage</td>
-            </tr>
-            <tr>
-                <td><label>GPA</label></td>
-                <td>@Model.GetGPA()</td>
-            </tr>
-            <tr>
-                <td><label>Total sum:</label></td>
-                <td><label>@Model.GetCTSum()</label></td>
-            </tr>
-        </table>
+</div>
+
+<div class="en-card en-card_right mdl-shadow--2dp">
+    <div class="en-header_middle">CT results</div>
+    <div class="en-body_inf">
+            <div class="en-text_inf en-text_inf_label">First subject</div>
+            <div class="en-text_inf">@Model.CTFirstSubject</div>
+            <div class="en-text_inf en-text_inf_label">Second subject</div>
+            <div class="en-text_inf">@Model.CTSecondSubject</div>
+            <div class="en-text_inf en-text_inf_label">Language</div>
+            <div class="en-text_inf">@Model.CTLanguage</div>
+            <div class="en-text_inf en-text_inf_label">GPAh</div>
+            <div class="en-text_inf">@Model.GetGPA()</div>
+            <div class="en-text_inf en-text_inf_label">Total sum:</div>
+            <div class="en-text_inf"><b>@Model.GetCTSum()</b></div>
     </div>
-    <div class="panel-footer">
-        @Html.ActionLink("Edit", "Edit", new { Model.EnrolleeID }, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Cancel and return to List", "Index", null, new { @class = "btn btn-default" })
+</div>
+
+<div class="en-card en-card_left mdl-shadow--2dp">
+    <div class="en-header_middle">Address</div>
+    <div class="en-text_inf en-body_inf">
+        @(
+            Model.Address.PostalCode + " " + Model.Address.Country + ", " +
+            Model.Address.Region + ", " + Model.Address.City + ", " +
+            Model.Address.Street + " " + Model.Address.BuildingNumber + "-" +
+            Model.Address.ApartmentNumber
+        )
     </div>
+</div>
+
+<div class="en-card mdl-shadow--2dp">
+    <div class="en-card_content">
+        @Html.ActionLink("Edit", "Edit", new { Model.EnrolleeID }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+        @Html.ActionLink("Cancel and return to List", "Index", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+    </div>  
 </div>

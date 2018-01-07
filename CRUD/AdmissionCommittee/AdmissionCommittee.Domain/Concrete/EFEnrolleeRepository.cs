@@ -13,6 +13,11 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.Enrollees; }
         }
 
+        public IEnumerable<Subject> Subjects
+        {
+            get { return context.Subjects; }
+        }
+
         public void SaveEnrollee(Enrollee enrollee)
         {
             if (enrollee.EnrolleeID == 0)
@@ -43,6 +48,7 @@ namespace AdmissionCommittee.Domain.Concrete
                     dbEntry.EducationLevel = enrollee.EducationLevel;
                     for(int i = 0; i < dbEntry.Marks.Count; i++)
                     {
+                        dbEntry.Marks[i].SubjectID = enrollee.Marks[i].SubjectID;
                         dbEntry.Marks[i].Mark = enrollee.Marks[i].Mark;
                     }
                 }

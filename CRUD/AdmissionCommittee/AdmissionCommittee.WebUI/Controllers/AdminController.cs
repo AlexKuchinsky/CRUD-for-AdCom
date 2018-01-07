@@ -40,9 +40,12 @@ namespace SportsStore.WebUI.Controllers
 
         public ViewResult Edit(int enrolleeId)
         {
-            Enrollee enrollee = repository.Enrollees
-                .FirstOrDefault(p => p.EnrolleeID == enrolleeId);
-            return View(enrollee);
+            var model = new EnrolleeEditViewModel
+            {
+                Enrollee = repository.Enrollees.FirstOrDefault(p => p.EnrolleeID == enrolleeId),
+                Subjects = repository.Subjects
+            };
+            return View(model);
         }
 
         public ViewResult Show(int enrolleeId)
@@ -70,7 +73,10 @@ namespace SportsStore.WebUI.Controllers
 
         public ViewResult Create()
         {
-            return View("Edit", new Enrollee());
+            return View("Edit", new EnrolleeEditViewModel()
+            {
+                Subjects = repository.Subjects
+            });
         }
 
         [HttpPost]
@@ -84,5 +90,12 @@ namespace SportsStore.WebUI.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //[HttpPost]
+        //public JsonResult LoadBranch(//параметры для определения ветки)
+        //{
+        //    //обращение к серверу для поиска наследников
+        //    //формировние json ответа
+        //}
     }
 }

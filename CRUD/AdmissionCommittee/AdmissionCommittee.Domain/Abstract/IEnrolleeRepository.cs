@@ -5,6 +5,8 @@ namespace AdmissionCommittee.Domain.Abstract
 {
     public interface IEnrolleeRepository
     {
+        IEnumerable<Subject> Subjects { get; }
+
         IEnumerable<Enrollee> Enrollees { get; }
 
         void SaveEnrollee(Enrollee enrollee);

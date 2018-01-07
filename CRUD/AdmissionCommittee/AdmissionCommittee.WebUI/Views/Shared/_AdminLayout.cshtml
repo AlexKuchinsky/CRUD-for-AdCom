@@ -6,17 +6,19 @@
     @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />*@
     <link href="~/Content/ErrorStyles.css" rel="stylesheet" />
-    <link href="~/Content/enrolleeStyle.css" rel="stylesheet"/>
     <link rel="stylesheet" href="~/Content/material.min.css">
+    <link href="~/Content/enrolleeStyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <script src="~/Content/material.min.js"></script>
+    <script src="~/Scripts/material.min.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/enrolleeScripts.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <title></title>
 </head>
 <body class="en-bg_color">
-    <div class="en-container_main">
+    <div class="en-container_main en-overflow">
         @if (TempData["message"] != null)
         {
             <div class="alert alert-success">@TempData["message"]</div>
