@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using AdmissionCommittee.Domain.Abstract;
 using AdmissionCommittee.Domain.Entities;
 using AdmissionCommittee.WebUI.Models;
+using System.Collections;
+using System;
 
 namespace SportsStore.WebUI.Controllers
 {
@@ -91,11 +93,19 @@ namespace SportsStore.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public JsonResult LoadBranch(//параметры для определения ветки)
-        //{
-        //    //обращение к серверу для поиска наследников
-        //    //формировние json ответа
-        //}
+        [HttpPost]
+        public JsonResult LoadNode(int id)
+        {
+            var parentsId = repository.TreeNodes.Select(parent => parent.ParentId);
+            var children = repository.TreeNodes
+                .Where(child => child.ParentId == id)
+                .Select(child => new {
+                    Id = child.Id,
+                    Title = child.Title,
+                    isFolder = parentsId.Contains(child.Id)
+                });
+
+            return Json(children, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -76,6 +76,7 @@
     <Compile Include="Entities\Enrollee.cs" />
     <Compile Include="Entities\EnrolleeToSubject.cs" />
     <Compile Include="Entities\Subject.cs" />
+    <Compile Include="Entities\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

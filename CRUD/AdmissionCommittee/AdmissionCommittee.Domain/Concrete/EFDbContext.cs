@@ -9,6 +9,7 @@ namespace AdmissionCommittee.Domain.Concrete
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<EnrolleeToSubject> EnrolleeToObjects { get; set; }
+        public DbSet<TreeNode> TreeNodes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -16,6 +17,7 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<Enrollee>().ToTable("Enrollees");
             modelBuilder.Entity<EnrolleeToSubject>().ToTable("EnrolleeToSubjects");
             modelBuilder.Entity<Subject>().ToTable("Subjects");
+            modelBuilder.Entity<TreeNode>().ToTable("Tree");
 
             //primary keys
             modelBuilder.Entity<Enrollee>().
@@ -26,7 +28,8 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasKey(ens => ens.EnrolleeToSubjectID);
             modelBuilder.Entity<Address>().
                 HasKey(ad => ad.EnrolleeID);
-
+            modelBuilder.Entity<TreeNode>().
+                HasKey(node => node.Id);
             //relationships
 
             //one-to-many

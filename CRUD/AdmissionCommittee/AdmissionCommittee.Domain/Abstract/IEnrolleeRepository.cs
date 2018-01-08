@@ -9,6 +9,8 @@ namespace AdmissionCommittee.Domain.Abstract
 
         IEnumerable<Enrollee> Enrollees { get; }
 
+        IEnumerable<TreeNode> TreeNodes { get; }
+
         void SaveEnrollee(Enrollee enrollee);
 
         Enrollee DeleteEnrollee(int enrolleeID);

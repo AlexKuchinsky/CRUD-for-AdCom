@@ -18,6 +18,11 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.Subjects; }
         }
 
+        public IEnumerable<TreeNode> TreeNodes
+        {
+            get { return context.TreeNodes; }
+        }
+
         public void SaveEnrollee(Enrollee enrollee)
         {
             if (enrollee.EnrolleeID == 0)
