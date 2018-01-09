@@ -22,7 +22,7 @@
     //        }
     //    });
     //})
-})
+});
 
 function tree(id, url) {
     var element = document.getElementById(id);
@@ -107,7 +107,7 @@ function tree(id, url) {
             success: onSuccess,
             error: onAjaxError,
             cache: false
-        })
+        });
     }
 
     element.onclick = function (event) {
@@ -142,5 +142,109 @@ function tree(id, url) {
 
         // загрузить узел
         load(node);
-    }
+    };
 }
+
+function universitySpecialties()
+{
+    var facultyDropdown = ajaxDropdown("faculty1");
+    var specialtyDropdown = ajaxDropdown("specialty1");
+    var facultyElement = document.getElementById("faculty1");
+    document.getElementById("payment1").onchange = function () {
+        facultyDropdown.loadFaculties("/Admin/LoadFaculties", document.getElementById("payment1").value);
+    }
+    document.getElementById("faculty1").onchange = function () {
+        specialtyDropdown.loadSpecialties("/Admin/LoadSpecialties", document.getElementById("payment1").value, document.getElementById("faculty1").value);
+    };
+}
+
+function ajaxDropdown(id) {
+    var element = document.getElementById(id);
+
+    var onLoaded = function (data) {
+        for (var i = 0; i < data.length; i++) {
+            var text = data[i].Text;
+            var value = data[i].Value;
+            element.options[i] = new Option(text, value);
+            //element.options[i].data("ispaid") = true;
+        }
+    };
+
+    var onLoadError = function (error) {
+        var msg = "Ошибка " + error.errcode;
+        if (error.message) msg = msg + ' :' + error.message;
+        alert(msg);
+    };
+
+    var showLoading = function (on) {
+        element.disabled = on;
+    };
+
+    var onSuccess = function (data) {
+        if (!data.errcode) {
+            onLoaded(data);
+            showLoading(false);
+        } else {
+            showLoading(false);
+            onLoadError(data);
+        }
+    };
+
+    var onAjaxError = function (xhr, status) {
+        showLoading(false);
+        var errinfo = { errcode: status };
+        if (xhr.status !== 200) {
+            errinfo.message = xhr.statusText;
+        } else {
+            errinfo.message = 'Некорректные данные с сервера';
+        }
+        onLoadError(errinfo);
+    };
+
+    return {
+        loadFaculties: function (url, isPaid) {
+            showLoading(true);
+
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+
+            $.ajax({
+                url: url,
+                method: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "isPaid": isPaid
+                }),
+                dataType: "json",
+                success: onSuccess,
+                error: onAjaxError,
+                cache: false
+            });
+        },
+
+        loadSpecialties: function (url, isPaid, idFac) {
+            showLoading(true);
+
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+
+            $.ajax({
+                url: url,
+                method: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "idFac": idFac,
+                    "isPaid": isPaid
+                }),
+                dataType: "json",
+                success: onSuccess,
+                error: onAjaxError,
+                cache: false
+            });
+        }
+    };
+}
+
+

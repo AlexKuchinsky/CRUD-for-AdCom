@@ -10,6 +10,8 @@ namespace AdmissionCommittee.Domain.Concrete
         public DbSet<Address> Address { get; set; }
         public DbSet<EnrolleeToSubject> EnrolleeToObjects { get; set; }
         public DbSet<TreeNode> TreeNodes { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Specialty> Specialties { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -18,6 +20,8 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<EnrolleeToSubject>().ToTable("EnrolleeToSubjects");
             modelBuilder.Entity<Subject>().ToTable("Subjects");
             modelBuilder.Entity<TreeNode>().ToTable("Tree");
+            modelBuilder.Entity<Faculty>().ToTable("Faculties");
+            modelBuilder.Entity<Specialty>().ToTable("Specialties");
 
             //primary keys
             modelBuilder.Entity<Enrollee>().
@@ -29,7 +33,11 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<Address>().
                 HasKey(ad => ad.EnrolleeID);
             modelBuilder.Entity<TreeNode>().
-                HasKey(node => node.Id);
+                HasKey(node => node.ID);
+            modelBuilder.Entity<Faculty>().
+                HasKey(f => f.FacultyID);
+            modelBuilder.Entity<Specialty>().
+                HasKey(sp => sp.SpecialtyID);
             //relationships
 
             //one-to-many
@@ -42,6 +50,11 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasMany(s => s.EnrolleeToSubjects).
                 WithRequired(en => en.Subject).
                 HasForeignKey(ens => ens.SubjectID);
+
+            modelBuilder.Entity<Faculty>().
+                HasMany(f => f.Specialities).
+                WithRequired(sp => sp.Faculty).
+                HasForeignKey(sp => sp.FacultyID);
 
             //one-to-one
             modelBuilder.Entity<Address>().

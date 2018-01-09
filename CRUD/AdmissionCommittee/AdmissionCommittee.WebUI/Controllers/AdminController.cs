@@ -57,6 +57,14 @@ namespace SportsStore.WebUI.Controllers
             return View(enrollee);
         }
 
+        public ViewResult Create()
+        {
+            return View("Edit", new EnrolleeEditViewModel()
+            {
+                Subjects = repository.Subjects
+            });
+        }
+
         [HttpPost]
         public ActionResult Edit(Enrollee enrollee)
         {
@@ -71,15 +79,7 @@ namespace SportsStore.WebUI.Controllers
                 // there is something wrong with the data values
                 return View(enrollee);
             }
-        }
-
-        public ViewResult Create()
-        {
-            return View("Edit", new EnrolleeEditViewModel()
-            {
-                Subjects = repository.Subjects
-            });
-        }
+        }    
 
         [HttpPost]
         public ActionResult Delete(int enrolleeId)
@@ -96,16 +96,43 @@ namespace SportsStore.WebUI.Controllers
         [HttpPost]
         public JsonResult LoadNode(int id)
         {
-            var parentsId = repository.TreeNodes.Select(parent => parent.ParentId);
+            var parentsId = repository.TreeNodes.Select(parent => parent.ParentID);
             var children = repository.TreeNodes
-                .Where(child => child.ParentId == id)
-                .Select(child => new {
-                    Id = child.Id,
+                .Where(child => child.ParentID == id)
+                .Select(child => new
+                {
+                    Id = child.ID,
                     Title = child.Title,
-                    isFolder = parentsId.Contains(child.Id)
+                    isFolder = parentsId.Contains(child.ID)
                 });
 
             return Json(children, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult LoadFaculties(bool isPaid)
+        {
+            var faculties = repository.Faculties
+                .Where(fac => fac.HasPaid == isPaid)
+                .Select(fac => new
+                {
+                    Text = fac.Name,
+                    Value = fac.FacultyID,
+                });
+            return Json(faculties, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult LoadSpecialties(bool isPaid, int idFac)
+        {
+            var faculties = repository.Specialties
+                .Where(sp => sp.HasPaid == isPaid && sp.FacultyID == idFac)
+                .Select(sp => new
+                {
+                    Text = sp.Name,
+                    Value = sp.SpecialtyID,
+                });
+            return Json(faculties, JsonRequestBehavior.AllowGet);
         }
     }
 }

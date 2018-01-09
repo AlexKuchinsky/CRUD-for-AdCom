@@ -23,6 +23,16 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.TreeNodes; }
         }
 
+        public IEnumerable<Faculty> Faculties
+        {
+            get { return context.Faculties; }
+        }
+
+        public IEnumerable<Specialty> Specialties
+        {
+            get { return context.Specialties; }
+        }
+
         public void SaveEnrollee(Enrollee enrollee)
         {
             if (enrollee.EnrolleeID == 0)

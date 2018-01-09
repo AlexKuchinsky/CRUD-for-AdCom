@@ -75,8 +75,11 @@
     <Compile Include="Entities\EducationLevel.cs" />
     <Compile Include="Entities\Enrollee.cs" />
     <Compile Include="Entities\EnrolleeToSubject.cs" />
+    <Compile Include="Entities\Faculty.cs" />
+    <Compile Include="Entities\Specialty.cs" />
     <Compile Include="Entities\Subject.cs" />
     <Compile Include="Entities\TreeNode.cs" />
+    <Compile Include="Entities\UniversitySpecialty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
