@@ -7,7 +7,14 @@
 }
 
 <div class="en-card mdl-shadow--2dp">
-    <div class="en-header_big">Edit @(Model.Enrollee.LastName + " " + Model.Enrollee.FirstName + " " + Model.Enrollee.Patronymic)</div>
+    @if (Model.Enrollee.FirstName != null)
+    {
+        <div class="en-header_big">Edit @(Model.Enrollee.LastName + " " + Model.Enrollee.FirstName + " " + Model.Enrollee.Patronymic)</div>
+    }
+    else
+    {
+        <div class="en-header_big">Create</div>
+    }
 </div>
 @{Html.EnableClientValidation();}
 @{Html.EnableUnobtrusiveJavaScript();}
@@ -15,107 +22,61 @@
 @using (Html.BeginForm("Edit", "Admin"))
 {
     @Html.AntiForgeryToken()
-    <div class="en-card en-card_left mdl-shadow--2dp">
-        @Html.HiddenFor(m => m.Enrollee.EnrolleeID)
-        <div class="en-header_middle">Main information</div>
+    <div class="en-column_left">
+        <div class="en-card mdl-shadow--2dp">
+            @Html.HiddenFor(m => m.Enrollee.EnrolleeID)
+            <div class="en-header_middle">Main information</div>
+            <div class="en-padding_textfields">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.LastName, null, new { @class = "mdl-textfield__input", @id = "lastname", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="lastname">Last name</label>
+                    <span class="mdl-textfield__error">Please enter last name!</span>
+                </div>
 
-        <div class="en-padding_textfields">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.LastName, null, new { @class = "mdl-textfield__input", @id = "lastname", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="lastname">Last name</label>
-                <span class="mdl-textfield__error">Please enter last name!</span>
-            </div>  
-        
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.FirstName, null, new { @class = "mdl-textfield__input", @id = "firstname", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="firstname">First name</label>
-                <span class="mdl-textfield__error">Please enter first name!</span>
-            </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.FirstName, null, new { @class = "mdl-textfield__input", @id = "firstname", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="firstname">First name</label>
+                    <span class="mdl-textfield__error">Please enter first name!</span>
+                </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Patronymic, null, new { @class = "mdl-textfield__input", @id = "patron", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="patron">Patronymic</label>
-                <span class="mdl-textfield__error">Please enter patronymic!</span>
-            </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Patronymic, null, new { @class = "mdl-textfield__input", @id = "patron", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="patron">Patronymic</label>
+                    <span class="mdl-textfield__error">Please enter patronymic!</span>
+                </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.PassportNumber, null, new { @class = "mdl-textfield__input", @id = "passport", @pattern = "([A-Z]|[a-z]){2}\\d{7}" })
-                <label class="mdl-textfield__label" for="passport">Passport number</label>
-                <span class="mdl-textfield__error">Please enter passport number!</span>
-            </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.PassportNumber, null, new { @class = "mdl-textfield__input", @id = "passport", @pattern = "([A-Z]|[a-z]){2}\\d{7}" })
+                    <label class="mdl-textfield__label" for="passport">Passport number</label>
+                    <span class="mdl-textfield__error">Please enter passport number!</span>
+                </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.DateOfBirth, Model.Enrollee.DateOfBirth.ToShortDateString(), new { @class = "mdl-textfield__input", @id = "birthday", @pattern = "\\d{2}\\.\\d{2}\\.\\d{4}" })
-                <label class="mdl-textfield__label" for="birthday">Date of birth</label>
-                <span class="mdl-textfield__error">Please enter date in format "DD.MM.YYYY"!</span>
-            </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.DateOfBirth, Model.Enrollee.DateOfBirth.ToShortDateString(), new { @class = "mdl-textfield__input", @id = "birthday", @pattern = "\\d{2}\\.\\d{2}\\.\\d{4}" })
+                    <label class="mdl-textfield__label" for="birthday">Date of birth</label>
+                    <span class="mdl-textfield__error">Please enter date in format "DD.MM.YYYY"!</span>
+                </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.EnumDropDownListFor(m => m.Enrollee.EducationLevel, new { @class = "mdl-textfield__input", @id ="edlevel" })
-                <label class="mdl-textfield__label" for="edlevel">Eduvation level</label>
-            </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.EnumDropDownListFor(m => m.Enrollee.EducationLevel, new { @class = "mdl-textfield__input", @id = "edlevel" })
+                    <label class="mdl-textfield__label" for="edlevel">Eduvation level</label>
+                </div>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Phone, null, new { @class = "mdl-textfield__input", @id = "phone", @pattern = "\\+\\d{3} \\d{2} \\d{7}" })
-                <label class="mdl-textfield__label" for="patron">Phone</label>
-                <span class="mdl-textfield__error">Please enter phone in format: "+111 22 3344555"!</span>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Phone, null, new { @class = "mdl-textfield__input", @id = "phone", @pattern = "\\+\\d{3} \\d{2} \\d{7}" })
+                    <label class="mdl-textfield__label" for="patron">Phone</label>
+                    <span class="mdl-textfield__error">Please enter phone in format: "+111 22 3344555"!</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="en-card en-card_right mdl-shadow--2dp">
-        <div class="en-header_middle">Address</div>
-        <div class="en-padding_textfields">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.Country, null, new { @class = "mdl-textfield__input", @id = "country", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="country">Country</label>
-                <span class="mdl-textfield__error">Please enter country!</span>
-            </div>  
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.Region, null, new { @class = "mdl-textfield__input", @id = "region", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="region">Region</label>
-                <span class="mdl-textfield__error">Please enter region!</span>
-            </div>  
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.City, null, new { @class = "mdl-textfield__input", @id = "city", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="city">City</label>
-                <span class="mdl-textfield__error">Please enter city!</span>
-            </div>  
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.Street, null, new { @class = "mdl-textfield__input", @id = "street", @pattern = "(\\D)+" })
-                <label class="mdl-textfield__label" for="street">Street</label>
-                <span class="mdl-textfield__error">Please enter street!</span>
-            </div>  
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.BuildingNumber, null, new { @class = "mdl-textfield__input", @id = "buildnum", @pattern = "\\d+(\\w)*" })
-                <label class="mdl-textfield__label" for="buildnum">Building number</label>
-                <span class="mdl-textfield__error">Please enter building number!</span>
-            </div>  
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.ApartmentNumber, null, new { @class = "mdl-textfield__input", @id = "apartnum", @pattern = "\\d*" })
-                <label class="mdl-textfield__label" for="apartnum">Apartment number</label>
-            </div>  
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                @Html.TextBoxFor(m => m.Enrollee.Address.PostalCode, null, new { @class = "mdl-textfield__input", @id = "postal", @pattern = "\\d{6}" })
-                <label class="mdl-textfield__label" for="postal">Postal code</label>
-                <span class="mdl-textfield__error">Please enter postal code!</span>
-            </div> 
-        </div>
-    </div>
-
-    <div class="en-card en-card_left mdl-shadow--2dp">
-        <div class="en-header_middle">Certeficate</div>
-        <div class="en-add_subj_but">
-            <button type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored addbtn">
-                <i class="material-icons">add</i>
-            </button>
-            <script>
+        <div class="en-card mdl-shadow--2dp">
+            <div class="en-header_middle">Certeficate</div>
+            <div class="en-add_subj_but">
+                <button type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored addbtn">
+                    <i class="material-icons">add</i>
+                </button>
+                <script>
                 $(function () {
                     $('.addbtn').click(function () {
                         @*var divblock = $('<div/>', {
@@ -152,81 +113,129 @@
 
                     })
                 });
-            </script>
-        </div>    
-        <div class="en-padding_textfields" id="subjects_and_marks">
-            @for (int i = 0; i < Model.Enrollee.Marks.Count; i++)
-            {
-                <div id="@($"subject-mark_block{i}")">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
-                        @Html.DropDownListFor(m => m.Enrollee.Marks[i].SubjectID, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[i].SubjectID), new { @class = "mdl-textfield__input", @id = $"subject{i}" })
-                        <label class="mdl-textfield__label" for="@($"subject{i}")">Subject</label>
+                </script>
+            </div>
+            <div class="en-padding_textfields" id="subjects_and_marks">
+                @for (int i = 0; i < Model.Enrollee.Marks.Count; i++)
+                {
+                    <div id="@($"subject-mark_block{i}")">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
+                            @Html.DropDownListFor(m => m.Enrollee.Marks[i].SubjectID, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[i].SubjectID), new { @class = "mdl-textfield__input", @id = $"subject{i}" })
+                            <label class="mdl-textfield__label" for="@($"subject{i}")">Subject</label>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
+                            @Html.TextBoxFor(m => m.Enrollee.Marks[i].Mark, null, new { @class = "mdl-textfield__input", @id = $"mark{i}", @pattern = "\\d{1,2}" })
+                            <label class="mdl-textfield__label" for="@($"mark{i}")">Mark</label>
+                            <span class="mdl-textfield__error">Please enter correct mark!</span>
+                        </div>
+                        @*<div class="en-delete_subject">
+                            <button class="mdl-button mdl-js-button mdl-button--icon delbtn" type="button" id="">
+                                <i class="material-icons">clear</i>
+                            </button>
+                            <script>
+                                $(function () {
+                                    $('.delbtn').click(function () {
+                                        $('#subject-mark_block' + i)
+                                    })
+                                });
+                            </script>
+                        </div>*@
                     </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
-                        @Html.TextBoxFor(m => m.Enrollee.Marks[i].Mark, null, new { @class = "mdl-textfield__input", @id = $"mark{i}", @pattern = "\\d{1,2}" })
-                        <label class="mdl-textfield__label" for="@($"mark{i}")">Mark</label>
-                        <span class="mdl-textfield__error">Please enter correct mark!</span>
-                    </div>
-                    @*<div class="en-delete_subject">
-                        <button class="mdl-button mdl-js-button mdl-button--icon delbtn" type="button" id="">
-                            <i class="material-icons">clear</i>
-                        </button>
-                        <script>
-                            $(function () {
-                                $('.delbtn').click(function () {
-                                    $('#subject-mark_block' + i)
-                                })
-                            });
-                        </script>
-                    </div>*@                   
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="en-column_right">
+        <div class="en-card mdl-shadow--2dp">
+            <div class="en-header_middle">Address</div>
+            <div class="en-padding_textfields">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.Country, null, new { @class = "mdl-textfield__input", @id = "country", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="country">Country</label>
+                    <span class="mdl-textfield__error">Please enter country!</span>
                 </div>
-            }
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.Region, null, new { @class = "mdl-textfield__input", @id = "region", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="region">Region</label>
+                    <span class="mdl-textfield__error">Please enter region!</span>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.City, null, new { @class = "mdl-textfield__input", @id = "city", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="city">City</label>
+                    <span class="mdl-textfield__error">Please enter city!</span>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.Street, null, new { @class = "mdl-textfield__input", @id = "street", @pattern = "(\\D)+" })
+                    <label class="mdl-textfield__label" for="street">Street</label>
+                    <span class="mdl-textfield__error">Please enter street!</span>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.BuildingNumber, null, new { @class = "mdl-textfield__input", @id = "buildnum", @pattern = "\\d+(\\w)*" })
+                    <label class="mdl-textfield__label" for="buildnum">Building number</label>
+                    <span class="mdl-textfield__error">Please enter building number!</span>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.ApartmentNumber, null, new { @class = "mdl-textfield__input", @id = "apartnum", @pattern = "\\d*" })
+                    <label class="mdl-textfield__label" for="apartnum">Apartment number</label>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    @Html.TextBoxFor(m => m.Enrollee.Address.PostalCode, null, new { @class = "mdl-textfield__input", @id = "postal", @pattern = "\\d{6}" })
+                    <label class="mdl-textfield__label" for="postal">Postal code</label>
+                    <span class="mdl-textfield__error">Please enter postal code!</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="en-card mdl-shadow--2dp">
+            <div class="en-header_middle">Specialties</div>
+            <div class="en-padding_textfields en-js-univspec">
+                <div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
+                        <select class="mdl-textfield__input" id="payment1" name="Enrollee.UniversitySpecialty.IsPaid"></select>
+                        <label class="mdl-textfield__label en-textfield_label">Payment</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
+                        <select class="mdl-textfield__input" id="faculty1" name="Enrollee.UniversitySpecialty.FacultyID"></select>
+                        <label class="mdl-textfield__label en-textfield_label">Faculty</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
+                        <select class="mdl-textfield__input" id="specialty1" name="Enrollee.UniversitySpecialty.SpecialtyID"></select>
+                        <label class="mdl-textfield__label en-textfield_label">Specialty</label>
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function () { universitySpecialties() })
+                </script>
+            </div>
+        </div>
+
+        <div class="en-card mdl-shadow--2dp">
+            <div class="en-header_middle">CT results</div>
+            <div class="form-group">
+                <label>Language</label>
+                @Html.TextBoxFor(m => m.Enrollee.CTLanguage, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Enrollee.CTLanguage)
+            </div>
+            <div class="form-group">
+                <label>First subject</label>
+                @Html.TextBoxFor(m => m.Enrollee.CTFirstSubject, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Enrollee.CTFirstSubject)
+            </div>
+            <div class="form-group">
+                <label>Second subject</label>
+                @Html.TextBoxFor(m => m.Enrollee.CTSecondSubject, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Enrollee.CTSecondSubject)
+            </div>
         </div>
     </div>
 
-    <div class="en-card en-card_right mdl-shadow--2dp">
-        <div class="en-header_middle">Specialties</div>
-        <div class="en-padding_textfields en-js-univspec">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                <select class="mdl-textfield__input" id="payment1" name="Enrollee.UniversitySpecialty.IsPaid">
-                    <option value="true">For a fee</option>
-                    <option value="false">From grand</option>
-                </select>
-                @*<label class="mdl-textfield__label" for="payment1">Payment</label>*@
-            </div>
-            <div class="mdl-textfield mdl-js-textfield en-block_spec">
-                <select class="mdl-textfield__input" id="faculty1" name="Enrollee.UniversitySpecialty.FacultyID"></select>
-                @*<label class="mdl-textfield__label" for="faculty1">Faculty</label>*@
-            </div>
-            <div class="mdl-textfield mdl-js-textfield en-block_spec">
-                <select class="mdl-textfield__input" id="specialty1" name="Enrollee.UniversitySpecialty.SpecialtyID"></select>
-                @*<label class="mdl-textfield__label" for="specialty1">Specialty</label>*@
-            </div>
-            <script>            
-                $(document).ready(function () { universitySpecialties() })
-            </script>
-        </div>
-    </div>
-
-    <div class="en-card en-card_right mdl-shadow--2dp">
-        <div class="en-header_middle">CT results</div>
-        <div class="form-group">
-            <label>Language</label>
-            @Html.TextBoxFor(m => m.Enrollee.CTLanguage, null, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Enrollee.CTLanguage)
-        </div>
-        <div class="form-group">
-            <label>First subject</label>
-            @Html.TextBoxFor(m => m.Enrollee.CTFirstSubject, null, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Enrollee.CTFirstSubject)
-        </div>
-        <div class="form-group">
-            <label>Second subject</label>
-            @Html.TextBoxFor(m => m.Enrollee.CTSecondSubject, null, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Enrollee.CTSecondSubject)
-        </div>
-    </div>
-     
     <div class="en-card mdl-shadow--2dp">
         <div class="en-card_content">
             <input type="submit" value="Save" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />

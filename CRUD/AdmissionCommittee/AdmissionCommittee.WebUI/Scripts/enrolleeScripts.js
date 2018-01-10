@@ -1,30 +1,4 @@
-﻿$(function () {
-    //$(".ul-dropfree div.drop").one('click', function () {
-    //    $.ajax({
-    //        type: 'POST',
-    //        url: '/Admin/LoadBrunch/',
-    //        data: JSON.stringify({ parentname: this.data('name') }),
-    //        success: function (data) {
-    //            if (data.length > 0) {
-    //                var ul = $('<ul/>');
-    //                $.each(data, function (index, item) {
-    //                    var li = $('<li/>', {
-    //                        text: item.Name,
-    //                        data: {
-    //                            "name": item.Name,
-    //                            "type": item.type 
-    //                        }
-    //                    });
-    //                    ul.append(li);
-    //                })
-    //                this.append(ul);
-    //            }
-    //        }
-    //    });
-    //})
-});
-
-function tree(id, url) {
+﻿function tree(id, url) {
     var element = document.getElementById(id);
 
     function hasClass(elem, className) {
@@ -32,10 +6,7 @@ function tree(id, url) {
     }
 
     function toggleNode(node) {
-        // определить новый класс для узла
         var newClass = hasClass(node, 'ExpandOpen') ? 'ExpandClosed' : 'ExpandOpen';
-        // заменить текущий класс на newClass
-        // регулярка находит отдельно стоящий open|close и меняет на newClass
         var re = /(^|\s)(ExpandOpen|ExpandClosed)(\s|$)/;
         node.className = node.className.replace(re, '$1' + newClass + '$3');
     }
@@ -60,8 +31,6 @@ function tree(id, url) {
             showLoading(false);
             var errinfo = { errcode: status };
             if (xhr.status !== 200) {
-                // может быть статус 200, а ошибка
-                // из-за некорректного JSON
                 errinfo.message = xhr.statusText;
             } else {
                 errinfo.message = 'Некорректные данные с сервера';
@@ -115,59 +84,79 @@ function tree(id, url) {
         var clickedElem = event.target || event.srcElement;
 
         if (!hasClass(clickedElem, 'Expand')) {
-            return; // клик не там
+            return;
         }
 
-        // Node, на который кликнули
         var node = clickedElem.parentNode;
         if (hasClass(node, 'ExpandLeaf')) {
-            return; // клик на листе
+            return;
         }
 
         if (node.isLoaded || node.getElementsByTagName('li').length) {
-            // Узел уже загружен через AJAX(возможно он пуст)
             toggleNode(node);
             return;
         }
 
 
         if (node.getElementsByTagName('LI').length) {
-            // Узел не был загружен при помощи AJAX, но у него почему-то есть потомки
-            // Например, эти узлы были в DOM дерева до вызова tree()
-            // Как правило, это "структурные" узлы
-            // ничего подгружать не надо
             toggleNode(node);
             return;
         }
 
-        // загрузить узел
         load(node);
     };
 }
 
 function universitySpecialties()
 {
+    var paymentDropdown = ajaxDropdown("payment1");
     var facultyDropdown = ajaxDropdown("faculty1");
     var specialtyDropdown = ajaxDropdown("specialty1");
+
+    var paymentElement = document.getElementById("payment1");
     var facultyElement = document.getElementById("faculty1");
-    document.getElementById("payment1").onchange = function () {
-        facultyDropdown.loadFaculties("/Admin/LoadFaculties", document.getElementById("payment1").value);
+
+    paymentDropdown.loadPayment("/Admin/LoadPayment");
+    paymentElement.onchange = function () {
+        facultyDropdown.loadFaculties("/Admin/LoadFaculties", paymentElement.value);
+        specialtyDropdown.clear();
     }
-    document.getElementById("faculty1").onchange = function () {
-        specialtyDropdown.loadSpecialties("/Admin/LoadSpecialties", document.getElementById("payment1").value, document.getElementById("faculty1").value);
+    facultyElement.onchange = function () {
+        specialtyDropdown.loadSpecialties("/Admin/LoadSpecialties", paymentElement.value, facultyElement.value);
     };
 }
+
+//$(function () {
+//    $(".en-js-university_main").on("click", ".en-js-university_each", function () {
+//        var paymentElement = $(this).find(".payment");
+//        var facultyElement = $(this).find(".faculty");
+//        var specialtyElement = $(this).find(".specialty");
+//        var facultyDropdown = ajaxDropdown(facultyElement);
+//        var specialtyDropdown = ajaxDropdown(specialtyElement);
+//        //var facultyElement = document.getElementById("faculty1");
+//        paymentElement.onchange = function () {
+//            var facultyElement = $(this).find(".faculty");
+//            var paymentElement = $(this).find(".payment");
+//            var facultyDropdown = ajaxDropdown(facultyElement);
+//            facultyDropdown.loadFaculties("/Admin/LoadFaculties", paymentElement.value);
+//        }
+//        facultyElement.onchange = function () {
+//            specialtyDropdown.loadSpecialties("/Admin/LoadSpecialties", paymentElement.value, facultyElement.value);
+//        };
+//    });
+//});
 
 function ajaxDropdown(id) {
     var element = document.getElementById(id);
 
     var onLoaded = function (data) {
+        element.options[0] = new Option("-Not selected-", null);
         for (var i = 0; i < data.length; i++) {
             var text = data[i].Text;
             var value = data[i].Value;
-            element.options[i] = new Option(text, value);
-            //element.options[i].data("ispaid") = true;
-        }
+            element.options[i+1] = new Option(text, value);
+            element.options[i + 1].title = data[i].Tooltip;
+        }   
     };
 
     var onLoadError = function (error) {
@@ -202,25 +191,48 @@ function ajaxDropdown(id) {
     };
 
     return {
-        loadFaculties: function (url, isPaid) {
-            showLoading(true);
-
+        clear: function () {
             while (element.firstChild) {
                 element.removeChild(element.firstChild);
             }
+        },
 
+        loadPayment: function (url) {
+            showLoading(true);
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            };
             $.ajax({
                 url: url,
                 method: "post",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "isPaid": isPaid
-                }),
                 dataType: "json",
                 success: onSuccess,
                 error: onAjaxError,
                 cache: false
             });
+        },
+
+        loadFaculties: function (url, isPaid) {
+            showLoading(true);
+
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            };
+            if (isPaid !== "null")
+            {
+                $.ajax({
+                    url: url,
+                    method: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "isPaid": isPaid
+                    }),
+                    dataType: "json",
+                    success: onSuccess,
+                    error: onAjaxError,
+                    cache: false
+                });
+            }           
         },
 
         loadSpecialties: function (url, isPaid, idFac) {
@@ -229,20 +241,22 @@ function ajaxDropdown(id) {
             while (element.firstChild) {
                 element.removeChild(element.firstChild);
             }
-
-            $.ajax({
-                url: url,
-                method: "post",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "idFac": idFac,
-                    "isPaid": isPaid
-                }),
-                dataType: "json",
-                success: onSuccess,
-                error: onAjaxError,
-                cache: false
-            });
+            if ((idFac !== "null") && (isPaid !== "null"))
+            {
+                $.ajax({
+                    url: url,
+                    method: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "idFac": idFac,
+                        "isPaid": isPaid
+                    }),
+                    dataType: "json",
+                    success: onSuccess,
+                    error: onAjaxError,
+                    cache: false
+                });
+            }         
         }
     };
 }

@@ -10,7 +10,6 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public enum EducationLevel
     {
-        [Display(Name = "Preschool education")]
         [Description("Preschool education")]
         PreschoolEducation,
         [Description("General secondary education")]

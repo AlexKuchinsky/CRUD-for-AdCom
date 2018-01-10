@@ -9,7 +9,15 @@
 
 <div class="en-card mdl-shadow--2dp en-overflow">
     <div class="en-block_header">
-        <div class="en-header_big">All enrollees</div>
+        <div class="en-header_title_with_add">
+            <div class="en-header_big">All enrollees</div>
+            <div class="en-block_add">
+                <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--accent">
+                    @Html.ActionLink("+", "Create", null, new { @class = "en-a_add" })
+                </button>            
+            </div>
+        </div>
+        
         <div class="en-padding_dropdown">
             @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
         </div>
@@ -21,19 +29,16 @@
         <script>
             $(document).ready(function () { tree("tree", "/Admin/LoadNode") })
         </script>
-        <div>
-            Наше дерево:
+        <div class="en-padding_tree">
+            Tree of specialties:
             <ul class="Container" id="tree">
                 <li class="Node IsRoot IsLast ExpandClosed" id="0">
                     <div class="Expand"></div>
-                    <div class="Content">Каталог</div>
+                    <div class="Content">BSUIR</div>
                     <ul class="Container"></ul>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="en-block_add">
-        @Html.ActionLink("+", "Create", null, new { @class = "mdl-button mdl-js-button mdl-button--fab mdl-button--accent" })
     </div>
 </div>
 

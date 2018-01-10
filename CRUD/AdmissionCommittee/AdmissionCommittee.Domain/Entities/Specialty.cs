@@ -14,6 +14,8 @@ namespace AdmissionCommittee.Domain.Entities
 
         public string Name { get; set; }
 
+        public string FullName { get; set; }
+
         public virtual Faculty Faculty { get; set; }
 
         public bool HasPaid { get; set; }

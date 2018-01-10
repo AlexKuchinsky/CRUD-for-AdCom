@@ -11,9 +11,10 @@
     <div class="en-header_big">@(Model.LastName + " " + Model.FirstName + " " + Model.Patronymic)</div>
 </div>
 
-<div class="en-card en-card_left mdl-shadow--2dp">
-    <div class="en-header_middle">Main information</div>
-    <div class="en-body_inf">
+<div class="en-column_left">
+    <div class="en-card mdl-shadow--2dp">
+        <div class="en-header_middle">Main information</div>
+        <div class="en-body_inf">
             <div class="en-text_inf en-text_inf_label">Passport number</div>
             <div class="en-text_inf">@Model.PassportNumber</div>
             <div class="en-text_inf en-text_inf_label">Date of birth</div>
@@ -22,12 +23,26 @@
             <div class="en-text_inf">@Model.EducationLevel.Description()</div>
             <div class="en-text_inf en-text_inf_label">Phone</div>
             <div class="en-text_inf">@Model.Phone</div>
+        </div>
+    </div>
+
+    <div class="en-card mdl-shadow--2dp">
+        <div class="en-header_middle">Address</div>
+        <div class="en-text_inf en-body_inf">
+            @(
+            Model.Address.PostalCode + " " + Model.Address.Country + ", " +
+            Model.Address.Region + ", " + Model.Address.City + ", " +
+            Model.Address.Street + " " + Model.Address.BuildingNumber + "-" +
+            Model.Address.ApartmentNumber
+            )
+        </div>
     </div>
 </div>
 
-<div class="en-card en-card_right mdl-shadow--2dp">
-    <div class="en-header_middle">CT results</div>
-    <div class="en-body_inf">
+<div class="en-column_right">
+    <div class="en-card mdl-shadow--2dp">
+        <div class="en-header_middle">CT results</div>
+        <div class="en-body_inf">
             <div class="en-text_inf en-text_inf_label">First subject</div>
             <div class="en-text_inf">@Model.CTFirstSubject</div>
             <div class="en-text_inf en-text_inf_label">Second subject</div>
@@ -38,18 +53,7 @@
             <div class="en-text_inf">@Model.GetGPA()</div>
             <div class="en-text_inf en-text_inf_label">Total sum:</div>
             <div class="en-text_inf"><b>@Model.GetCTSum()</b></div>
-    </div>
-</div>
-
-<div class="en-card en-card_left mdl-shadow--2dp">
-    <div class="en-header_middle">Address</div>
-    <div class="en-text_inf en-body_inf">
-        @(
-            Model.Address.PostalCode + " " + Model.Address.Country + ", " +
-            Model.Address.Region + ", " + Model.Address.City + ", " +
-            Model.Address.Street + " " + Model.Address.BuildingNumber + "-" +
-            Model.Address.ApartmentNumber
-        )
+        </div>
     </div>
 </div>
 

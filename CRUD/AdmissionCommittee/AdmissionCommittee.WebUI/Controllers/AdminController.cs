@@ -61,6 +61,7 @@ namespace SportsStore.WebUI.Controllers
         {
             return View("Edit", new EnrolleeEditViewModel()
             {
+                Enrollee = new Enrollee(),
                 Subjects = repository.Subjects
             });
         }
@@ -110,29 +111,83 @@ namespace SportsStore.WebUI.Controllers
         }
 
         [HttpPost]
+        public JsonResult LoadPayment()
+        {
+            var payment = new[] 
+            {
+                new
+                {
+                    Text = "For a fee",
+                    Value = "true",
+                    Tooltip = ""
+                },
+                new
+                {
+                    Text = "From grand",
+                    Value = "False",
+                    Tooltip = ""
+                }
+            };
+            return Json(payment, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult LoadFaculties(bool isPaid)
         {
-            var faculties = repository.Faculties
-                .Where(fac => fac.HasPaid == isPaid)
+            if (isPaid)
+            {
+                var faculties = repository.Faculties
+                .Where(fac => fac.HasPaid)
                 .Select(fac => new
                 {
                     Text = fac.Name,
                     Value = fac.FacultyID,
+                    Tooltip = fac.FullName
                 });
-            return Json(faculties, JsonRequestBehavior.AllowGet);
+                return Json(faculties, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var faculties = repository.Faculties
+                .Where(fac => fac.HasGrand)
+                .Select(fac => new
+                {
+                    Text = fac.Name,
+                    Value = fac.FacultyID,
+                    Tooltip = fac.FullName
+                });
+                return Json(faculties, JsonRequestBehavior.AllowGet);
+            }              
         }
 
         [HttpPost]
         public JsonResult LoadSpecialties(bool isPaid, int idFac)
         {
-            var faculties = repository.Specialties
-                .Where(sp => sp.HasPaid == isPaid && sp.FacultyID == idFac)
+            if(isPaid)
+            {
+                var faculties = repository.Specialties
+                .Where(sp => sp.HasPaid && sp.FacultyID == idFac)
                 .Select(sp => new
                 {
                     Text = sp.Name,
                     Value = sp.SpecialtyID,
+                    Tooltip = sp.FullName
                 });
-            return Json(faculties, JsonRequestBehavior.AllowGet);
+                return Json(faculties, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var faculties = repository.Specialties
+                .Where(sp => sp.HasGrand && sp.FacultyID == idFac)
+                .Select(sp => new
+                {
+                    Text = sp.Name,
+                    Value = sp.SpecialtyID,
+                    Tooltip = sp.FullName
+                });
+                return Json(faculties, JsonRequestBehavior.AllowGet);
+            }
+            
         }
     }
 }
