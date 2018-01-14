@@ -22,22 +22,18 @@
             @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
         </div>
         <script>
-        function CallChangeFunc(val) {
-            window.location.href = "@Url.RouteUrl(new { controller = "Admin", action = "Index"})/" + val + "/1";
-        }
-        </script>
-        <script>
-            $(document).ready(function () { tree("tree", "/Admin/LoadNode") })
+            function CallChangeFunc(val) {
+                window.location.href = "@Url.RouteUrl(new { controller = "Admin", action = "Index"})/" + val + "/1";
+            }
         </script>
         <div class="en-padding_tree">
-            Tree of specialties:
-            <ul class="Container" id="tree">
-                <li class="Node IsRoot IsLast ExpandClosed" id="0">
-                    <div class="Expand"></div>
-                    <div class="Content">BSUIR</div>
-                    <ul class="Container"></ul>
-                </li>
-            </ul>
+            @using (Ajax.BeginForm("FilterEnrollee", "Admin", new AjaxOptions()))
+            {
+            <div class="en-js-tree" data-id="0">
+                <ul class="en-tree_container"></ul>
+            </div>
+            <input type="submit" value="Submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+            }
         </div>
     </div>
 </div>
@@ -55,18 +51,18 @@
         {
             <tr>
                 <td class="mdl-data-table__cell--non-numeric">@Html.ActionLink((item.LastName + " " + item.FirstName + " " + item.Patronymic),
-                                        "Show", new { item.EnrolleeID })</td>
+                                        "Show", new { item.EnrolleeId })</td>
                 <td>@item.DateOfBirth.ToString("d")</td>
                 <td>@item.GetCTSum()</td>
                 <td class="mdl-data-table__cell--non-numeric">@item.EducationLevel.Description()</td>
                 <td class="mdl-data-table__cell--non-numeric en-button_conteiner_240">
                     <div class="en-float_left">
-                        @Html.ActionLink("Edit", "Edit", new { item.EnrolleeID }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" })
+                        @Html.ActionLink("Edit", "Edit", new { item.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" })
                     </div>
                     <div class="en-float_right">
-                        @using (Html.BeginForm("Delete", "Admin", new { item.EnrolleeID }))
+                        @using (Html.BeginForm("Delete", "Admin", new { item.EnrolleeId }))
                         {
-                            @Html.Hidden("ProductID", item.EnrolleeID)
+                            @Html.Hidden("ProductID", item.EnrolleeId)
                             <input type="submit"
                                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
                                     value="Delete" 

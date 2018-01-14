@@ -8,7 +8,7 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class Faculty
     {
-        public int FacultyID { get; set; }
+        public int FacultyId { get; set; }
 
         public string Name { get; set; }
 

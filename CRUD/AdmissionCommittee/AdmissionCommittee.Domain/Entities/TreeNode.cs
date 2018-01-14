@@ -8,10 +8,12 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class TreeNode
     {
-        public int ID { get; set; }
+        public int NodeId { get; set; }
 
-        public string Title { get; set; }
+        public int ParentId { get; set; }
 
-        public int ParentID { get; set; }
+        public int DataId { get; set; }
+
+        public virtual TreeData Data { get; set; }
     }
 }

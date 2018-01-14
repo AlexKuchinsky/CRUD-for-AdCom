@@ -8,13 +8,13 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class EnrolleeToSubject
     {
-        public int EnrolleeToSubjectID { get; set; }
+        public int EnrolleeToSubjectId { get; set; }
 
-        public int EnrolleeID { get; set; }
+        public int EnrolleeId { get; set; }
 
         public virtual Enrollee Enrollee { get; set; }
 
-        public int SubjectID { get; set; }
+        public int SubjectId { get; set; }
 
         public virtual Subject Subject { get; set; }
 

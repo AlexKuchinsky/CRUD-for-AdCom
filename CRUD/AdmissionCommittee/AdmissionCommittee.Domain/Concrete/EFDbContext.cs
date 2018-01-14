@@ -10,6 +10,7 @@ namespace AdmissionCommittee.Domain.Concrete
         public DbSet<Address> Address { get; set; }
         public DbSet<EnrolleeToSubject> EnrolleeToObjects { get; set; }
         public DbSet<TreeNode> TreeNodes { get; set; }
+        public DbSet<TreeData> TreeData { get; set; }
         public DbSet<Faculty> Faculties { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
 
@@ -20,46 +21,57 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<EnrolleeToSubject>().ToTable("EnrolleeToSubjects");
             modelBuilder.Entity<Subject>().ToTable("Subjects");
             modelBuilder.Entity<TreeNode>().ToTable("Tree");
+            modelBuilder.Entity<TreeData>().ToTable("TreeData");
             modelBuilder.Entity<Faculty>().ToTable("Faculties");
             modelBuilder.Entity<Specialty>().ToTable("Specialties");
 
             //primary keys
             modelBuilder.Entity<Enrollee>().
-                HasKey(en => en.EnrolleeID);
+                HasKey(en => en.EnrolleeId);
             modelBuilder.Entity<Subject>().
-                HasKey(s => s.SubjectID);
+                HasKey(s => s.SubjectId);
             modelBuilder.Entity<EnrolleeToSubject>().
-                HasKey(ens => ens.EnrolleeToSubjectID);
+                HasKey(ens => ens.EnrolleeToSubjectId);
             modelBuilder.Entity<Address>().
-                HasKey(ad => ad.EnrolleeID);
+                HasKey(ad => ad.EnrolleeId);
             modelBuilder.Entity<TreeNode>().
-                HasKey(node => node.ID);
+                HasKey(node => node.NodeId);
+            modelBuilder.Entity<TreeData>().
+                HasKey(data => data.DataId);
             modelBuilder.Entity<Faculty>().
-                HasKey(f => f.FacultyID);
+                HasKey(f => f.FacultyId);
             modelBuilder.Entity<Specialty>().
-                HasKey(sp => sp.SpecialtyID);
+                HasKey(sp => sp.SpecialtyId);
+
             //relationships
+            //one-to-one
+            modelBuilder.Entity<Address>().
+                HasRequired(ad => ad.Enrollee).
+                WithRequiredPrincipal(en => en.Address);
 
             //one-to-many
             modelBuilder.Entity<Enrollee>().
                 HasMany(en => en.Marks).
                 WithRequired(s => s.Enrollee).
-                HasForeignKey(ens => ens.EnrolleeID);
+                HasForeignKey(ens => ens.EnrolleeId);
 
             modelBuilder.Entity<Subject>().
                 HasMany(s => s.EnrolleeToSubjects).
                 WithRequired(en => en.Subject).
-                HasForeignKey(ens => ens.SubjectID);
+                HasForeignKey(ens => ens.SubjectId);
 
             modelBuilder.Entity<Faculty>().
                 HasMany(f => f.Specialities).
                 WithRequired(sp => sp.Faculty).
-                HasForeignKey(sp => sp.FacultyID);
+                HasForeignKey(sp => sp.FacultyId);
 
-            //one-to-one
-            modelBuilder.Entity<Address>().
-                HasRequired(ad => ad.Enrollee).
-                WithRequiredPrincipal(en => en.Address);
+            //modelBuilder.Entity<TreeNode>().
+            //    HasRequired(node => node.Data).
+            //    WithMany();
+
+            modelBuilder.Entity<TreeData>().
+                HasMany(data => data.Nodes).
+                WithRequired(node => node.Data);
         }
     }
 }

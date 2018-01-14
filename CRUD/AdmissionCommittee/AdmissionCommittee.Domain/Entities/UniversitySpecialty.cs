@@ -10,9 +10,9 @@ namespace AdmissionCommittee.Domain.Entities
     {
         public bool IsPaid { get; set; }
 
-        public int FacultyID { get; set; }
+        public int FacultyId { get; set; }
 
-        public int SpecialtyID { get; set; }
+        public int SpecialtyId { get; set; }
 
         public Faculty Faculty { get; set; }
 

@@ -11,6 +11,8 @@ namespace AdmissionCommittee.Domain.Abstract
 
         IEnumerable<TreeNode> TreeNodes { get; }
 
+        IEnumerable<TreeData> TreeData { get; }
+
         IEnumerable<Faculty> Faculties { get; }
 
         IEnumerable<Specialty> Specialties { get; }

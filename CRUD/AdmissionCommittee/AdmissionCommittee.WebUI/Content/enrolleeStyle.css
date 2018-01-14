@@ -37,7 +37,7 @@
 }
 
 .en-body_inf{
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0 10px 0;
     overflow:auto;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .en-padding_textfields {
-    padding: 10px 20px 0px 20px;
+    padding: 10px 20px 0 20px;
 }
 
 .en-block_add{
@@ -159,17 +159,17 @@
 }
 
 /*tree class*/
-.Container {
+.en-tree_container {
     padding: 0;
     margin: 0;
 }
 
-    .Container li {
-        list-style-type: none;
-    }
+.en-tree_container li {
+    list-style-type: none;
+}
 
 /* indent for all tree children excepts root */
-.Node {
+.en-tree_node {
     background-image: url(/img/i.gif);
     background-position: top left;
     background-repeat: repeat-y;
@@ -177,64 +177,75 @@
     zoom: 1;
 }
 
-.IsRoot {
+.en-tree_node input {
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin: 2px;
+}
+
+.-en-tree_node, .en-tree-content {
+    margin-left: 36px;
+}
+
+.en-tree_is_root {
     margin-left: 0;
 }
 
 /* left vertical line (grid) for all nodes */
-.IsLast {
+.en-tree_is_last {
     background-image: url(/img/i_half.gif);
     background-repeat: no-repeat;
 }
 
-.ExpandOpen .Expand {
+.en-tree_expand_open .en-tree_expand {
     background-image: url(/img/expand_minus.gif);
 }
 
 /* closed is higher priority than open */
-.ExpandClosed .Expand {
+.en-tree_expand_closed .en-tree_expand {
     background-image: url(/img/expand_plus.gif);
 }
 
 /* highest priority */
-.ExpandLeaf .Expand {
+.en-tree_expand_leaf .en-tree_expand {
     background-image: url(/img/expand_leaf.gif);
 }
 
-.Content {
+.en-tree_content {
     min-height: 18px;
     margin-left: 18px;
 }
 
-* html .Content {
+* html .en-tree_content {
     height: 18px;
 }
 
-.Expand {
+.en-tree_expand {
     width: 18px;
     height: 18px;
     float: left;
 }
 
-.ExpandLoading {
+.en-tree_expand_loading {
     width: 18px;
     height: 18px;
     float: left;
     background-image: url(/img/expand_loading.gif);
 }
 
-.ExpandOpen .Container {
+.en-tree_expand_open .en-tree_container {
     display: block;
 }
 
-.ExpandClosed .Container {
+.en-tree_expand_closed .en-tree_container {
     display: none;
 }
 
-.ExpandOpen .Expand, .ExpandClosed .Expand {
+.en-tree_expand_open .en-tree_expand, .en-tree_expand_closed .en-tree_expand {
     cursor: pointer;
 }
 
-.ExpandLeaf .Expand {
+.en-tree_expand_leaf .en-tree_expand {
     cursor: auto;
 }

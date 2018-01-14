@@ -9,7 +9,7 @@ namespace AdmissionCommittee.Domain.Entities
     public class Enrollee
     {
         [HiddenInput(DisplayValue = false)]
-        public int EnrolleeID { get; set; }
+        public int EnrolleeId { get; set; }
 
         [Required(ErrorMessage = "Please enter first name")]
         [Display(Name = "First name")]

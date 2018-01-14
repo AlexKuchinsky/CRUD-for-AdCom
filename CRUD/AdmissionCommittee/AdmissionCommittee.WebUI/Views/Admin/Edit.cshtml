@@ -24,7 +24,7 @@
     @Html.AntiForgeryToken()
     <div class="en-column_left">
         <div class="en-card mdl-shadow--2dp">
-            @Html.HiddenFor(m => m.Enrollee.EnrolleeID)
+            @Html.HiddenFor(m => m.Enrollee.EnrolleeId)
             <div class="en-header_middle">Main information</div>
             <div class="en-padding_textfields">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -120,7 +120,7 @@
                 {
                     <div id="@($"subject-mark_block{i}")">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
-                            @Html.DropDownListFor(m => m.Enrollee.Marks[i].SubjectID, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[i].SubjectID), new { @class = "mdl-textfield__input", @id = $"subject{i}" })
+                            @Html.DropDownListFor(m => m.Enrollee.Marks[i].SubjectId, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[i].SubjectId), new { @class = "mdl-textfield__input", @id = $"subject{i}" })
                             <label class="mdl-textfield__label" for="@($"subject{i}")">Subject</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
@@ -210,8 +210,8 @@
                         <label class="mdl-textfield__label en-textfield_label">Specialty</label>
                     </div>
                 </div>
-                <script>
-                    $(document).ready(function () { universitySpecialties() })
+                <script>                
+                    $(document).ready(function () { universitySpecialties();})
                 </script>
             </div>
         </div>

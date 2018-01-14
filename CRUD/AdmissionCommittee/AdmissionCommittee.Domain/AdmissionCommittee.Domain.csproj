@@ -78,6 +78,7 @@
     <Compile Include="Entities\Faculty.cs" />
     <Compile Include="Entities\Specialty.cs" />
     <Compile Include="Entities\Subject.cs" />
+    <Compile Include="Entities\TreeData.cs" />
     <Compile Include="Entities\TreeNode.cs" />
     <Compile Include="Entities\UniversitySpecialty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

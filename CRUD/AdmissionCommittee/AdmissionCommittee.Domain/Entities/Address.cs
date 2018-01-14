@@ -9,7 +9,7 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class Address
     {
-        public int EnrolleeID { get; set; }
+        public int EnrolleeId { get; set; }
 
         public virtual Enrollee Enrollee { get; set; }
 

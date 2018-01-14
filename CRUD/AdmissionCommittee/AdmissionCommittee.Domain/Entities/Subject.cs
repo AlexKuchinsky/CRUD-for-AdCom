@@ -8,7 +8,7 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class Subject
     {
-        public int SubjectID { get; set; }
+        public int SubjectId { get; set; }
 
         public string Name { get; set; }
 

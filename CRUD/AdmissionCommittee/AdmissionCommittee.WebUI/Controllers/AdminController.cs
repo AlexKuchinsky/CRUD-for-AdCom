@@ -24,7 +24,7 @@ namespace SportsStore.WebUI.Controllers
             {
                 Enrollees = repository.Enrollees
                     .Where(p => edLevel == null || p.EducationLevel == edLevel)
-                    .OrderBy(p => p.EnrolleeID)
+                    .OrderBy(p => p.EnrolleeId)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
@@ -44,7 +44,7 @@ namespace SportsStore.WebUI.Controllers
         {
             var model = new EnrolleeEditViewModel
             {
-                Enrollee = repository.Enrollees.FirstOrDefault(p => p.EnrolleeID == enrolleeId),
+                Enrollee = repository.Enrollees.FirstOrDefault(p => p.EnrolleeId == enrolleeId),
                 Subjects = repository.Subjects
             };
             return View(model);
@@ -53,7 +53,7 @@ namespace SportsStore.WebUI.Controllers
         public ViewResult Show(int enrolleeId)
         {
             Enrollee enrollee = repository.Enrollees
-                    .FirstOrDefault(p => p.EnrolleeID == enrolleeId);
+                    .FirstOrDefault(p => p.EnrolleeId == enrolleeId);
             return View(enrollee);
         }
 
@@ -97,17 +97,32 @@ namespace SportsStore.WebUI.Controllers
         [HttpPost]
         public JsonResult LoadNode(int id)
         {
-            var parentsId = repository.TreeNodes.Select(parent => parent.ParentID);
-            var children = repository.TreeNodes
-                .Where(child => child.ParentID == id)
-                .Select(child => new
-                {
-                    Id = child.ID,
-                    Title = child.Title,
-                    isFolder = parentsId.Contains(child.ID)
-                });
-
-            return Json(children, JsonRequestBehavior.AllowGet);
+            if(id != 0)
+            {
+                var children = repository.TreeNodes.
+                    Where(node => node.ParentId == id)
+                    .Select(child => new
+                    {
+                        Id = child.Data.DataId,
+                        Name = child.Data.Name,
+                        FullName = child.Data.FullName,
+                        NumChildren = repository.TreeNodes.Where(node => node.ParentId == child.DataId).Count()
+                    });
+                return Json(children, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var mainNodes = repository.TreeData
+                    .Where(data => data.Type == 0)
+                    .Select(data => new
+                    {
+                        Id = data.DataId,
+                        Name = data.Name,
+                        FullName = data.FullName,
+                        NumChildren = repository.TreeNodes.Where(node => node.ParentId == data.DataId).Count()
+                    });
+                return Json(mainNodes, JsonRequestBehavior.AllowGet);
+            }           
         }
 
         [HttpPost]
@@ -141,7 +156,7 @@ namespace SportsStore.WebUI.Controllers
                 .Select(fac => new
                 {
                     Text = fac.Name,
-                    Value = fac.FacultyID,
+                    Value = fac.FacultyId,
                     Tooltip = fac.FullName
                 });
                 return Json(faculties, JsonRequestBehavior.AllowGet);
@@ -153,7 +168,7 @@ namespace SportsStore.WebUI.Controllers
                 .Select(fac => new
                 {
                     Text = fac.Name,
-                    Value = fac.FacultyID,
+                    Value = fac.FacultyId,
                     Tooltip = fac.FullName
                 });
                 return Json(faculties, JsonRequestBehavior.AllowGet);
@@ -166,11 +181,11 @@ namespace SportsStore.WebUI.Controllers
             if(isPaid)
             {
                 var faculties = repository.Specialties
-                .Where(sp => sp.HasPaid && sp.FacultyID == idFac)
+                .Where(sp => sp.HasPaid && sp.FacultyId == idFac)
                 .Select(sp => new
                 {
                     Text = sp.Name,
-                    Value = sp.SpecialtyID,
+                    Value = sp.SpecialtyId,
                     Tooltip = sp.FullName
                 });
                 return Json(faculties, JsonRequestBehavior.AllowGet);
@@ -178,11 +193,11 @@ namespace SportsStore.WebUI.Controllers
             else
             {
                 var faculties = repository.Specialties
-                .Where(sp => sp.HasGrand && sp.FacultyID == idFac)
+                .Where(sp => sp.HasGrand && sp.FacultyId == idFac)
                 .Select(sp => new
                 {
                     Text = sp.Name,
-                    Value = sp.SpecialtyID,
+                    Value = sp.SpecialtyId,
                     Tooltip = sp.FullName
                 });
                 return Json(faculties, JsonRequestBehavior.AllowGet);

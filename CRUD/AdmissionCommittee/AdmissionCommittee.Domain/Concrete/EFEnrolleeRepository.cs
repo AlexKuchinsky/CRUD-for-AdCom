@@ -23,6 +23,11 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.TreeNodes; }
         }
 
+        public IEnumerable<TreeData> TreeData
+        {
+            get { return context.TreeData; }
+        }
+
         public IEnumerable<Faculty> Faculties
         {
             get { return context.Faculties; }
@@ -35,13 +40,13 @@ namespace AdmissionCommittee.Domain.Concrete
 
         public void SaveEnrollee(Enrollee enrollee)
         {
-            if (enrollee.EnrolleeID == 0)
+            if (enrollee.EnrolleeId == 0)
             {
                 context.Enrollees.Add(enrollee);
             }
             else
             {
-                Enrollee dbEntry = context.Enrollees.Find(enrollee.EnrolleeID);
+                Enrollee dbEntry = context.Enrollees.Find(enrollee.EnrolleeId);
                 if (dbEntry != null)
                 {
                     dbEntry.FirstName = enrollee.FirstName;
@@ -63,7 +68,7 @@ namespace AdmissionCommittee.Domain.Concrete
                     dbEntry.EducationLevel = enrollee.EducationLevel;
                     for(int i = 0; i < dbEntry.Marks.Count; i++)
                     {
-                        dbEntry.Marks[i].SubjectID = enrollee.Marks[i].SubjectID;
+                        dbEntry.Marks[i].SubjectId = enrollee.Marks[i].SubjectId;
                         dbEntry.Marks[i].Mark = enrollee.Marks[i].Mark;
                     }
                 }

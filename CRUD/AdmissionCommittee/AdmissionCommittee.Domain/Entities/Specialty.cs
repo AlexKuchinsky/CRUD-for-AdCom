@@ -8,9 +8,9 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class Specialty
     {
-        public int SpecialtyID { get; set; }
+        public int SpecialtyId { get; set; }
 
-        public int FacultyID { get; set; }
+        public int FacultyId { get; set; }
 
         public string Name { get; set; }
 
