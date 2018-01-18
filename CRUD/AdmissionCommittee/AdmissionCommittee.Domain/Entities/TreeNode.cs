@@ -10,7 +10,7 @@ namespace AdmissionCommittee.Domain.Entities
     {
         public int NodeId { get; set; }
 
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
 
         public int DataId { get; set; }
 

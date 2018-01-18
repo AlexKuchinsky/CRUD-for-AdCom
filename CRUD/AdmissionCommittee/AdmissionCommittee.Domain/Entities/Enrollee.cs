@@ -51,14 +51,15 @@ namespace AdmissionCommittee.Domain.Entities
         [Display(Name = "Education level")]
         public EducationLevel EducationLevel { get; set; }
 
-        //public UniversitySpecialty UniversitySpecialty { get; set; }
+        public int SpecialtyInfoId { get; set; }
+        public virtual SpecialtyInfo SpecialtyInfo { get; set; }
+     
+        public virtual Address Address { get; set; }
 
         public Enrollee()
         {
             Marks = new List<EnrolleeToSubject>();
         }
-
-        public virtual Address Address { get; set; }
 
         public int GetCTSum()
         {

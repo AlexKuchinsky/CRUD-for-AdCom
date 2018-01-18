@@ -95,34 +95,18 @@ namespace SportsStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoadNode(int id)
+        public JsonResult LoadNode(int? id)
         {
-            if(id != 0)
-            {
-                var children = repository.TreeNodes.
+            var children = repository.TreeNodes.
                     Where(node => node.ParentId == id)
                     .Select(child => new
                     {
-                        Id = child.Data.DataId,
+                        Id = child.NodeId,
                         Name = child.Data.Name,
                         FullName = child.Data.FullName,
-                        NumChildren = repository.TreeNodes.Where(node => node.ParentId == child.DataId).Count()
+                        NumChildren = repository.TreeNodes.Where(node => node.ParentId == child.NodeId).Count()
                     });
-                return Json(children, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var mainNodes = repository.TreeData
-                    .Where(data => data.Type == 0)
-                    .Select(data => new
-                    {
-                        Id = data.DataId,
-                        Name = data.Name,
-                        FullName = data.FullName,
-                        NumChildren = repository.TreeNodes.Where(node => node.ParentId == data.DataId).Count()
-                    });
-                return Json(mainNodes, JsonRequestBehavior.AllowGet);
-            }           
+            return Json(children, JsonRequestBehavior.AllowGet);         
         }
 
         [HttpPost]
@@ -147,62 +131,17 @@ namespace SportsStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoadFaculties(bool isPaid)
+        public JsonResult LoadTreeNode(int? parentId)
         {
-            if (isPaid)
-            {
-                var faculties = repository.Faculties
-                .Where(fac => fac.HasPaid)
-                .Select(fac => new
+            var children = repository.TreeNodes.
+                Where(node => node.ParentId == parentId).
+                Select(node => new
                 {
-                    Text = fac.Name,
-                    Value = fac.FacultyId,
-                    Tooltip = fac.FullName
+                    Text = node.Data.Name,
+                    Value = node.NodeId,
+                    Title = node.Data.FullName
                 });
-                return Json(faculties, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var faculties = repository.Faculties
-                .Where(fac => fac.HasGrand)
-                .Select(fac => new
-                {
-                    Text = fac.Name,
-                    Value = fac.FacultyId,
-                    Tooltip = fac.FullName
-                });
-                return Json(faculties, JsonRequestBehavior.AllowGet);
-            }              
-        }
-
-        [HttpPost]
-        public JsonResult LoadSpecialties(bool isPaid, int idFac)
-        {
-            if(isPaid)
-            {
-                var faculties = repository.Specialties
-                .Where(sp => sp.HasPaid && sp.FacultyId == idFac)
-                .Select(sp => new
-                {
-                    Text = sp.Name,
-                    Value = sp.SpecialtyId,
-                    Tooltip = sp.FullName
-                });
-                return Json(faculties, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var faculties = repository.Specialties
-                .Where(sp => sp.HasGrand && sp.FacultyId == idFac)
-                .Select(sp => new
-                {
-                    Text = sp.Name,
-                    Value = sp.SpecialtyId,
-                    Tooltip = sp.FullName
-                });
-                return Json(faculties, JsonRequestBehavior.AllowGet);
-            }
-            
+            return Json(children, JsonRequestBehavior.AllowGet);
         }
     }
 }

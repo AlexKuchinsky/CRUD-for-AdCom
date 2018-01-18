@@ -13,6 +13,7 @@ namespace AdmissionCommittee.Domain.Concrete
         public DbSet<TreeData> TreeData { get; set; }
         public DbSet<Faculty> Faculties { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
+        public DbSet<SpecialtyInfo> SpecialtyInfo { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -24,6 +25,7 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<TreeData>().ToTable("TreeData");
             modelBuilder.Entity<Faculty>().ToTable("Faculties");
             modelBuilder.Entity<Specialty>().ToTable("Specialties");
+            modelBuilder.Entity<SpecialtyInfo>().ToTable("SpecialtyInfo");
 
             //primary keys
             modelBuilder.Entity<Enrollee>().
@@ -42,6 +44,8 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasKey(f => f.FacultyId);
             modelBuilder.Entity<Specialty>().
                 HasKey(sp => sp.SpecialtyId);
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasKey(si => si.SpecialtyInfoId);
 
             //relationships
             //one-to-one
@@ -65,13 +69,42 @@ namespace AdmissionCommittee.Domain.Concrete
                 WithRequired(sp => sp.Faculty).
                 HasForeignKey(sp => sp.FacultyId);
 
-            //modelBuilder.Entity<TreeNode>().
-            //    HasRequired(node => node.Data).
-            //    WithMany();
-
             modelBuilder.Entity<TreeData>().
                 HasMany(data => data.Nodes).
-                WithRequired(node => node.Data);
+                WithRequired(node => node.Data).
+                HasForeignKey(node => node.DataId);
+
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasMany(si => si.Enrollees).
+                WithRequired(en => en.SpecialtyInfo).
+                HasForeignKey(en => en.SpecialtyInfoId);
+
+            //specialtyinfo
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasRequired(si => si.University).
+                WithMany().
+                HasForeignKey(en => en.UniversityId);
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasRequired(si => si.Faculty).
+                WithMany().
+                HasForeignKey(en => en.FacultyId);
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasRequired(si => si.Specialty).
+                WithMany().
+                HasForeignKey(en => en.SpecialtyId);
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasRequired(si => si.Specialization).
+                WithMany().
+                HasForeignKey(en => en.SpecializationId);
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasRequired(si => si.FormOfStudy).
+                WithMany().
+                HasForeignKey(en => en.FormOfStudyId);
+            modelBuilder.Entity<SpecialtyInfo>().
+                HasRequired(si => si.Payment).
+                WithMany().
+                HasForeignKey(en => en.PaymentId);
+
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿$(document).ready(function () { tree("/Admin/LoadNode"); });
-
-function tree(url) {
+﻿function tree(url) {
     var element = document.getElementsByClassName("en-js-tree")[0];
     element.isFirstLoading = true;
     function hasClass(elem, className) {
@@ -201,54 +199,51 @@ function tree(url) {
     };
 }
 
-function universitySpecialties()
-{
-    var paymentDropdown = ajaxDropdown("payment1");
-    var facultyDropdown = ajaxDropdown("faculty1");
-    var specialtyDropdown = ajaxDropdown("specialty1");
+function initFirstDropdown(firstElement) {
+    var firstDropdown = ajaxDropdown(firstElement);
+    firstDropdown.loadNode("/Admin/LoadTreeNode", null);
+}
 
-    var paymentElement = document.getElementById("payment1");
-    var facultyElement = document.getElementById("faculty1");
+function setDropdownRelations(parentElement, childElement) {
+    var childDropdown = ajaxDropdown(childElement);
 
-    paymentDropdown.loadPayment("/Admin/LoadPayment");
-    paymentElement.onchange = function () {
-        facultyDropdown.loadFaculties("/Admin/LoadFaculties", paymentElement.value);
-        specialtyDropdown.clear();
-    };
-    facultyElement.onchange = function () {
-        specialtyDropdown.loadSpecialties("/Admin/LoadSpecialties", paymentElement.value, facultyElement.value);
+    //parentElement.childElement = childElement;
+    //parentElement.clearChild = function() {
+    //    while (parentElement.childElement.firstChild) {
+    //        parentElement.childElement.removeChild(childElement.firstChild);
+    //    }
+    //    childElement.clearChild();
+    //}
+
+    parentElement.onchange = function () {
+        childDropdown.loadNode("/Admin/LoadTreeNode", parentElement.value);     
     };
 }
 
-//$(function () {
-//    $(".en-js-university_main").on("click", ".en-js-university_each", function () {
-//        var paymentElement = $(this).find(".payment");
-//        var facultyElement = $(this).find(".faculty");
-//        var specialtyElement = $(this).find(".specialty");
-//        var facultyDropdown = ajaxDropdown(facultyElement);
-//        var specialtyDropdown = ajaxDropdown(specialtyElement);
-//        //var facultyElement = document.getElementById("faculty1");
-//        paymentElement.onchange = function () {
-//            var facultyElement = $(this).find(".faculty");
-//            var paymentElement = $(this).find(".payment");
-//            var facultyDropdown = ajaxDropdown(facultyElement);
-//            facultyDropdown.loadFaculties("/Admin/LoadFaculties", paymentElement.value);
-//        }
-//        facultyElement.onchange = function () {
-//            specialtyDropdown.loadSpecialties("/Admin/LoadSpecialties", paymentElement.value, facultyElement.value);
-//        };
-//    });
-//});
+function initSpecialityInfo()
+{
+    var universityElement = document.getElementById("university1");
+    var facultyElement = document.getElementById("faculty1");
+    var specialtyElement = document.getElementById("specialty1");
+    var specializationElement = document.getElementById("specialization1");
+    var formOfStudyElement = document.getElementById("formOfStudy1");
+    var paymentElement = document.getElementById("payment1");
 
-function ajaxDropdown(id) {
-    var element = document.getElementById(id);
+    initFirstDropdown(universityElement);
+    setDropdownRelations(universityElement, facultyElement);
+    setDropdownRelations(facultyElement, specialtyElement);
+    setDropdownRelations(specialtyElement, specializationElement);
+    setDropdownRelations(specializationElement, formOfStudyElement);
+    setDropdownRelations(formOfStudyElement, paymentElement);
+}
 
+function ajaxDropdown(element) {
     var onLoaded = function (data) {
-        element.options[0] = new Option("-Not selected-", null);
+        element.options[0] = new Option("-Not selected-", "empty");
         for (var i = 0; i < data.length; i++) {
             var text = data[i].Text;
             var value = data[i].Value;
-            element.options[i+1] = new Option(text, value);
+            element.options[i + 1] = new Option(text, value);
             element.options[i + 1].title = data[i].Tooltip;
         }   
     };
@@ -291,60 +286,20 @@ function ajaxDropdown(id) {
             }
         },
 
-        loadPayment: function (url) {
-            showLoading(true);
-            while (element.firstChild) {
-                element.removeChild(element.firstChild);
-            }
-            $.ajax({
-                url: url,
-                method: "post",
-                dataType: "json",
-                success: onSuccess,
-                error: onAjaxError,
-                cache: false
-            });
-        },
-
-        loadFaculties: function (url, isPaid) {
+        loadNode: function (url, parentId) {
             showLoading(true);
 
             while (element.firstChild) {
                 element.removeChild(element.firstChild);
             }
-
-            if (isPaid !== "null")
+            if (parentId != "empty")
             {
                 $.ajax({
                     url: url,
                     method: "post",
                     contentType: "application/json",
                     data: JSON.stringify({
-                        "isPaid": isPaid
-                    }),
-                    dataType: "json",
-                    success: onSuccess,
-                    error: onAjaxError,
-                    cache: false
-                });
-            }           
-        },
-
-        loadSpecialties: function (url, isPaid, idFac) {
-            showLoading(true);
-
-            while (element.firstChild) {
-                element.removeChild(element.firstChild);
-            }
-            if (idFac !== "null" && isPaid !== "null")
-            {
-                $.ajax({
-                    url: url,
-                    method: "post",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        "idFac": idFac,
-                        "isPaid": isPaid
+                        "parentId": parentId
                     }),
                     dataType: "json",
                     success: onSuccess,

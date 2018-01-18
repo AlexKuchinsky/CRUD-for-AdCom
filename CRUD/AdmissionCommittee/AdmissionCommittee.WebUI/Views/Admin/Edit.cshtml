@@ -120,7 +120,14 @@
                 {
                     <div id="@($"subject-mark_block{i}")">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
-                            @Html.DropDownListFor(m => m.Enrollee.Marks[i].SubjectId, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[i].SubjectId), new { @class = "mdl-textfield__input", @id = $"subject{i}" })
+                            @Html.DropDownListFor(
+                                m => m.Enrollee.Marks[i].SubjectId, 
+                                new SelectList(
+                                    Model.Subjects,
+                                    "SubjectID",
+                                    "Name", 
+                                    Model.Enrollee.Marks[i].SubjectId),
+                                new { @class = "mdl-textfield__input", @id = $"subject{i}" })
                             <label class="mdl-textfield__label" for="@($"subject{i}")">Subject</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
@@ -198,20 +205,34 @@
             <div class="en-padding_textfields en-js-univspec">
                 <div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="payment1" name="Enrollee.UniversitySpecialty.IsPaid"></select>
-                        <label class="mdl-textfield__label en-textfield_label">Payment</label>
+                        <select class="mdl-textfield__input" id="university1"></select>
+                        <label class="mdl-textfield__label en-textfield_label">University</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="faculty1" name="Enrollee.UniversitySpecialty.FacultyID"></select>
+                        <select class="mdl-textfield__input" id="faculty1"></select>
                         <label class="mdl-textfield__label en-textfield_label">Faculty</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="specialty1" name="Enrollee.UniversitySpecialty.SpecialtyID"></select>
+                        <select class="mdl-textfield__input" id="specialty1"></select>
                         <label class="mdl-textfield__label en-textfield_label">Specialty</label>
                     </div>
                 </div>
+                <div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
+                        <select class="mdl-textfield__input" id="specialization1"></select>
+                        <label class="mdl-textfield__label en-textfield_label">Specialization</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
+                        <select class="mdl-textfield__input" id="formOfStudy1"></select>
+                        <label class="mdl-textfield__label en-textfield_label">Form of study</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
+                        <select class="mdl-textfield__input" id="payment1"></select>
+                        <label class="mdl-textfield__label en-textfield_label">Payment</label>
+                    </div>
+                </div>
                 <script>                
-                    $(document).ready(function () { universitySpecialties();})
+                    $(document).ready(function () { initSpecialityInfo(); })
                 </script>
             </div>
         </div>

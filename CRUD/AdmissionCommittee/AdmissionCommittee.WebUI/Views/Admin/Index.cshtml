@@ -29,9 +29,12 @@
         <div class="en-padding_tree">
             @using (Ajax.BeginForm("FilterEnrollee", "Admin", new AjaxOptions()))
             {
-            <div class="en-js-tree" data-id="0">
+            <div class="en-js-tree" data-id="null">
                 <ul class="en-tree_container"></ul>
             </div>
+            <script>
+                $(document).ready(function () { tree("/Admin/LoadNode"); });
+            </script>
             <input type="submit" value="Submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
             }
         </div>
