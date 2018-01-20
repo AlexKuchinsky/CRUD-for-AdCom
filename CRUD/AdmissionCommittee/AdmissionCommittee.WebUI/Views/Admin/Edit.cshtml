@@ -205,29 +205,29 @@
             <div class="en-padding_textfields en-js-univspec">
                 <div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="university1"></select>
+                        @Html.DropDownListFor(m => m.SpecialtyInfo.UniversityId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "university1" })
                         <label class="mdl-textfield__label en-textfield_label">University</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="faculty1"></select>
+                        @Html.DropDownListFor(m => m.SpecialtyInfo.FacultyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "faculty1" })
                         <label class="mdl-textfield__label en-textfield_label">Faculty</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="specialty1"></select>
+                        @Html.DropDownListFor(m => m.SpecialtyInfo.SpecialtyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialty1" })
                         <label class="mdl-textfield__label en-textfield_label">Specialty</label>
                     </div>
                 </div>
                 <div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="specialization1"></select>
+                        @Html.DropDownListFor(m => m.SpecialtyInfo.SpecializationId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialization1" })
                         <label class="mdl-textfield__label en-textfield_label">Specialization</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="formOfStudy1"></select>
+                        @Html.DropDownListFor(m => m.SpecialtyInfo.FormOfStudyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "formOfStudy1" })
                         <label class="mdl-textfield__label en-textfield_label">Form of study</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        <select class="mdl-textfield__input" id="payment1"></select>
+                        @Html.DropDownListFor(m => m.SpecialtyInfo.PaymentId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "payment1" })
                         <label class="mdl-textfield__label en-textfield_label">Payment</label>
                     </div>
                 </div>

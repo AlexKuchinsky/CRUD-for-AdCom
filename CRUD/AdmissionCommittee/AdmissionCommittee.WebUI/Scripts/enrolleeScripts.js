@@ -201,22 +201,22 @@
 
 function initFirstDropdown(firstElement) {
     var firstDropdown = ajaxDropdown(firstElement);
-    firstDropdown.loadNode("/Admin/LoadTreeNode", null);
+    firstDropdown.loadNode("/Admin/LoadDropdown", null);
 }
 
 function setDropdownRelations(parentElement, childElement) {
     var childDropdown = ajaxDropdown(childElement);
 
-    //parentElement.childElement = childElement;
-    //parentElement.clearChild = function() {
-    //    while (parentElement.childElement.firstChild) {
-    //        parentElement.childElement.removeChild(childElement.firstChild);
-    //    }
-    //    childElement.clearChild();
-    //}
+    parentElement.clearChild = function () {
+        while (childElement.firstChild) {
+            childElement.removeChild(childElement.firstChild);
+        }
+        if (childElement.clearChild) childElement.clearChild();
+    };
 
     parentElement.onchange = function () {
-        childDropdown.loadNode("/Admin/LoadTreeNode", parentElement.value);     
+        parentElement.clearChild();
+        childDropdown.loadNode("/Admin/LoadDropdown", parentElement.value);       
     };
 }
 
@@ -229,22 +229,22 @@ function initSpecialityInfo()
     var formOfStudyElement = document.getElementById("formOfStudy1");
     var paymentElement = document.getElementById("payment1");
 
-    initFirstDropdown(universityElement);
     setDropdownRelations(universityElement, facultyElement);
     setDropdownRelations(facultyElement, specialtyElement);
     setDropdownRelations(specialtyElement, specializationElement);
     setDropdownRelations(specializationElement, formOfStudyElement);
     setDropdownRelations(formOfStudyElement, paymentElement);
+    initFirstDropdown(universityElement);
 }
 
 function ajaxDropdown(element) {
     var onLoaded = function (data) {
         element.options[0] = new Option("-Not selected-", "empty");
         for (var i = 0; i < data.length; i++) {
-            var text = data[i].Text;
-            var value = data[i].Value;
+            var text = data[i].Name;
+            var value = data[i].NodeId;
             element.options[i + 1] = new Option(text, value);
-            element.options[i + 1].title = data[i].Tooltip;
+            element.options[i + 1].title = data[i].FullName;
         }   
     };
 
@@ -280,19 +280,10 @@ function ajaxDropdown(element) {
     };
 
     return {
-        clear: function () {
-            while (element.firstChild) {
-                element.removeChild(element.firstChild);
-            }
-        },
-
         loadNode: function (url, parentId) {
             showLoading(true);
 
-            while (element.firstChild) {
-                element.removeChild(element.firstChild);
-            }
-            if (parentId != "empty")
+            if (parentId !== "empty")
             {
                 $.ajax({
                     url: url,

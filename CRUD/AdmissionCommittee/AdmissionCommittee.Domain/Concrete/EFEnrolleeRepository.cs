@@ -1,5 +1,6 @@
 ﻿using AdmissionCommittee.Domain.Abstract;
 using AdmissionCommittee.Domain.Entities;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace AdmissionCommittee.Domain.Concrete
@@ -28,14 +29,26 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.TreeData; }
         }
 
-        public IEnumerable<Faculty> Faculties
+        public IEnumerable<SpecialtyInfo> SpecialtyInfo
         {
-            get { return context.Faculties; }
+            get { return context.SpecialtyInfo; }
         }
 
-        public IEnumerable<Specialty> Specialties
+        public int GetSpecialtyInfoId(SpecialtyInfo info)
         {
-            get { return context.Specialties; }
+            SpecialtyInfo findedInfo = ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo)
+                .Where(si => si.Equals(info)).FirstOrDefault();
+            if(findedInfo != null)
+            {
+                return findedInfo.SpecialtyInfoId;
+            }
+            else
+            {
+                context.SpecialtyInfo.Add(info);
+                context.SaveChanges();
+                return ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo).Where(si => si.Equals(info)).FirstOrDefault().SpecialtyInfoId;
+            }
+            
         }
 
         public void SaveEnrollee(Enrollee enrollee)

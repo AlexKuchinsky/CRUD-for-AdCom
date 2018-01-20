@@ -13,12 +13,12 @@ namespace AdmissionCommittee.Domain.Abstract
 
         IEnumerable<TreeData> TreeData { get; }
 
-        IEnumerable<Faculty> Faculties { get; }
-
-        IEnumerable<Specialty> Specialties { get; }
+        IEnumerable<SpecialtyInfo> SpecialtyInfo { get; }
 
         void SaveEnrollee(Enrollee enrollee);
 
         Enrollee DeleteEnrollee(int enrolleeID);
+
+        int GetSpecialtyInfoId(SpecialtyInfo info);
     }
 }

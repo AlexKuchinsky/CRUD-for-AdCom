@@ -11,8 +11,6 @@ namespace AdmissionCommittee.Domain.Concrete
         public DbSet<EnrolleeToSubject> EnrolleeToObjects { get; set; }
         public DbSet<TreeNode> TreeNodes { get; set; }
         public DbSet<TreeData> TreeData { get; set; }
-        public DbSet<Faculty> Faculties { get; set; }
-        public DbSet<Specialty> Specialties { get; set; }
         public DbSet<SpecialtyInfo> SpecialtyInfo { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -23,8 +21,6 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<Subject>().ToTable("Subjects");
             modelBuilder.Entity<TreeNode>().ToTable("Tree");
             modelBuilder.Entity<TreeData>().ToTable("TreeData");
-            modelBuilder.Entity<Faculty>().ToTable("Faculties");
-            modelBuilder.Entity<Specialty>().ToTable("Specialties");
             modelBuilder.Entity<SpecialtyInfo>().ToTable("SpecialtyInfo");
 
             //primary keys
@@ -40,10 +36,6 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasKey(node => node.NodeId);
             modelBuilder.Entity<TreeData>().
                 HasKey(data => data.DataId);
-            modelBuilder.Entity<Faculty>().
-                HasKey(f => f.FacultyId);
-            modelBuilder.Entity<Specialty>().
-                HasKey(sp => sp.SpecialtyId);
             modelBuilder.Entity<SpecialtyInfo>().
                 HasKey(si => si.SpecialtyInfoId);
 
@@ -63,11 +55,6 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasMany(s => s.EnrolleeToSubjects).
                 WithRequired(en => en.Subject).
                 HasForeignKey(ens => ens.SubjectId);
-
-            modelBuilder.Entity<Faculty>().
-                HasMany(f => f.Specialities).
-                WithRequired(sp => sp.Faculty).
-                HasForeignKey(sp => sp.FacultyId);
 
             modelBuilder.Entity<TreeData>().
                 HasMany(data => data.Nodes).
@@ -104,7 +91,6 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasRequired(si => si.Payment).
                 WithMany().
                 HasForeignKey(en => en.PaymentId);
-
         }
     }
 }
