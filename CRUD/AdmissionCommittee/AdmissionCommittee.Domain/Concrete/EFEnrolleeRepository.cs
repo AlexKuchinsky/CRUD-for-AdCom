@@ -79,6 +79,7 @@ namespace AdmissionCommittee.Domain.Concrete
                     dbEntry.Address.PostalCode = enrollee.Address.PostalCode;
                     dbEntry.Phone = enrollee.Phone;
                     dbEntry.EducationLevel = enrollee.EducationLevel;
+                    dbEntry.SpecialtyInfoId = enrollee.SpecialtyInfoId;
                     for(int i = 0; i < dbEntry.Marks.Count; i++)
                     {
                         dbEntry.Marks[i].SubjectId = enrollee.Marks[i].SubjectId;

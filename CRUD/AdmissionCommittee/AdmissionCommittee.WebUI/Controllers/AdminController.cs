@@ -46,7 +46,6 @@ namespace SportsStore.WebUI.Controllers
             var model = new EnrolleeEditViewModel
             {
                 Enrollee = enrollee,
-                SpecialtyInfo = enrollee.SpecialtyInfo,
                 Subjects = repository.Subjects
             };
             return View(model);
@@ -71,16 +70,25 @@ namespace SportsStore.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(EnrolleeEditViewModel model)
         {
+            if(model.Enrollee.SpecialtyInfo.UniversityId == 0 ||
+               model.Enrollee.SpecialtyInfo.FacultyId == 0 ||
+               model.Enrollee.SpecialtyInfo.SpecialtyId == 0 ||
+               model.Enrollee.SpecialtyInfo.SpecializationId == 0 ||
+               model.Enrollee.SpecialtyInfo.FormOfStudyId == 0 ||
+               model.Enrollee.SpecialtyInfo.PaymentId == 0)
+            {
+                ModelState.AddModelError("Enrollee.SpecialtyInfo", "Select specialty");
+            }
             if (ModelState.IsValid)
             {
-                model.Enrollee.SpecialtyInfoId = repository.GetSpecialtyInfoId(model.SpecialtyInfo);
+                model.Enrollee.SpecialtyInfoId = repository.GetSpecialtyInfoId(model.Enrollee.SpecialtyInfo);
                 repository.SaveEnrollee(model.Enrollee);
                 TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
                 return RedirectToAction("Index");
             }
             else
             {
-                // there is something wrong with the data values
+                model.Subjects = repository.Subjects;
                 return View(model);
             }
         }    

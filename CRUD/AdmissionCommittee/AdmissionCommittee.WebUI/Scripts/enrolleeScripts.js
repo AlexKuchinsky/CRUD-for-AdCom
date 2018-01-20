@@ -199,53 +199,69 @@
     };
 }
 
-function initFirstDropdown(firstElement) {
-    var firstDropdown = ajaxDropdown(firstElement);
-    firstDropdown.loadNode("/Admin/LoadDropdown", null);
+function initFirst(firstDropdown, callback) {
+    firstDropdown.loadNode("/Admin/LoadDropdown", null, callback);
 }
 
-function setDropdownRelations(parentElement, childElement) {
-    var childDropdown = ajaxDropdown(childElement);
-
-    parentElement.clearChild = function () {
-        while (childElement.firstChild) {
-            childElement.removeChild(childElement.firstChild);
+function setRelations(parentDropdown, childDropdown, parentId) {
+    parentDropdown.clearChild = function () {
+        while (childDropdown.element.firstChild) {
+            childDropdown.element.removeChild(childDropdown.element.firstChild);
         }
-        if (childElement.clearChild) childElement.clearChild();
+        if (childDropdown.clearChild) childDropdown.clearChild();
     };
 
-    parentElement.onchange = function () {
-        parentElement.clearChild();
-        childDropdown.loadNode("/Admin/LoadDropdown", parentElement.value);       
+    parentDropdown.element.onchange = function () {
+        parentDropdown.clearChild();
+        childDropdown.loadNode("/Admin/LoadDropdown", parentDropdown.element.value, null);       
     };
 }
 
-function initSpecialityInfo()
-{
-    var universityElement = document.getElementById("university1");
-    var facultyElement = document.getElementById("faculty1");
-    var specialtyElement = document.getElementById("specialty1");
-    var specializationElement = document.getElementById("specialization1");
-    var formOfStudyElement = document.getElementById("formOfStudy1");
-    var paymentElement = document.getElementById("payment1");
+function onDropdownLoaded(parentDropdown, childDropdown, parentId, onChildLoaded) {
+    parentDropdown.element.value = parentId;
+    if (childDropdown) {
+        childDropdown.loadNode("/Admin/LoadDropdown", parentId, onChildLoaded);
+    }
+}
 
-    setDropdownRelations(universityElement, facultyElement);
-    setDropdownRelations(facultyElement, specialtyElement);
-    setDropdownRelations(specialtyElement, specializationElement);
-    setDropdownRelations(specializationElement, formOfStudyElement);
-    setDropdownRelations(formOfStudyElement, paymentElement);
-    initFirstDropdown(universityElement);
+function initSpecialityInfo(info)
+{
+    var university = ajaxDropdown(document.getElementById("university1"));
+    var faculty= ajaxDropdown(document.getElementById("faculty1"));
+    var specialty = ajaxDropdown(document.getElementById("specialty1"));
+    var specialization = ajaxDropdown(document.getElementById("specialization1"));
+    var formOfStudy = ajaxDropdown(document.getElementById("formOfStudy1"));
+    var payment = ajaxDropdown(document.getElementById("payment1"));
+
+    var onPaymentLoaded = function(){ onDropdownLoaded(payment, null, info.PaymentId, null) };
+    var onFormOfStudyLoaded = function () { onDropdownLoaded(formOfStudy, payment, info.FormOfStudyId, onPaymentLoaded) };
+    var onSpecializationLoaded = function () { onDropdownLoaded(specialization, formOfStudy, info.SpecializationId, onFormOfStudyLoaded) };
+    var onSpecialtyLoaded = function () { onDropdownLoaded(specialty, specialization, info.SpecialtyId, onSpecializationLoaded) };
+    var onFacultyLoaded = function () { onDropdownLoaded(faculty, specialty, info.FacultyId, onSpecialtyLoaded) };
+    var onUniversityLoaded = function () { onDropdownLoaded(university, faculty, info.UniversityId, onFacultyLoaded) };
+
+    setRelations(formOfStudy, payment);
+    setRelations(specialization, formOfStudy);
+    setRelations(specialty, specialization);
+    setRelations(faculty, specialty);
+    setRelations(university, faculty);
+
+    initFirst(university, onUniversityLoaded);
 }
 
 function ajaxDropdown(element) {
+    var thisCallback;
     var onLoaded = function (data) {
-        element.options[0] = new Option("-Not selected-", "empty");
+        element.options[0] = new Option("-Not selected-", -1);
         for (var i = 0; i < data.length; i++) {
             var text = data[i].Name;
             var value = data[i].NodeId;
             element.options[i + 1] = new Option(text, value);
             element.options[i + 1].title = data[i].FullName;
-        }   
+        }
+        if (thisCallback) {
+            thisCallback();
+        }
     };
 
     var onLoadError = function (error) {
@@ -280,10 +296,11 @@ function ajaxDropdown(element) {
     };
 
     return {
-        loadNode: function (url, parentId) {
+        element: element,
+        loadNode: function (url, parentId, callback) {
             showLoading(true);
-
-            if (parentId !== "empty")
+            thisCallback = callback;
+            if (parentId !== -1)
             {
                 $.ajax({
                     url: url,

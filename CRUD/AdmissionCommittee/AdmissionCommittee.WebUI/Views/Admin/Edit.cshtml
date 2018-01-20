@@ -205,34 +205,42 @@
             <div class="en-padding_textfields en-js-univspec">
                 <div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.SpecialtyInfo.UniversityId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "university1" })
+                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.UniversityId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "university1" })
                         <label class="mdl-textfield__label en-textfield_label">University</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.SpecialtyInfo.FacultyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "faculty1" })
+                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.FacultyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "faculty1" })
                         <label class="mdl-textfield__label en-textfield_label">Faculty</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.SpecialtyInfo.SpecialtyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialty1" })
+                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.SpecialtyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialty1" })
                         <label class="mdl-textfield__label en-textfield_label">Specialty</label>
                     </div>
                 </div>
                 <div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.SpecialtyInfo.SpecializationId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialization1" })
+                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.SpecializationId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialization1" })
                         <label class="mdl-textfield__label en-textfield_label">Specialization</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.SpecialtyInfo.FormOfStudyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "formOfStudy1" })
+                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.FormOfStudyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "formOfStudy1" })
                         <label class="mdl-textfield__label en-textfield_label">Form of study</label>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.SpecialtyInfo.PaymentId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "payment1" })
+                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.PaymentId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "payment1" })
                         <label class="mdl-textfield__label en-textfield_label">Payment</label>
                     </div>
                 </div>
                 <script>                
-                    $(document).ready(function () { initSpecialityInfo(); })
+                    var info = @Html.Raw(Json.Encode(new {
+                              UniversityId = Model.Enrollee.SpecialtyInfo.UniversityId,
+                              FacultyId = Model.Enrollee.SpecialtyInfo.FacultyId,
+                              SpecialtyId = Model.Enrollee.SpecialtyInfo.SpecialtyId,
+                              SpecializationId = Model.Enrollee.SpecialtyInfo.SpecializationId,
+                              FormOfStudyId = Model.Enrollee.SpecialtyInfo.FormOfStudyId,
+                              PaymentId = Model.Enrollee.SpecialtyInfo.PaymentId
+                          }));
+                    $(document).ready(function () { initSpecialityInfo(info); });
                 </script>
             </div>
         </div>

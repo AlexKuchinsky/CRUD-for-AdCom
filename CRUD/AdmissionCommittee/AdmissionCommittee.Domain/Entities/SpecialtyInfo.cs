@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdmissionCommittee.Domain.Entities
 {
@@ -10,6 +9,7 @@ namespace AdmissionCommittee.Domain.Entities
     {
         public int SpecialtyInfoId { get; set; }
 
+        [Required]
         public int UniversityId { get; set; }
         public virtual TreeNode University { get; set; }
         //private TreeNode university;
@@ -31,19 +31,23 @@ namespace AdmissionCommittee.Domain.Entities
         //        }
         //    }
         //}
-
+        [Required]
         public int FacultyId { get; set; }
         public virtual TreeNode Faculty { get; set; }
 
+        [Required]
         public int SpecialtyId { get; set; }
         public virtual TreeNode Specialty { get; set; }
 
+        [Required]
         public int SpecializationId { get; set; }
         public virtual TreeNode Specialization { get; set; }
 
+        [Required]
         public int FormOfStudyId { get; set; }
         public virtual TreeNode FormOfStudy { get; set; }
 
+        [Required]
         public int PaymentId { get; set; }
         public virtual TreeNode Payment { get; set; }
 
