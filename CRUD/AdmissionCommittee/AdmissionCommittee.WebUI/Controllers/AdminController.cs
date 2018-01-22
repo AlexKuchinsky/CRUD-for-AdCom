@@ -5,6 +5,7 @@ using AdmissionCommittee.Domain.Entities;
 using AdmissionCommittee.WebUI.Models;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace SportsStore.WebUI.Controllers
 {
@@ -65,6 +66,37 @@ namespace SportsStore.WebUI.Controllers
                 Enrollee = new Enrollee(),
                 Subjects = repository.Subjects
             });
+        }
+
+        [HttpPost]
+        public PartialViewResult LoadEnrolleeTable(IEnumerable<AjaxTreeDataModel> model)
+        {
+            if (model == null)
+            {
+                return PartialView("PartialEnrolleeTable", null);
+            }
+            else
+            {
+                var level1 = model.Where(m => m.Level == 1).Select(m => m.Id);
+                var spOn1Level = repository.SpecialtyInfo.Where(s => level1.Contains(s.UniversityId));
+                var level2 = model.Where(m => m.Level == 2).Select(m => m.Id);
+                var spOn2Level = repository.SpecialtyInfo.Where(s => level2.Contains(s.FacultyId));
+                var level3 = model.Where(m => m.Level == 3).Select(m => m.Id);
+                var spOn3Level = repository.SpecialtyInfo.Where(s => level3.Contains(s.SpecialtyId));
+                var level4 = model.Where(m => m.Level == 4).Select(m => m.Id);
+                var spOn4Level = repository.SpecialtyInfo.Where(s => level4.Contains(s.SpecializationId));
+                var level5 = model.Where(m => m.Level == 5).Select(m => m.Id);
+                var spOn5Level = repository.SpecialtyInfo.Where(s => level5.Contains(s.FormOfStudyId));
+                var asdas = model.Where(m => m.Level == 6);
+                var level6 = model.Where(m => m.Level == 6).Select(m => m.Id);
+                var spOn6Level = repository.SpecialtyInfo.Where(s => level6.Contains(s.PaymentId));
+                var selectedSpecialties = spOn1Level.Concat(spOn2Level).Concat(spOn3Level).Concat(spOn4Level)
+                    .Concat(spOn5Level).Concat(spOn6Level).Select(a => a.SpecialtyInfoId);
+                var result = repository.Enrollees.Where(en => selectedSpecialties.Contains(en.SpecialtyInfoId));
+                return PartialView("PartialEnrolleeTable", result);
+            }
+
+
         }
 
         [HttpPost]

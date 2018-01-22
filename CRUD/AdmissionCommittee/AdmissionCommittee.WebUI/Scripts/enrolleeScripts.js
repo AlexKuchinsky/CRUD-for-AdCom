@@ -101,59 +101,52 @@
         });
     }
 
-    $(document).ready(function () {
-        load(element);
-    });
+    load(element);
 
     function checkParent(checkbox) {
-        var isLevelFull = checkSiblings(checkbox);
-        var isSomeInLevel;
-
-        if (isLevelFull === "some") {
-            isSomeInLevel = true;
-            isLevelFull = false;
-        }
-        else {
-            isSomeInLevel = isLevelFull;
-        }
-
-        var isChecked = checkbox.checked;
-        if ($(checkbox).parents('ul').first().parent().data('id') === 0) {
+        if ($(checkbox).parents('ul').first().parent().data('id') === null) {
             return;
         }
+
+        var levelState = checkLevel(checkbox);   
         var parent_checkbox = $(checkbox).parents('ul').first().siblings('input')[0];
 
-        if (isLevelFull && isChecked) {
+        if (levelState === "full") {
             parent_checkbox.checked = true;
             parent_checkbox.indeterminate = false;
         }
-        else if (isSomeInLevel || isChecked || checkbox.indeterminate) {
-            parent_checkbox.checked = false;
-            parent_checkbox.indeterminate = true;
-        }
-        else {
+        else if (levelState === "empty") {
             parent_checkbox.checked = false;
             parent_checkbox.indeterminate = false;
         }
+        else {
+            parent_checkbox.checked = false;
+            parent_checkbox.indeterminate = true;
+        }
 
-            checkParent(parent_checkbox); 
+        checkParent(parent_checkbox); 
     }
 
-    function checkSiblings(checkbox) {
-        var lis = $(checkbox).parent().siblings('li');
+    function checkLevel(checkbox) {
+        var sibsCheckboxes = $(checkbox).parent().siblings('li').children('input');
         var numTrue = 0;
-        for (i = 0; i < lis.length; i++) {          
-            if ($(lis[i]).children('input')[0].checked === true) {
+        if (checkbox.checked) numTrue++;
+        if (checkbox.indeterminate) return "some";
+        for (i = 0; i < sibsCheckboxes.length; i++) {          
+            if ($(sibsCheckboxes[i])[0].checked === true) {
                 numTrue++;         
-            }         
+            }        
+            if ($(sibsCheckboxes[i])[0].indeterminate === true) {
+                return 'some';
+            }
         }
-        if (numTrue === lis.length) {
-            return true;
+        if (numTrue === sibsCheckboxes.length + 1) {
+            return 'full';
         }
         else if (numTrue === 0) {
-            return false;
+            return 'empty';
         }
-        return "some";
+        return 'some';
     }
 
     function checkChild(checkbox) {
@@ -177,9 +170,10 @@
         var clickedElem = event.target || event.srcElement;
 
         if (clickedElem.type === "checkbox") {
-            var isChecked = clickedElem.checked;
+            //var isChecked = clickedElem.checked;
             checkRelations(clickedElem);
         }
+
         if (!hasClass(clickedElem, 'en-tree_expand')) {
             return;
         }
@@ -199,9 +193,81 @@
     };
 }
 
-function initFirst(firstDropdown, callback) {
-    firstDropdown.loadNode("/Admin/LoadDropdown", null, callback);
+function submitTree() {
+    var data = [];
+
+    function StartTreeDFS() {
+        var mainLies = $('div[data-id = null]').children('ul').children('li');
+        for (var j = 0; j < mainLies.length; j++)
+            TreeDFS(mainLies[j].dataset.id, 1);
+
+    }
+
+    function TreeDFS(LiId, level) {
+        var li = $('li[data-id = ' + LiId + ']');
+        var input = $(li).children('input')[0];
+        if (input.checked == true) {
+            var x = {
+                "Id": +li[0].dataset.id,
+                "Level": level
+            }
+            data.push(x);
+        }
+        else if (input.indeterminate == true) {
+            var childLies = $(li).children('ul').children('li');
+            for (var j = 0; j < childLies.length; j++)
+                TreeDFS(childLies[j].dataset.id, level + 1);
+        }
+    };
+
+    function onSuccess(data) {
+        if (!data.errcode) {
+            onLoaded(data);
+        } else {
+            showLoading(false);
+            onLoadError(data);
+        }
+    }
+    function onAjaxError(xhr, status) {
+        var errinfo = { errcode: status };
+        if (xhr.status != 200) {
+            errinfo.message = xhr.statusText;
+        } else {
+            errinfo.message = 'Некорректные данные с сервера';
+        }
+        onLoadError(errinfo);
+    }
+    function onLoadError(error) {
+        var msg = "Ошибка " + error.errcode;
+        if (error.message)
+            msg = msg + ' :' + error.message;
+        alert(msg);
+    }
+
+    function onLoaded(data) {
+        var div = $('#enrolleeTable');
+        div.empty();
+        var html = $.parseHTML(data)
+        div.append(html);
+    }
+
+    return {
+        loadData: function () {
+            StartTreeDFS();
+            $.ajax({
+                url: "/Admin/LoadEnrolleeTable",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "html",
+                success: onSuccess,
+                error: onAjaxError,
+                cache: false,
+                method: "post"
+            });
+        }
+    };
 }
+
 
 function setRelations(parentDropdown, childDropdown, parentId) {
     parentDropdown.clearChild = function () {
@@ -233,20 +299,22 @@ function initSpecialityInfo(info)
     var formOfStudy = ajaxDropdown(document.getElementById("formOfStudy1"));
     var payment = ajaxDropdown(document.getElementById("payment1"));
 
-    var onPaymentLoaded = function(){ onDropdownLoaded(payment, null, info.PaymentId, null) };
-    var onFormOfStudyLoaded = function () { onDropdownLoaded(formOfStudy, payment, info.FormOfStudyId, onPaymentLoaded) };
-    var onSpecializationLoaded = function () { onDropdownLoaded(specialization, formOfStudy, info.SpecializationId, onFormOfStudyLoaded) };
-    var onSpecialtyLoaded = function () { onDropdownLoaded(specialty, specialization, info.SpecialtyId, onSpecializationLoaded) };
-    var onFacultyLoaded = function () { onDropdownLoaded(faculty, specialty, info.FacultyId, onSpecialtyLoaded) };
-    var onUniversityLoaded = function () { onDropdownLoaded(university, faculty, info.UniversityId, onFacultyLoaded) };
 
+    var onPaymentLoaded = function () { onDropdownLoaded(payment, null, info.PaymentId, null); };
+    var onFormOfStudyLoaded = function () { onDropdownLoaded(formOfStudy, payment, info.FormOfStudyId, onPaymentLoaded); };
+    var onSpecializationLoaded = function () { onDropdownLoaded(specialization, formOfStudy, info.SpecializationId, onFormOfStudyLoaded); };
+    var onSpecialtyLoaded = function () { onDropdownLoaded(specialty, specialization, info.SpecialtyId, onSpecializationLoaded); };
+    var onFacultyLoaded = function () { onDropdownLoaded(faculty, specialty, info.FacultyId, onSpecialtyLoaded); };
+    var onUniversityLoaded = function () { onDropdownLoaded(university, faculty, info.UniversityId, onFacultyLoaded); };
+
+    
     setRelations(formOfStudy, payment);
     setRelations(specialization, formOfStudy);
     setRelations(specialty, specialization);
     setRelations(faculty, specialty);
     setRelations(university, faculty);
 
-    initFirst(university, onUniversityLoaded);
+    university.loadNode("/Admin/LoadDropdown", null, onUniversityLoaded);
 }
 
 function ajaxDropdown(element) {

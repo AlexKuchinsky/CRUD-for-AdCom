@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\AjaxTreeDataModel.cs" />
     <Compile Include="Models\EnrolleeEditViewModel.cs" />
     <Compile Include="Models\EnrolleesListViewModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
@@ -176,6 +177,7 @@
     <Content Include="Views\Admin\Show.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
+    <Content Include="Views\Shared\PartialEnrolleeTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

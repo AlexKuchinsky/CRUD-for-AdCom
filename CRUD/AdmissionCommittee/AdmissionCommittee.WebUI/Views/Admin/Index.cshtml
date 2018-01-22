@@ -1,6 +1,4 @@
-﻿@using AdmissionCommittee.Domain.Entities;
-@using AdmissionCommittee.WebUI.HtmlHelpers
-@model AdmissionCommittee.WebUI.Models.EnrolleesListViewModel
+﻿@model AdmissionCommittee.WebUI.Models.EnrolleesListViewModel
 
 @{
     ViewBag.Title = "All enrollees";
@@ -27,65 +25,21 @@
             }
         </script>
         <div class="en-padding_tree">
-            @using (Ajax.BeginForm("FilterEnrollee", "Admin", new AjaxOptions()))
-            {
             <div class="en-js-tree" data-id="null">
                 <ul class="en-tree_container"></ul>
             </div>
+            <input type="submit" value="Submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent en-js-tree_submit" onclick="submitTree().loadData()"/>
             <script>
-                $(document).ready(function () { tree("/Admin/LoadNode"); });
-            </script>
-            <input type="submit" value="Submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-            }
+                $(document).ready(function () {
+                    tree("/Admin/LoadNode");
+                });
+            </script>  
         </div>
     </div>
 </div>
 
-<div class="mdl-shadow--2dp en-card">
-    <table class="mdl-data-table en-full_width">
-        <tr>
-            <th class="mdl-data-table__cell--non-numeric">Full Name</th>
-            <th>Date of birth</th>
-            <th>Sum CT</th>
-            <th class="mdl-data-table__cell--non-numeric">Education level</th>
-            <th class="en-button_conteiner_240"></th>
-        </tr>
-        @foreach (var item in Model.Enrollees)
-        {
-            <tr>
-                <td class="mdl-data-table__cell--non-numeric">@Html.ActionLink((item.LastName + " " + item.FirstName + " " + item.Patronymic),
-                                        "Show", new { item.EnrolleeId })</td>
-                <td>@item.DateOfBirth.ToString("d")</td>
-                <td>@item.GetCTSum()</td>
-                <td class="mdl-data-table__cell--non-numeric">@item.EducationLevel.Description()</td>
-                <td class="mdl-data-table__cell--non-numeric en-button_conteiner_240">
-                    <div class="en-float_left">
-                        @Html.ActionLink("Edit", "Edit", new { item.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" })
-                    </div>
-                    <div class="en-float_right">
-                        @using (Html.BeginForm("Delete", "Admin", new { item.EnrolleeId }))
-                        {
-                            @Html.Hidden("ProductID", item.EnrolleeId)
-                            <input type="submit"
-                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                                    value="Delete" 
-                                    onclick="return ConfirmDeleteEnrollee()"/>
-                            <script language="javascript" type="text/javascript">
-                                function ConfirmDeleteEnrollee()
-                                {
-                                    var x = confirm("Are you sure you want to delete this enrollee?");
-                                    if (x)
-                                        return true;
-                                    else
-                                        return false;
-                                }
-                            </script>
-                        }
-                    </div>
-                </td>
-            </tr>
-        }
-    </table>
+<div class="mdl-shadow--2dp en-card" id="enrolleeTable">
+    @Html.Partial("PartialEnrolleeTable", Model.Enrollees);
 </div>
 
 @*<div class="en-card mdl-shadow--2dp en-card_content">
