@@ -73,30 +73,28 @@ namespace SportsStore.WebUI.Controllers
         {
             if (model == null)
             {
-                return PartialView("PartialEnrolleeTable", null);
+                return PartialView("PartialEnrolleeTable", repository.Enrollees);
             }
             else
             {
                 var level1 = model.Where(m => m.Level == 1).Select(m => m.Id);
-                var spOn1Level = repository.SpecialtyInfo.Where(s => level1.Contains(s.UniversityId));
+                var spOn1Level = repository.SpecialtyInfo.Where(si => level1.Contains(si.UniversityId));
                 var level2 = model.Where(m => m.Level == 2).Select(m => m.Id);
-                var spOn2Level = repository.SpecialtyInfo.Where(s => level2.Contains(s.FacultyId));
+                var spOn2Level = repository.SpecialtyInfo.Where(si => level2.Contains(si.FacultyId));
                 var level3 = model.Where(m => m.Level == 3).Select(m => m.Id);
-                var spOn3Level = repository.SpecialtyInfo.Where(s => level3.Contains(s.SpecialtyId));
+                var spOn3Level = repository.SpecialtyInfo.Where(si => level3.Contains(si.SpecialtyId));
                 var level4 = model.Where(m => m.Level == 4).Select(m => m.Id);
-                var spOn4Level = repository.SpecialtyInfo.Where(s => level4.Contains(s.SpecializationId));
+                var spOn4Level = repository.SpecialtyInfo.Where(si => level4.Contains(si.SpecializationId));
                 var level5 = model.Where(m => m.Level == 5).Select(m => m.Id);
-                var spOn5Level = repository.SpecialtyInfo.Where(s => level5.Contains(s.FormOfStudyId));
-                var asdas = model.Where(m => m.Level == 6);
+                var spOn5Level = repository.SpecialtyInfo.Where(si => level5.Contains(si.FormOfStudyId));
                 var level6 = model.Where(m => m.Level == 6).Select(m => m.Id);
-                var spOn6Level = repository.SpecialtyInfo.Where(s => level6.Contains(s.PaymentId));
+                var spOn6Level = repository.SpecialtyInfo.Where(si => level6.Contains(si.PaymentId));
+
                 var selectedSpecialties = spOn1Level.Concat(spOn2Level).Concat(spOn3Level).Concat(spOn4Level)
                     .Concat(spOn5Level).Concat(spOn6Level).Select(a => a.SpecialtyInfoId);
                 var result = repository.Enrollees.Where(en => selectedSpecialties.Contains(en.SpecialtyInfoId));
                 return PartialView("PartialEnrolleeTable", result);
             }
-
-
         }
 
         [HttpPost]

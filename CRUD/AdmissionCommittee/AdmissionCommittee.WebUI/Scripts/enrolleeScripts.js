@@ -132,6 +132,7 @@
         var numTrue = 0;
         if (checkbox.checked) numTrue++;
         if (checkbox.indeterminate) return "some";
+
         for (i = 0; i < sibsCheckboxes.length; i++) {          
             if ($(sibsCheckboxes[i])[0].checked === true) {
                 numTrue++;         
@@ -140,6 +141,7 @@
                 return 'some';
             }
         }
+
         if (numTrue === sibsCheckboxes.length + 1) {
             return 'full';
         }
@@ -223,6 +225,7 @@ function submitTree() {
     function onSuccess(data) {
         if (!data.errcode) {
             onLoaded(data);
+            showLoading(false);
         } else {
             showLoading(false);
             onLoadError(data);
