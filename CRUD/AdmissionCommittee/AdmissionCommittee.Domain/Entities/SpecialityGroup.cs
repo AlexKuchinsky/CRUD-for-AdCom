@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AdmissionCommittee.Domain.Entities
 {
-    public class Subject
+    public class SpecialityGroup
     {
-        public int SubjectId { get; set; }
+        public int SpecialityGroupId { get; set; }
 
         public string Name { get; set; }
     }

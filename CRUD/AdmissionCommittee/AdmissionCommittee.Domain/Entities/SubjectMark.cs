@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace AdmissionCommittee.Domain.Entities
 {
-    public class EnrolleeToSubject
+    public class SubjectMark
     {
-        public int EnrolleeToSubjectId { get; set; }
+        public int SubjectMarkId { get; set; }
 
         public int EnrolleeId { get; set; }
-
-        public virtual Enrollee Enrollee { get; set; }
 
         public int SubjectId { get; set; }
 

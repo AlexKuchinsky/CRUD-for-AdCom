@@ -17,7 +17,6 @@ namespace AdmissionCommittee.Domain.Entities
 
         public string Region { get; set; }
 
-        [Required(ErrorMessage = "Please enter a city")]
         public string City { get; set; }
 
         public string Street { get; set; }

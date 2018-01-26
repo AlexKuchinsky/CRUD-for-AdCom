@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AdmissionCommittee.Domain.Entities
 {
-    public class Subject
+    public class FinancingType
     {
-        public int SubjectId { get; set; }
+        public int FinancingTypeId { get; set; }
 
-        public string Name { get; set; }
+        public string Type { get; set; }
     }
 }

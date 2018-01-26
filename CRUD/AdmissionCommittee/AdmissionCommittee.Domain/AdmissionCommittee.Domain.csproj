@@ -72,13 +72,22 @@
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFEnrolleeRepository.cs" />
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\EducationForm.cs" />
     <Compile Include="Entities\EducationLevel.cs" />
+    <Compile Include="Entities\EducationPeriod.cs" />
+    <Compile Include="Entities\EducationPlace.cs" />
     <Compile Include="Entities\Enrollee.cs" />
-    <Compile Include="Entities\EnrolleeToSubject.cs" />
+    <Compile Include="Entities\SubjectMark.cs" />
+    <Compile Include="Entities\FinancingType.cs" />
+    <Compile Include="Entities\NCSQSpecialty.cs" />
+    <Compile Include="Entities\Speciality.cs" />
+    <Compile Include="Entities\SpecialityAvailableDate.cs" />
+    <Compile Include="Entities\SpecialityGroup.cs" />
+    <Compile Include="Entities\SpecialityPositionsNumber.cs" />
+    <Compile Include="Entities\SpecialityThreshold.cs" />
     <Compile Include="Entities\Subject.cs" />
     <Compile Include="Entities\TreeData.cs" />
     <Compile Include="Entities\TreeNode.cs" />
-    <Compile Include="Entities\SpecialtyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
