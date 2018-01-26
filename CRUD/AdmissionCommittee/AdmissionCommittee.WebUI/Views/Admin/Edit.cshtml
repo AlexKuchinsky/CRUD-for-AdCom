@@ -70,87 +70,87 @@
             </div>
         </div>
 
-        <div class="en-card mdl-shadow--2dp">
-            <div class="en-header_middle">Certeficate</div>
-            <div class="en-add_subj_but">
-                <button type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored addbtn">
-                    <i class="material-icons">add</i>
-                </button>
-                <script>
-                $(function () {
-                    $('.addbtn').click(function () {
-                        @*var divblock = $('<div/>', {
-                            id: '@($"subject-mark_block{Model.Enrollee.Marks.Count}")',
-                        });
-                        var divsubject = $('<div/>', {
-                            class: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark'
-                        });
-                        var labelsubject = $('<label/>', {
-                            class: 'mdl-textfield__label',
-                            for: @($"subject{Model.Enrollee.Marks.Count}"),
-                            text: 'Subject'
-                        });
-                        var divmark = $('<div/>', {
-                            class: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark'
-                        });
-                        var labelmark = $('<label/>', {
-                            class: 'mdl-textfield__label',
-                            for: @($"mark{Model.Enrollee.Marks.Count}"),
-                            text: 'Mark'
-                        });
-                        var spanmark = $('<span/>', {
-                            class: 'mdl - textfield__error',
-                            text: 'Please enter correct mark!'
-                        });
-                        divsubject.append(@Html.DropDownListFor(m => m.Enrollee.Marks[Model.Enrollee.Marks.Count].SubjectID, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[Model.Enrollee.Marks.Count].SubjectID), new { @class = "mdl-textfield__input", @id = $"subject{Model.Enrollee.Marks.Count}" }));
-                        divsubject.append(labelsubject);
-                        divmark.append(@Html.TextBoxFor(m => m.Enrollee.Marks[Model.Enrollee.Marks.Count].Mark, null, new { @class = "mdl-textfield__input", @id = $"mark{Model.Enrollee.Marks.Count}", @pattern = "\\d{1,2}" }));
-                        divmark.append(labelmark);
-                        divmark.append(spanmark);
-                        divblock.append(divsubject);
-                        divblock.append(divmark);
-                        $('#subjects_and_marks').append(divblock);*@
+        @*<div class="en-card mdl-shadow--2dp">
+        <div class="en-header_middle">Certeficate</div>
+        <div class="en-add_subj_but">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored addbtn">
+                <i class="material-icons">add</i>
+            </button>
+            <script>
+            $(function () {
+                $('.addbtn').click(function () {
+                    var divblock = $('<div/>', {
+                        id: '@($"subject-mark_block{Model.Enrollee.Marks.Count}")',
+                    });
+                    var divsubject = $('<div/>', {
+                        class: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark'
+                    });
+                    var labelsubject = $('<label/>', {
+                        class: 'mdl-textfield__label',
+                        for: @($"subject{Model.Enrollee.Marks.Count}"),
+                        text: 'Subject'
+                    });
+                    var divmark = $('<div/>', {
+                        class: 'mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark'
+                    });
+                    var labelmark = $('<label/>', {
+                        class: 'mdl-textfield__label',
+                        for: @($"mark{Model.Enrollee.Marks.Count}"),
+                        text: 'Mark'
+                    });
+                    var spanmark = $('<span/>', {
+                        class: 'mdl - textfield__error',
+                        text: 'Please enter correct mark!'
+                    });
+                    divsubject.append(@Html.DropDownListFor(m => m.Enrollee.Marks[Model.Enrollee.Marks.Count].SubjectID, new SelectList(Model.Subjects, "SubjectID", "Name", Model.Enrollee.Marks[Model.Enrollee.Marks.Count].SubjectID), new { @class = "mdl-textfield__input", @id = $"subject{Model.Enrollee.Marks.Count}" }));
+                    divsubject.append(labelsubject);
+                    divmark.append(@Html.TextBoxFor(m => m.Enrollee.Marks[Model.Enrollee.Marks.Count].Mark, null, new { @class = "mdl-textfield__input", @id = $"mark{Model.Enrollee.Marks.Count}", @pattern = "\\d{1,2}" }));
+                    divmark.append(labelmark);
+                    divmark.append(spanmark);
+                    divblock.append(divsubject);
+                    divblock.append(divmark);
+                    $('#subjects_and_marks').append(divblock);
 
-                    })
-                });
-                </script>
-            </div>
-            <div class="en-padding_textfields" id="subjects_and_marks">
-                @for (int i = 0; i < Model.Enrollee.Marks.Count; i++)
-                {
-                    <div id="@($"subject-mark_block{i}")">
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
-                            @Html.DropDownListFor(
-                                m => m.Enrollee.Marks[i].SubjectId, 
-                                new SelectList(
-                                    Model.Subjects,
-                                    "SubjectID",
-                                    "Name", 
-                                    Model.Enrollee.Marks[i].SubjectId),
-                                new { @class = "mdl-textfield__input", @id = $"subject{i}" })
-                            <label class="mdl-textfield__label" for="@($"subject{i}")">Subject</label>
-                        </div>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
-                            @Html.TextBoxFor(m => m.Enrollee.Marks[i].Mark, null, new { @class = "mdl-textfield__input", @id = $"mark{i}", @pattern = "\\d{1,2}" })
-                            <label class="mdl-textfield__label" for="@($"mark{i}")">Mark</label>
-                            <span class="mdl-textfield__error">Please enter correct mark!</span>
-                        </div>
-                        @*<div class="en-delete_subject">
-                            <button class="mdl-button mdl-js-button mdl-button--icon delbtn" type="button" id="">
-                                <i class="material-icons">clear</i>
-                            </button>
-                            <script>
-                                $(function () {
-                                    $('.delbtn').click(function () {
-                                        $('#subject-mark_block' + i)
-                                    })
-                                });
-                            </script>
-                        </div>*@
-                    </div>
-                }
-            </div>
+                })
+            });
+            </script>
         </div>
+        <div class="en-padding_textfields" id="subjects_and_marks">
+            @for (int i = 0; i < Model.Enrollee.Marks.Count; i++)
+            {
+                <div id="@($"subject-mark_block{i}")">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
+                        @Html.DropDownListFor(
+                            m => m.Enrollee.Marks[i].SubjectId,
+                            new SelectList(
+                                Model.Subjects,
+                                "SubjectID",
+                                "Name",
+                                Model.Enrollee.Marks[i].SubjectId),
+                            new { @class = "mdl-textfield__input", @id = $"subject{i}" })
+                        <label class="mdl-textfield__label" for="@($"subject{i}")">Subject</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_mark">
+                        @Html.TextBoxFor(m => m.Enrollee.Marks[i].Mark, null, new { @class = "mdl-textfield__input", @id = $"mark{i}", @pattern = "\\d{1,2}" })
+                        <label class="mdl-textfield__label" for="@($"mark{i}")">Mark</label>
+                        <span class="mdl-textfield__error">Please enter correct mark!</span>
+                    </div>
+                    <div class="en-delete_subject">
+                        <button class="mdl-button mdl-js-button mdl-button--icon delbtn" type="button" id="">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <script>
+                            $(function () {
+                                $('.delbtn').click(function () {
+                                    $('#subject-mark_block' + i)
+                                })
+                            });
+                        </script>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>*@
     </div>
     
     <div class="en-column_right">
@@ -202,67 +202,63 @@
 
         <div class="en-card mdl-shadow--2dp">
             <div class="en-header_middle">Specialties</div>
-            <div class="en-padding_textfields en-js-univspec">
-                <div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.UniversityId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "university1" })
-                        <label class="mdl-textfield__label en-textfield_label">University</label>
-                    </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.FacultyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "faculty1" })
-                        <label class="mdl-textfield__label en-textfield_label">Faculty</label>
-                    </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.SpecialtyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialty1" })
-                        <label class="mdl-textfield__label en-textfield_label">Specialty</label>
-                    </div>
-                </div>
-                <div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.SpecializationId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "specialization1" })
-                        <label class="mdl-textfield__label en-textfield_label">Specialization</label>
-                    </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.FormOfStudyId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "formOfStudy1" })
-                        <label class="mdl-textfield__label en-textfield_label">Form of study</label>
-                    </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-                        @Html.DropDownListFor(m => m.Enrollee.SpecialtyInfo.PaymentId, new SelectList(new List<object>()), new { @class = "mdl-textfield__input", @id = "payment1" })
-                        <label class="mdl-textfield__label en-textfield_label">Payment</label>
-                    </div>
-                </div>
-                <script>                
-                    var info = @Html.Raw(Json.Encode(new {
-                              UniversityId = Model.Enrollee.SpecialtyInfo.UniversityId,
-                              FacultyId = Model.Enrollee.SpecialtyInfo.FacultyId,
-                              SpecialtyId = Model.Enrollee.SpecialtyInfo.SpecialtyId,
-                              SpecializationId = Model.Enrollee.SpecialtyInfo.SpecializationId,
-                              FormOfStudyId = Model.Enrollee.SpecialtyInfo.FormOfStudyId,
-                              PaymentId = Model.Enrollee.SpecialtyInfo.PaymentId
-                          }));
-                    $(document).ready(function () { initSpecialityInfo(info); });
-                </script>
-            </div>
+            <table class="mdl-data-table en-full_width">
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Place</th>
+                    <th class="mdl-data-table__cell--non-numeric">Speciality</th>
+                    <th class="mdl-data-table__cell--non-numeric">Form</th>
+                    <th class="mdl-data-table__cell--non-numeric">Qualiphication</th>
+                </tr>
+                @if (Model.Enrollee.Specialities.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="4" class="mdl-data-table__cell--non-numeric ">
+                            Specialities not selected
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach(var specialty in Model.Enrollee.Specialities)
+                    {
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                @specialty.EducationPlace
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                @specialty.NCSQSpecialty.Name
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                @specialty.EducationForm
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                @specialty.NCSQSpecialty.Qualiphication
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+            @Html.ActionLink("Edit specialities", "Specialities", Model.Enrollee.EnrolleeId, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
         </div>
 
-        <div class="en-card mdl-shadow--2dp">
-            <div class="en-header_middle">CT results</div>
-            <div class="form-group">
-                <label>Language</label>
-                @Html.TextBoxFor(m => m.Enrollee.CTLanguage, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Enrollee.CTLanguage)
-            </div>
-            <div class="form-group">
-                <label>First subject</label>
-                @Html.TextBoxFor(m => m.Enrollee.CTFirstSubject, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Enrollee.CTFirstSubject)
-            </div>
-            <div class="form-group">
-                <label>Second subject</label>
-                @Html.TextBoxFor(m => m.Enrollee.CTSecondSubject, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Enrollee.CTSecondSubject)
-            </div>
+    @*<div class="en-card mdl-shadow--2dp">
+        <div class="en-header_middle">CT results</div>
+        <div class="form-group">
+            <label>Language</label>
+            @Html.TextBoxFor(m => m.Enrollee.CTLanguage, null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Enrollee.CTLanguage)
         </div>
+        <div class="form-group">
+            <label>First subject</label>
+            @Html.TextBoxFor(m => m.Enrollee.CTFirstSubject, null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Enrollee.CTFirstSubject)
+        </div>
+        <div class="form-group">
+            <label>Second subject</label>
+            @Html.TextBoxFor(m => m.Enrollee.CTSecondSubject, null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Enrollee.CTSecondSubject)
+        </div>
+    </div>*@
     </div>
 
     <div class="en-card mdl-shadow--2dp">

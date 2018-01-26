@@ -68,60 +68,67 @@ namespace SportsStore.WebUI.Controllers
             });
         }
 
-        [HttpPost]
-        public PartialViewResult LoadEnrolleeTable(IEnumerable<AjaxTreeDataModel> model)
+        public ViewResult Specialities(int enrolleeId)
         {
-            if (model == null)
-            {
-                return PartialView("PartialEnrolleeTable", repository.Enrollees);
-            }
-            else
-            {
-                var level1 = model.Where(m => m.Level == 1).Select(m => m.Id);
-                var spOn1Level = repository.SpecialtyInfo.Where(si => level1.Contains(si.UniversityId));
-                var level2 = model.Where(m => m.Level == 2).Select(m => m.Id);
-                var spOn2Level = repository.SpecialtyInfo.Where(si => level2.Contains(si.FacultyId));
-                var level3 = model.Where(m => m.Level == 3).Select(m => m.Id);
-                var spOn3Level = repository.SpecialtyInfo.Where(si => level3.Contains(si.SpecialtyId));
-                var level4 = model.Where(m => m.Level == 4).Select(m => m.Id);
-                var spOn4Level = repository.SpecialtyInfo.Where(si => level4.Contains(si.SpecializationId));
-                var level5 = model.Where(m => m.Level == 5).Select(m => m.Id);
-                var spOn5Level = repository.SpecialtyInfo.Where(si => level5.Contains(si.FormOfStudyId));
-                var level6 = model.Where(m => m.Level == 6).Select(m => m.Id);
-                var spOn6Level = repository.SpecialtyInfo.Where(si => level6.Contains(si.PaymentId));
-
-                var selectedSpecialties = spOn1Level.Concat(spOn2Level).Concat(spOn3Level).Concat(spOn4Level)
-                    .Concat(spOn5Level).Concat(spOn6Level).Select(a => a.SpecialtyInfoId);
-                var result = repository.Enrollees.Where(en => selectedSpecialties.Contains(en.SpecialtyInfoId));
-                return PartialView("PartialEnrolleeTable", result);
-            }
+            IEnumerable<Speciality> specialities = repository.Enrollees
+                    .FirstOrDefault(p => p.EnrolleeId == enrolleeId).Specialities;
+            return View(specialities);
         }
 
-        [HttpPost]
-        public ActionResult Edit(EnrolleeEditViewModel model)
-        {
-            if(model.Enrollee.SpecialtyInfo.UniversityId == 0 ||
-               model.Enrollee.SpecialtyInfo.FacultyId == 0 ||
-               model.Enrollee.SpecialtyInfo.SpecialtyId == 0 ||
-               model.Enrollee.SpecialtyInfo.SpecializationId == 0 ||
-               model.Enrollee.SpecialtyInfo.FormOfStudyId == 0 ||
-               model.Enrollee.SpecialtyInfo.PaymentId == 0)
-            {
-                ModelState.AddModelError("Enrollee.SpecialtyInfo", "Select specialty");
-            }
-            if (ModelState.IsValid)
-            {
-                model.Enrollee.SpecialtyInfoId = repository.GetSpecialtyInfoId(model.Enrollee.SpecialtyInfo);
-                repository.SaveEnrollee(model.Enrollee);
-                TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                model.Subjects = repository.Subjects;
-                return View(model);
-            }
-        }    
+        //[HttpPost]
+        //public PartialViewResult LoadEnrolleeTable(IEnumerable<AjaxTreeDataModel> model)
+        //{
+        //    if (model == null)
+        //    {
+        //        return PartialView("PartialEnrolleeTable", repository.Enrollees);
+        //    }
+        //    else
+        //    {
+        //        var level1 = model.Where(m => m.Level == 1).Select(m => m.Id);
+        //        var spOn1Level = repository.SpecialtyInfo.Where(si => level1.Contains(si.UniversityId));
+        //        var level2 = model.Where(m => m.Level == 2).Select(m => m.Id);
+        //        var spOn2Level = repository.SpecialtyInfo.Where(si => level2.Contains(si.FacultyId));
+        //        var level3 = model.Where(m => m.Level == 3).Select(m => m.Id);
+        //        var spOn3Level = repository.SpecialtyInfo.Where(si => level3.Contains(si.SpecialtyId));
+        //        var level4 = model.Where(m => m.Level == 4).Select(m => m.Id);
+        //        var spOn4Level = repository.SpecialtyInfo.Where(si => level4.Contains(si.SpecializationId));
+        //        var level5 = model.Where(m => m.Level == 5).Select(m => m.Id);
+        //        var spOn5Level = repository.SpecialtyInfo.Where(si => level5.Contains(si.FormOfStudyId));
+        //        var level6 = model.Where(m => m.Level == 6).Select(m => m.Id);
+        //        var spOn6Level = repository.SpecialtyInfo.Where(si => level6.Contains(si.PaymentId));
+
+        //        var selectedSpecialties = spOn1Level.Concat(spOn2Level).Concat(spOn3Level).Concat(spOn4Level)
+        //            .Concat(spOn5Level).Concat(spOn6Level).Select(a => a.SpecialtyInfoId);
+        //        var result = repository.Enrollees.Where(en => selectedSpecialties.Contains(en.SpecialtyInfoId));
+        //        return PartialView("PartialEnrolleeTable", result);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public ActionResult Edit(EnrolleeEditViewModel model)
+        //{
+        //    if(model.Enrollee.SpecialtyInfo.UniversityId == 0 ||
+        //       model.Enrollee.SpecialtyInfo.FacultyId == 0 ||
+        //       model.Enrollee.SpecialtyInfo.SpecialtyId == 0 ||
+        //       model.Enrollee.SpecialtyInfo.SpecializationId == 0 ||
+        //       model.Enrollee.SpecialtyInfo.FormOfStudyId == 0 ||
+        //       model.Enrollee.SpecialtyInfo.PaymentId == 0)
+        //    {
+        //        ModelState.AddModelError("Enrollee.SpecialtyInfo", "Select specialty");
+        //    }
+        //    if (ModelState.IsValid)
+        //    {
+        //        model.Enrollee.SpecialtyInfoId = repository.GetSpecialtyInfoId(model.Enrollee.SpecialtyInfo);
+        //        repository.SaveEnrollee(model.Enrollee);
+        //        TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        model.Subjects = repository.Subjects;
+        //        return View(model);
+        //    }
+        //}    
 
         [HttpPost]
         public ActionResult Delete(int enrolleeId)
