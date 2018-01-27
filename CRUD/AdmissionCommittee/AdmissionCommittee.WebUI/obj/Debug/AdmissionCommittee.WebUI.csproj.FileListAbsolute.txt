@@ -93,3 +93,6 @@ D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\En
 D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\AdmissionCommittee.Domain.dll.config
 D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\EntityFramework.xml
 D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\EntityFramework.SqlServer.xml
+C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\obj\Debug\AdmissionCommittee.WebUI.csprojResolveAssemblyReference.cache
+C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\obj\Debug\AdmissionCommittee.WebUI.dll
+C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\obj\Debug\AdmissionCommittee.WebUI.pdb

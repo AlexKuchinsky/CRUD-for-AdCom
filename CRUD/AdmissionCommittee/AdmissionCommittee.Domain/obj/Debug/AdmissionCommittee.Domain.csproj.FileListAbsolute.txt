@@ -22,3 +22,6 @@ D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\bin\D
 D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\bin\Debug\EntityFramework.xml
 D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\bin\Debug\EntityFramework.SqlServer.xml
 D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\obj\Debug\AdmissionCommittee.Domain.csprojResolveAssemblyReference.cache
+C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\obj\Debug\AdmissionCommittee.Domain.csprojResolveAssemblyReference.cache
+C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\obj\Debug\AdmissionCommittee.Domain.dll
+C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.Domain\obj\Debug\AdmissionCommittee.Domain.pdb
