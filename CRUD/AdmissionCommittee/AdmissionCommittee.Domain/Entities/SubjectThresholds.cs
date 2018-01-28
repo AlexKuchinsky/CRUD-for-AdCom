@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace AdmissionCommittee.Domain.Entities
 {
-    public class EducationForm
+    public class SubjectThresholds
     {
-        public int EducationFormId { get; set; }
+        public int SubjectThresholdsId { get; set; }
 
-        public string Name { get; set; }
+        public int MinScore { get; set; }
 
-        public bool IsInternal { get; set; }
+        public int MinAdditionalScore { get; set; }
     }
 }

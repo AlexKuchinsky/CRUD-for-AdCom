@@ -20,11 +20,11 @@ namespace AdmissionCommittee.Domain.Entities
 
         public DateTime DateOfBirth { get; set; }
 
-        public virtual IList<SubjectMark> CTSubjects { get; set; }
-
         public string Phone { get; set; }
 
-        public virtual IList<Speciality> Specialities { get; set; }
+        public virtual IList<SubjectMark> CTSubjects { get; set; }
+
+        public virtual IList<Application> Applications { get; set; }
      
         public virtual Address Address { get; set; }
 

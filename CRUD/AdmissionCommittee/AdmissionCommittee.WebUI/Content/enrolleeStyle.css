@@ -96,6 +96,11 @@
     overflow:auto;
 }
 
+.en-header_small {
+    font-size: 24px;
+    padding: 15px 20px 15px 20px;
+}
+
 .en-header_middle {
     font-size: 32px;
     padding: 15px 20px 15px 20px;
@@ -156,6 +161,12 @@
     top: 4px;
     visibility: visible;
     position: absolute;
+}
+
+.en-speciality {
+    background-color: white;
+    margin: 0px 0px 15px 0px;
+    height: 70px;
 }
 
 /*tree class*/

@@ -6,13 +6,12 @@
         <th class="mdl-data-table__cell--non-numeric">Full Name</th>
         <th>Date of birth</th>
         <th>Sum CT</th>
-        <th class="mdl-data-table__cell--non-numeric">Education level</th>
         <th class="en-button_conteiner_240"></th>
     </tr>
     @if (Model.Count() == 0)
     {
         <tr>
-            <td colspan="5" class="mdl-data-table__cell--non-numeric ">
+            <td colspan="4" class="mdl-data-table__cell--non-numeric ">
                 Enrollees not found
             </td>
         </tr>
@@ -28,7 +27,6 @@
                 </td>
                 <td>@item.DateOfBirth.ToString("d")</td>
                 <td>@item.GetCTSum()</td>
-                <td class="mdl-data-table__cell--non-numeric">@item.EducationLevel.Description()</td>
                 <td class="mdl-data-table__cell--non-numeric en-button_conteiner_240">
                     <div class="en-float_left">
                         @Html.ActionLink("Edit", "Edit", new { item.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" })

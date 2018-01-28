@@ -11,5 +11,9 @@ namespace AdmissionCommittee.Domain.Entities
         public int SpecialityGroupId { get; set; }
 
         public string Name { get; set; }
+
+        public IList<Speciality> Specialities { get; set; }
+
+        public IList<GroupFriendship> Friendships { get; set; }
     }
 }

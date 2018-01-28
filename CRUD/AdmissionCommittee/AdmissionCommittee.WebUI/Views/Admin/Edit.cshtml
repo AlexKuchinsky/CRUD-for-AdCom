@@ -58,11 +58,6 @@
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.EnumDropDownListFor(m => m.Enrollee.EducationLevel, new { @class = "mdl-textfield__input", @id = "edlevel" })
-                    <label class="mdl-textfield__label" for="edlevel">Eduvation level</label>
-                </div>
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     @Html.TextBoxFor(m => m.Enrollee.Phone, null, new { @class = "mdl-textfield__input", @id = "phone", @pattern = "\\+\\d{3} \\d{2} \\d{7}" })
                     <label class="mdl-textfield__label" for="patron">Phone</label>
                     <span class="mdl-textfield__error">Please enter phone in format: "+111 22 3344555"!</span>
@@ -200,47 +195,6 @@
             </div>
         </div>
 
-        <div class="en-card mdl-shadow--2dp">
-            <div class="en-header_middle">Specialties</div>
-            <table class="mdl-data-table en-full_width">
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric">Place</th>
-                    <th class="mdl-data-table__cell--non-numeric">Speciality</th>
-                    <th class="mdl-data-table__cell--non-numeric">Form</th>
-                    <th class="mdl-data-table__cell--non-numeric">Qualiphication</th>
-                </tr>
-                @if (Model.Enrollee.Specialities.Count() == 0)
-                {
-                    <tr>
-                        <td colspan="4" class="mdl-data-table__cell--non-numeric ">
-                            Specialities not selected
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    foreach(var specialty in Model.Enrollee.Specialities)
-                    {
-                        <tr>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                @specialty.EducationPlace
-                            </td>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                @specialty.NCSQSpecialty.Name
-                            </td>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                @specialty.EducationForm
-                            </td>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                @specialty.NCSQSpecialty.Qualiphication
-                            </td>
-                        </tr>
-                    }
-                }
-            </table>
-            @Html.ActionLink("Edit specialities", "Specialities", Model.Enrollee.EnrolleeId, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
-        </div>
-
     @*<div class="en-card mdl-shadow--2dp">
         <div class="en-header_middle">CT results</div>
         <div class="form-group">
@@ -259,6 +213,53 @@
             @Html.ValidationMessageFor(m => m.Enrollee.CTSecondSubject)
         </div>
     </div>*@
+    </div>
+
+    <div class="en-card mdl-shadow--2dp">
+        <div class="en-header_middle">Specialties</div>
+        <table class="mdl-data-table en-full_width">
+            <tr>
+                <th>Priority</th>
+                <th class="mdl-data-table__cell--non-numeric">Place</th>
+                <th class="mdl-data-table__cell--non-numeric">Speciality</th>
+                <th class="mdl-data-table__cell--non-numeric">Form</th>
+                <th class="mdl-data-table__cell--non-numeric">Qualiphication</th>
+            </tr>
+            @if (Model.Enrollee.Applications[0].Specialities.Count() == 0)
+                {
+                <tr>
+                    <td colspan="4" class="mdl-data-table__cell--non-numeric ">
+                        Specialities not selected
+                    </td>
+                </tr>
+            }
+            else
+            {
+                for (int i = 0; i < Model.Enrollee.Applications[0].Specialities.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @(i+1)
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            @Model.Enrollee.Applications[0].Specialities[i].EducationPlace.Name
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            @Model.Enrollee.Applications[0].Specialities[i].NCSQSpeciality.Name
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            @Model.Enrollee.Applications[0].Specialities[i].EducationForm.Name
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            @Model.Enrollee.Applications[0].Specialities[i].NCSQSpeciality.Qualification
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        <div class="en-card_content">
+            @Html.ActionLink("Edit specialities", "Specialities", new { Model.Enrollee.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+        </div>
     </div>
 
     <div class="en-card mdl-shadow--2dp">

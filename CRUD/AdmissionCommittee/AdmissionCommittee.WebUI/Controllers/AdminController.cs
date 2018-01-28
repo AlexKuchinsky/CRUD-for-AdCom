@@ -19,12 +19,12 @@ namespace SportsStore.WebUI.Controllers
             repository = repo;
         }
 
-        public ViewResult Index(EducationLevel? edLevel = null, int page = 1)
+        public ViewResult Index(int page = 1)
         {
+            //repository.DatabaseTest();
             EnrolleesListViewModel model = new EnrolleesListViewModel
             {
                 Enrollees = repository.Enrollees
-                    .Where(p => edLevel == null || p.EducationLevel == edLevel)
                     .OrderBy(p => p.EnrolleeId)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
@@ -32,11 +32,8 @@ namespace SportsStore.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = edLevel == null ?
-                        repository.Enrollees.Count() :
-                        repository.Enrollees.Where(e => e.EducationLevel == edLevel).Count()
+                    TotalItems = repository.Enrollees.Count()
                 },
-                CurrentCategoryOfEducation = edLevel
             };
             return View(model);
         }
@@ -70,8 +67,8 @@ namespace SportsStore.WebUI.Controllers
 
         public ViewResult Specialities(int enrolleeId)
         {
-            IEnumerable<Speciality> specialities = repository.Enrollees
-                    .FirstOrDefault(p => p.EnrolleeId == enrolleeId).Specialities;
+            var specialities = repository.Enrollees
+                    .FirstOrDefault(p => p.EnrolleeId == enrolleeId).Applications[0].Specialities;
             return View(specialities);
         }
 
@@ -142,33 +139,33 @@ namespace SportsStore.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public JsonResult LoadNode(int? id)
-        {
-            var children = repository.TreeNodes.
-                    Where(node => node.ParentId == id)
-                    .Select(child => new
-                    {
-                        Id = child.NodeId,
-                        Name = child.Data.Name,
-                        FullName = child.Data.FullName,
-                        NumChildren = repository.TreeNodes.Where(node => node.ParentId == child.NodeId).Count()
-                    });
-            return Json(children, JsonRequestBehavior.AllowGet);         
-        }
+        //[HttpPost]
+        //public JsonResult LoadNode(int? id)
+        //{
+        //    var children = repository.TreeNodes.
+        //            Where(node => node.ParentId == id)
+        //            .Select(child => new
+        //            {
+        //                Id = child.NodeId,
+        //                Name = child.Data.Name,
+        //                FullName = child.Data.FullName,
+        //                NumChildren = repository.TreeNodes.Where(node => node.ParentId == child.NodeId).Count()
+        //            });
+        //    return Json(children, JsonRequestBehavior.AllowGet);         
+        //}
 
-        [HttpPost]
-        public JsonResult LoadDropdown(int? parentId)
-        {
-            var children = repository.TreeNodes.
-                Where(node => node.ParentId == parentId).
-                Select(node => new
-                {
-                    Name = node.Data.Name,
-                    NodeId = node.NodeId,
-                    FullName = node.Data.FullName
-                });
-            return Json(children, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpPost]
+        //public JsonResult LoadDropdown(int? parentId)
+        //{
+        //    var children = repository.TreeNodes.
+        //        Where(node => node.ParentId == parentId).
+        //        Select(node => new
+        //        {
+        //            Name = node.Data.Name,
+        //            NodeId = node.NodeId,
+        //            FullName = node.Data.FullName
+        //        });
+        //    return Json(children, JsonRequestBehavior.AllowGet);
+        //}
     }
 }

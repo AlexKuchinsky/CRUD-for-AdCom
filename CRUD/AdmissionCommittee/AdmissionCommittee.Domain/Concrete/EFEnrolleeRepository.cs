@@ -19,36 +19,54 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.Subjects; }
         }
 
-        public IEnumerable<TreeNode> TreeNodes
-        {
-            get { return context.TreeNodes; }
-        }
+        //public IEnumerable<TreeNode> TreeNodes
+        //{
+        //    get { return context.TreeNodes; }
+        //}
 
-        public IEnumerable<TreeData> TreeData
-        {
-            get { return context.TreeData; }
-        }
+        //public IEnumerable<TreeData> TreeData
+        //{
+        //    get { return context.TreeData; }
+        //}
 
-        public IEnumerable<SpecialtyInfo> SpecialtyInfo
-        {
-            get { return context.SpecialtyInfo; }
-        }
 
-        public int GetSpecialtyInfoId(SpecialtyInfo info)
-        {
-            SpecialtyInfo findedInfo = ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo)
-                .Where(si => si.Equals(info)).FirstOrDefault();
-            if(findedInfo != null)
-            {
-                return findedInfo.SpecialtyInfoId;
-            }
-            else
-            {
-                context.SpecialtyInfo.Add(info);
-                context.SaveChanges();
-                return ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo).Where(si => si.Equals(info)).FirstOrDefault().SpecialtyInfoId;
-            }
+        //public int GetSpecialtyInfoId(SpecialtyInfo info)
+        //{
+        //    SpecialtyInfo findedInfo = ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo)
+        //        .Where(si => si.Equals(info)).FirstOrDefault();
+        //    if(findedInfo != null)
+        //    {
+        //        return findedInfo.SpecialtyInfoId;
+        //    }
+        //    else
+        //    {
+        //        context.SpecialtyInfo.Add(info);
+        //        context.SaveChanges();
+        //        return ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo).Where(si => si.Equals(info)).FirstOrDefault().SpecialtyInfoId;
+        //    }
             
+        //}
+        public void DatabaseTest()
+        {
+            var er1 = context.Address.ToList();
+            var er2 = context.Applications.ToList();
+            var er3 = context.Colors.ToList();
+            var er4 = context.EducationDurations.ToList();
+            var er5 = context.EducationForms.ToList();
+            var er6 = context.EducationPlaces.ToList();
+            var er7 = context.Enrollees.ToList();
+            var er8 = context.FinancingTypes.ToList();
+            var er9 = context.GroupFriendships.ToList();
+            var er10 = context.NCSQSpecialities.ToList();
+            var er11 = context.Specialities.ToList();
+            var er12 = context.SpecialityAvailableDates.ToList();
+            var er13 = context.SpecialityGroups.ToList();
+            var er14 = context.SpecialityPositionsNumbers.ToList();
+            var er15 = context.SpecialitySubjects.ToList();
+            var er16 = context.SubjectMarks.ToList();
+            var er17 = context.Subjects.ToList();
+            var er18 = context.SubjectThresholds.ToList();
+            //var er19 = context.ApplicationToSpecialities.ToList();
         }
 
         public void SaveEnrollee(Enrollee enrollee)
@@ -66,9 +84,6 @@ namespace AdmissionCommittee.Domain.Concrete
                     dbEntry.LastName = enrollee.LastName;
                     dbEntry.Patronymic = enrollee.Patronymic;
                     dbEntry.PassportNumber = enrollee.PassportNumber;
-                    dbEntry.CTLanguage = enrollee.CTLanguage;
-                    dbEntry.CTFirstSubject = enrollee.CTFirstSubject;
-                    dbEntry.CTSecondSubject = enrollee.CTSecondSubject;
                     dbEntry.DateOfBirth = enrollee.DateOfBirth;
                     dbEntry.Address.Country = enrollee.Address.Country;
                     dbEntry.Address.City = enrollee.Address.City;
@@ -78,13 +93,11 @@ namespace AdmissionCommittee.Domain.Concrete
                     dbEntry.Address.ApartmentNumber = enrollee.Address.ApartmentNumber;
                     dbEntry.Address.PostalCode = enrollee.Address.PostalCode;
                     dbEntry.Phone = enrollee.Phone;
-                    dbEntry.EducationLevel = enrollee.EducationLevel;
-                    dbEntry.SpecialtyInfoId = enrollee.SpecialtyInfoId;
-                    for(int i = 0; i < dbEntry.Marks.Count; i++)
-                    {
-                        dbEntry.Marks[i].SubjectId = enrollee.Marks[i].SubjectId;
-                        dbEntry.Marks[i].Mark = enrollee.Marks[i].Mark;
-                    }
+                    //for(int i = 0; i < dbEntry.Marks.Count; i++)
+                    //{
+                    //    dbEntry.Marks[i].SubjectId = enrollee.Marks[i].SubjectId;
+                    //    dbEntry.Marks[i].Mark = enrollee.Marks[i].Mark;
+                    //}
                 }
             }
             context.SaveChanges();

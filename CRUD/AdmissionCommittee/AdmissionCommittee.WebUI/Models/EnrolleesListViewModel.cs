@@ -7,6 +7,5 @@ namespace AdmissionCommittee.WebUI.Models
     {
         public IEnumerable<Enrollee> Enrollees { get; set; }
         public PagingInfo PagingInfo { get; set; }
-        public EducationLevel? CurrentCategoryOfEducation { get; set; }
     }
 }

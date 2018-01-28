@@ -16,15 +16,7 @@
             </div>
         </div>
         
-        <div class="en-padding_dropdown">
-            @Html.EnumDropDownListFor(Model => Model.CurrentCategoryOfEducation, "Any level", new { @onchange = "CallChangeFunc(this.options[this.selectedIndex].text)" })
-        </div>
-        <script>
-            function CallChangeFunc(val) {
-                window.location.href = "@Url.RouteUrl(new { controller = "Admin", action = "Index"})/" + val + "/1";
-            }
-        </script>
-        <div class="en-padding_tree">
+        @*<div class="en-padding_tree">
             <div class="en-js-tree" data-id="null">
                 <ul class="en-tree_container"></ul>
             </div>
@@ -34,12 +26,12 @@
                     tree("/Admin/LoadNode");
                 });
             </script>  
-        </div>
+        </div>*@
     </div>
 </div>
 
 <div class="mdl-shadow--2dp en-card" id="enrolleeTable">
-    @Html.Partial("PartialEnrolleeTable", Model.Enrollees);
+    @Html.Partial("PartialEnrolleeTable", Model.Enrollees)
 </div>
 
 @*<div class="en-card mdl-shadow--2dp en-card_content">

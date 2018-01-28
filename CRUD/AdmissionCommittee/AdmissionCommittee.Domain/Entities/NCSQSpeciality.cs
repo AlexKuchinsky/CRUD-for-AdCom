@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace AdmissionCommittee.Domain.Entities
 {
-    public class NCSQSpecialty
+    public class NCSQSpeciality
     {
-        public int NCSQSpecialtyId { get; set; }
+        public int NCSQSpecialityId { get; set; }
 
         public string Cipher { get; set; }
 
         public string Name { get; set; }
 
-        public string Qualiphication { get; set; }
+        public string Qualification { get; set; }
     }
 }

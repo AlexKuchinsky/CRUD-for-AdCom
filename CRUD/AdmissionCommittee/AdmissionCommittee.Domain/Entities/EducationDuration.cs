@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace AdmissionCommittee.Domain.Entities
 {
-    public class EducationForm
+    public class EducationDuration
     {
-        public int EducationFormId { get; set; }
+        public int EducationDurationId { get; set; }
 
-        public string Name { get; set; }
-
-        public bool IsInternal { get; set; }
+        public string Duration { get; set; }
     }
 }

@@ -13,8 +13,8 @@ namespace AdmissionCommittee.Domain.Entities
         public int EducationFormId { get; set; }
         public virtual EducationForm EducationForm { get; set; }
 
-        public int EducationPeriodId { get; set; }
-        public virtual EducationPeriod EducationPeriod { get; set; }
+        public int EducationDurationId { get; set; }
+        public virtual EducationDuration EducationDuration { get; set; }
 
         public int EducationPlaceId { get; set; }
         public virtual EducationPlace EducationPlace { get; set; }
@@ -23,7 +23,7 @@ namespace AdmissionCommittee.Domain.Entities
         public virtual FinancingType FinancingType { get; set; }
 
         public int NCSQSpecialityId { get; set; }
-        public virtual NCSQSpecialty NCSQSpecialty { get; set; }
+        public virtual NCSQSpeciality NCSQSpeciality { get; set; }
 
         public int SpecialityAvailableDateId { get; set; }
         public virtual SpecialityAvailableDate SpecialityAvailableDate { get; set; }
@@ -34,7 +34,11 @@ namespace AdmissionCommittee.Domain.Entities
         public int SpecialityPositionsNumberId { get; set; }
         public virtual SpecialityPositionsNumber SpecialityPositionsNumber { get; set; }
 
-        public int SpecialityThresholdId { get; set; }
-        public virtual SpecialityThreshold SpecialityThreshold { get; set; }
+        public int ColorId { get; set; }
+        public virtual Color Color { get; set; }
+
+        public virtual IList<Application> Applications { get; set; }
+
+        public virtual IList<SpecialitySubject> SpecialitySubjects { get; set; }
     }
 }
