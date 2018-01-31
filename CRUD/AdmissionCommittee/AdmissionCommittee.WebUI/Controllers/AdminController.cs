@@ -65,11 +65,17 @@ namespace SportsStore.WebUI.Controllers
             });
         }
 
-        public ViewResult Specialities(int enrolleeId)
+        public ViewResult Application(int enrolleeId, int applicationId)
         {
-            var specialities = repository.Enrollees
-                    .FirstOrDefault(p => p.EnrolleeId == enrolleeId).Applications[0].Specialities;
-            return View(specialities);
+            var model = new ApplicationEditViewModel()
+            {
+                Application = repository.Enrollees
+                    .FirstOrDefault(en => en.EnrolleeId == enrolleeId).Applications
+                    .FirstOrDefault(app => app.ApplicationId == applicationId),
+                EducationPlaces = repository.EducationPlaces,
+                FinancingTypes = repository.FinancingTypes
+            };
+            return View(model);
         }
 
         //[HttpPost]
@@ -139,6 +145,150 @@ namespace SportsStore.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
+        //[HttpPost]
+        //public JsonResult LoadSpecialities(AjaxSpecialityDataModel parameters)
+        //{      
+        //    if(parameters.MainSpecialityId > 0) {
+        //        var mainGroup = repository.Specialities
+        //            .FirstOrDefault(sp => sp.SpecialityId == parameters.MainSpecialityId)
+        //            .SpecialityGroup;
+        //        var availableGroupIds = mainGroup.FriendlyGroups
+        //            .Select(gr => gr.SpecialityGroupId)
+        //            .Concat(new[] { mainGroup.SpecialityGroupId});
+        //        var speciality = repository.Specialities
+        //            .Where(sp => 
+        //                sp.EducationPlaceId == parameters.EducationPlaceId &&
+        //                sp.FinancingTypeId == parameters.FinancingTypeId && 
+        //                availableGroupIds.Contains(sp.SpecialityGroupId));
+        //    }
+        //    else
+        //    {
+        //        var options = repository.Specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId
+        //            && sp.FinancingTypeId == parameters.FinancingTypeId);
+        //    }
+        //}
+
+        public IEnumerable<Speciality> SelectByGroup(IEnumerable<Speciality> specialities, int? mainSpecialityId)
+        {
+            if (mainSpecialityId != null)
+            {
+                var mainGroup = repository.Specialities
+                    .FirstOrDefault(sp => sp.SpecialityId == mainSpecialityId)
+                    .SpecialityGroup;
+                var availableGroupIds = mainGroup.FriendlyGroups
+                    .Select(gr => gr.SpecialityGroupId)
+                    .Concat(new[] { mainGroup.SpecialityGroupId });
+                return specialities.Where(sp => availableGroupIds.Contains(sp.SpecialityGroupId));
+            }
+            return specialities;
+        }
+
+        //public IEnumerable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
+        //{
+        //    IEnumerable<Speciality> specialities = new List<Speciality>();
+
+        //    if(parameters.EducationPlaceId == null || parameters.FinancingTypeId == null)
+        //    {
+        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
+        //    }
+        //    specialities = repository.Specialities.Where(sp => 
+        //        sp.EducationPlaceId == parameters.EducationPlaceId &&
+        //        sp.FinancingTypeId == parameters.FinancingTypeId);
+
+        //    if(parameters.SpecialityId == null)
+        //    {
+        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
+        //    }
+        //    specialities = specialities.Where(sp =>sp.SpecialityId == parameters.SpecialityId);
+
+        //    if(parameters.EducationFormId == null)
+        //    {
+        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
+        //    }
+        //    specialities = specialities.Where(sp => sp.EducationFormId == parameters.EducationFormId);
+
+        //    if(parameters.EducationDurationId != null)
+        //    {
+        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
+        //    }
+        //    specialities = specialities.Where(sp => sp.EducationDurationId == parameters.EducationDurationId);
+        //    return SelectByGroup(specialities, parameters.MainSpecialityId);
+        //}
+
+        public IEnumerable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
+        {
+            IEnumerable<Speciality> specialities = new List<Speciality>();
+
+            if (parameters.EducationPlaceId == null || parameters.FinancingTypeId == null)
+            {
+                return SelectByGroup(specialities, parameters.MainSpecialityId);
+            }
+            specialities = repository.Specialities.Where(sp =>
+                sp.EducationPlaceId == parameters.EducationPlaceId &&
+                sp.FinancingTypeId == parameters.FinancingTypeId);
+
+            if (parameters.SpecialityId != null)
+            {
+                specialities = specialities.Where(sp => sp.NCSQSpecialityId == parameters.SpecialityId);
+            }
+
+            if (parameters.EducationFormId != null)
+            {
+                specialities = specialities.Where(sp => sp.EducationFormId == parameters.EducationFormId);
+            }
+
+            if (parameters.EducationDurationId != null)
+            {
+                specialities = specialities.Where(sp => sp.EducationDurationId == parameters.EducationDurationId);
+            }
+            return SelectByGroup(specialities, parameters.MainSpecialityId);
+        }
+
+        [HttpPost]
+        public JsonResult LoadSpecialityOptions(AjaxSpecialityDataModel parameters)
+        {
+            var specialitySet = new HashSet<NCSQSpeciality>(SelectSpecialities(parameters).Select(sp => sp.NCSQSpeciality));
+            var options = specialitySet.Select(sp => new
+            {
+                Text = sp.Name,
+                Value = sp.NCSQSpecialityId,
+                Label = sp.Cipher + " " + sp.Name
+            });
+            return Json(options, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult LoadEducationFormOptions(AjaxSpecialityDataModel parameters)
+        {
+            var educationFormSet = new HashSet<EducationForm>(SelectSpecialities(parameters).Select(sp => sp.EducationForm));
+            var options = educationFormSet.Select(sp => new
+            {
+                Text = sp.Name,
+                Value = sp.EducationFormId,
+                Label = sp.IsInternal ? "Full-time" : "Correspondence"
+            });
+            return Json(options, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult LoadEducationDurationOptions(AjaxSpecialityDataModel parameters)
+        {
+            var educationDurationSet = new HashSet<EducationDuration>(SelectSpecialities(parameters).Select(sp => sp.EducationDuration));
+            var options = educationDurationSet.Select(sp => new
+            {
+                Text = sp.Duration,
+                Value = sp.EducationDurationId,
+                Label = sp.Duration
+            });
+            return Json(options, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public PartialViewResult LoadProposedSpecialities(AjaxSpecialityDataModel parameters)
+        {
+            var specialities = SelectSpecialities(parameters).ToList();
+            return PartialView("PartialProposedSpecialities", specialities);
+        }
         //[HttpPost]
         //public JsonResult LoadNode(int? id)
         //{

@@ -17,6 +17,12 @@ namespace AdmissionCommittee.Domain.Abstract
 
         Enrollee DeleteEnrollee(int enrolleeID);
 
+        IEnumerable<EducationPlace> EducationPlaces { get; }
+
+        IEnumerable<FinancingType> FinancingTypes { get; }
+
+        IEnumerable<Speciality> Specialities { get; }
+
         void DatabaseTest();
     }
 }

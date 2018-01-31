@@ -208,19 +208,19 @@ function submitTree() {
     function TreeDFS(LiId, level) {
         var li = $('li[data-id = ' + LiId + ']');
         var input = $(li).children('input')[0];
-        if (input.checked == true) {
+        if (input.checked === true) {
             var x = {
                 "Id": +li[0].dataset.id,
                 "Level": level
-            }
+            };
             data.push(x);
         }
-        else if (input.indeterminate == true) {
+        else if (input.indeterminate === true) {
             var childLies = $(li).children('ul').children('li');
             for (var j = 0; j < childLies.length; j++)
                 TreeDFS(childLies[j].dataset.id, level + 1);
         }
-    };
+    }
 
     function onSuccess(data) {
         if (!data.errcode) {
@@ -233,7 +233,7 @@ function submitTree() {
     }
     function onAjaxError(xhr, status) {
         var errinfo = { errcode: status };
-        if (xhr.status != 200) {
+        if (xhr.status !== 200) {
             errinfo.message = xhr.statusText;
         } else {
             errinfo.message = 'Некорректные данные с сервера';
@@ -250,7 +250,7 @@ function submitTree() {
     function onLoaded(data) {
         var div = $('#enrolleeTable');
         div.empty();
-        var html = $.parseHTML(data)
+        var html = $.parseHTML(data);
         div.append(html);
     }
 
@@ -270,124 +270,141 @@ function submitTree() {
         }
     };
 }
+///////////////////////////////////////////////////////////////////////
+function DropdownsAndTable() {
+    var parameters;
 
+    function setRelation(thisEl, nextEl, url) {
+        thisEl.clearNext = function () {
+            while (nextEl.firstChild) {
+                nextEl.removeChild(nextEl.firstChild);
+            }
+            if (nextEl.clearNext) nextEl.clearNext();
+        };
 
-function setRelations(parentDropdown, childDropdown, parentId) {
-    parentDropdown.clearChild = function () {
-        while (childDropdown.element.firstChild) {
-            childDropdown.element.removeChild(childDropdown.element.firstChild);
-        }
-        if (childDropdown.clearChild) childDropdown.clearChild();
-    };
+        thisEl.loadNext = function () {
+            loadDropdown(nextEl, url);
+            if (nextEl.loadNext) {
+                nextEl.loadNext();
+            }
+        };
 
-    parentDropdown.element.onchange = function () {
-        parentDropdown.clearChild();
-        childDropdown.loadNode("/Admin/LoadDropdown", parentDropdown.element.value, null);       
-    };
-}
-
-function onDropdownLoaded(parentDropdown, childDropdown, parentId, onChildLoaded) {
-    parentDropdown.element.value = parentId;
-    if (childDropdown) {
-        childDropdown.loadNode("/Admin/LoadDropdown", parentId, onChildLoaded);
+        thisEl.onchange = function () {
+            thisEl.clearNext();
+            updateParameters();         
+            thisEl.loadNext();
+            loadTable('/Admin/LoadProposedSpecialities');
+        };
     }
+
+    function updateParameters() {
+        parameters = {
+            mainSpeciality: $('.selected_speciality').first().data('id'),
+            educationPlace: $('#educationPlace')[0].value,
+            financingType: $('#financingType')[0].value,
+            speciality: $('#speciality')[0].value,
+            educationForm: $('#educationForm')[0].value,
+            educationDuration: $('#educationDuration')[0].value
+        };
+    }
+
+    function loadDropdown(element, url) {
+        var onSuccess = function (data) {
+            if (data.length > 1) {
+                element.options[0] = new Option("-Any-", null);
+                for (var i = 0; i < data.length; i++) {
+                    element.options[i + 1] = new Option(data[i].Text, data[i].Value);
+                    element.options[i + 1].title = data[i].Title;
+                }
+            }
+            else if (data.length === 1) {
+                element.options[0] = new Option(data[0].Text, data[0].Value);
+                if (element.loadNext) {
+                    element.loadNext();
+                }
+            }
+            else {
+                element.options[0] = new Option("-Not exist-", null);
+            }
+        };
+
+        var onError = function (errorData) {
+            alert('Ошибка' + errorData.responseText);
+        };
+
+        if (parameters.educationPlace > 0 && parameters.financingType > 0) {
+            $.ajax({
+                url: url,
+                method: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "MainSpecialityId": parameters.mainSpeciality,
+                    "EducationPlaceId": parameters.educationPlace,
+                    "FinancingTypeId": parameters.financingType,
+                    "SpecialityId": parameters.speciality,
+                    "EducationFormId": parameters.educationForm,
+                    "EducationDurationId": parameters.educationDuration
+                }),
+                dataType: "json",
+                success: onSuccess,
+                error: onError
+            });
+        }
+    }
+
+    function loadTable(url) {
+        updateParameters();
+        var onSuccess = function (data) {
+            var table = $('#proposed_specialities');
+            table.empty();
+            table.html(data);
+        };
+
+        var onError = function (errorData) {
+            alert('Артём, тут ошибка, хватит говнокодить:' + errorData.responseText);
+        };
+
+        $.ajax({
+            url: url,
+            method: "post",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "MainSpecialityId": parameters.mainSpeciality,
+                "EducationPlaceId": parameters.educationPlace,
+                "FinancingTypeId": parameters.financingType,
+                "SpecialityId": parameters.speciality,
+                "EducationFormId": parameters.educationForm,
+                "EducationDurationId": parameters.educationDuration
+            }),
+            dataType: "html",
+            success: onSuccess,
+            error: onError
+        });
+    }
+
+    edPlaceEl = $('#educationPlace')[0];
+    finTypeEl = $('#financingType')[0];
+    specEl = $('#speciality')[0];
+    edFormEl = $('#educationForm')[0];
+    edDurEl = $('#educationDuration')[0];
+    setRelation(edPlaceEl, specEl, '/Admin/LoadSpecialityOptions');
+    setRelation(finTypeEl, specEl, '/Admin/LoadSpecialityOptions');
+    $('#educationPlace, #financingType').change(function () {
+        if (edPlaceEl.value > 0 && finTypeEl.value > 0) {
+            edPlaceEl.clearNext();
+            edPlaceEl.loadNext();
+            loadTable('/Admin/LoadProposedSpecialities');
+        }
+    });
+    setRelation(specEl, edFormEl, '/Admin/LoadEducationFormOptions');
+    setRelation(edFormEl, edDurEl, '/Admin/LoadEducationDurationOptions');
+
+    $('#educationDuration')[0].onchange = function () {
+        loadTable('/Admin/LoadProposedSpecialities');
+    };
 }
 
-function initSpecialityInfo(info)
-{
-    var university = ajaxDropdown(document.getElementById("university1"));
-    var faculty= ajaxDropdown(document.getElementById("faculty1"));
-    var specialty = ajaxDropdown(document.getElementById("specialty1"));
-    var specialization = ajaxDropdown(document.getElementById("specialization1"));
-    var formOfStudy = ajaxDropdown(document.getElementById("formOfStudy1"));
-    var payment = ajaxDropdown(document.getElementById("payment1"));
 
 
-    var onPaymentLoaded = function () { onDropdownLoaded(payment, null, info.PaymentId, null); };
-    var onFormOfStudyLoaded = function () { onDropdownLoaded(formOfStudy, payment, info.FormOfStudyId, onPaymentLoaded); };
-    var onSpecializationLoaded = function () { onDropdownLoaded(specialization, formOfStudy, info.SpecializationId, onFormOfStudyLoaded); };
-    var onSpecialtyLoaded = function () { onDropdownLoaded(specialty, specialization, info.SpecialtyId, onSpecializationLoaded); };
-    var onFacultyLoaded = function () { onDropdownLoaded(faculty, specialty, info.FacultyId, onSpecialtyLoaded); };
-    var onUniversityLoaded = function () { onDropdownLoaded(university, faculty, info.UniversityId, onFacultyLoaded); };
-
-    
-    setRelations(formOfStudy, payment);
-    setRelations(specialization, formOfStudy);
-    setRelations(specialty, specialization);
-    setRelations(faculty, specialty);
-    setRelations(university, faculty);
-
-    university.loadNode("/Admin/LoadDropdown", null, onUniversityLoaded);
-}
-
-function ajaxDropdown(element) {
-    var thisCallback;
-    var onLoaded = function (data) {
-        element.options[0] = new Option("-Not selected-", -1);
-        for (var i = 0; i < data.length; i++) {
-            var text = data[i].Name;
-            var value = data[i].NodeId;
-            element.options[i + 1] = new Option(text, value);
-            element.options[i + 1].title = data[i].FullName;
-        }
-        if (thisCallback) {
-            thisCallback();
-        }
-    };
-
-    var onLoadError = function (error) {
-        var msg = "Ошибка " + error.errcode;
-        if (error.message) msg = msg + ' :' + error.message;
-        alert(msg);
-    };
-
-    var showLoading = function (on) {
-        element.disabled = on;
-    };
-
-    var onSuccess = function (data) {
-        if (!data.errcode) {
-            onLoaded(data);
-            showLoading(false);
-        } else {
-            showLoading(false);
-            onLoadError(data);
-        }
-    };
-
-    var onAjaxError = function (xhr, status) {
-        showLoading(false);
-        var errinfo = { errcode: status };
-        if (xhr.status !== 200) {
-            errinfo.message = xhr.statusText;
-        } else {
-            errinfo.message = 'Некорректные данные с сервера';
-        }
-        onLoadError(errinfo);
-    };
-
-    return {
-        element: element,
-        loadNode: function (url, parentId, callback) {
-            showLoading(true);
-            thisCallback = callback;
-            if (parentId !== -1)
-            {
-                $.ajax({
-                    url: url,
-                    method: "post",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        "parentId": parentId
-                    }),
-                    dataType: "json",
-                    success: onSuccess,
-                    error: onAjaxError,
-                    cache: false
-                });
-            }         
-        }
-    };
-}
 
 

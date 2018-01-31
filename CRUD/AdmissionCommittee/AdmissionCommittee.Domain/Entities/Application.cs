@@ -13,6 +13,9 @@ namespace AdmissionCommittee.Domain.Entities
         public int FinancingTypeId { get; set; }
         public virtual FinancingType FinancingType { get; set; }
 
+        public int EducationPlaceId { get; set; }
+        public virtual EducationPlace EducationPlace { get; set; }
+
         public int EnrolleeId { get; set; }
         public virtual Enrollee Enrollee { get; set; }
 

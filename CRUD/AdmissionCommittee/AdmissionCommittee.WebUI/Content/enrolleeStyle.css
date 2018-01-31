@@ -137,8 +137,10 @@
     width:170px;
 }
 
-.en-block_spec{
-    width:130px;
+.en-block_spec {
+    width: 130px;
+    margin: 10px 0 5px 20px;
+    display:inline-block;
 }
 
 .en-add_subj_but {
@@ -165,10 +167,35 @@
 
 .en-speciality {
     background-color: white;
-    margin: 0px 0px 15px 0px;
-    height: 70px;
+    margin: 0 0 15px 0;
+    overflow:auto;
+    min-height: 70px;
 }
 
+.en-text_overflow {
+    white-space: normal;
+    word-wrap: normal;
+}
+
+.en-table_td_speciality {
+    width: 250px;  
+}
+
+.en-table_td_qualification {
+    width: 250px;
+}
+
+.en-table_td_form {
+    width: 100px;
+}
+
+.en-table_td_duration {
+    width: 150px;
+}
+
+.en-table_td_subjects {
+    width: 150px;
+}
 /*tree class*/
 .en-tree_container {
     padding: 0;

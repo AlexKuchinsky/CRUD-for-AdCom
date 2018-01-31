@@ -19,6 +19,21 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.Subjects; }
         }
 
+        public IEnumerable<EducationPlace> EducationPlaces
+        {
+            get { return context.EducationPlaces; }
+        }
+
+        public IEnumerable<FinancingType> FinancingTypes
+        {
+            get { return context.FinancingTypes; }
+        }
+
+        public IEnumerable<Speciality> Specialities
+        {
+            get { return context.Specialities; }
+        }
+
         //public IEnumerable<TreeNode> TreeNodes
         //{
         //    get { return context.TreeNodes; }
@@ -44,7 +59,7 @@ namespace AdmissionCommittee.Domain.Concrete
         //        context.SaveChanges();
         //        return ((IEnumerable<SpecialtyInfo>)context.SpecialtyInfo).Where(si => si.Equals(info)).FirstOrDefault().SpecialtyInfoId;
         //    }
-            
+
         //}
         public void DatabaseTest()
         {
@@ -56,7 +71,7 @@ namespace AdmissionCommittee.Domain.Concrete
             var er6 = context.EducationPlaces.ToList();
             var er7 = context.Enrollees.ToList();
             var er8 = context.FinancingTypes.ToList();
-            var er9 = context.GroupFriendships.ToList();
+            //var er9 = context.GroupFriendships.ToList();
             var er10 = context.NCSQSpecialities.ToList();
             var er11 = context.Specialities.ToList();
             var er12 = context.SpecialityAvailableDates.ToList();

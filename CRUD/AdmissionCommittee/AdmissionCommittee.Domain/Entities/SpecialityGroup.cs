@@ -12,8 +12,14 @@ namespace AdmissionCommittee.Domain.Entities
 
         public string Name { get; set; }
 
-        public IList<Speciality> Specialities { get; set; }
+        public virtual IList<Speciality> Specialities { get; set; }
 
-        public IList<GroupFriendship> Friendships { get; set; }
+        public virtual IList<SpecialityGroup> FriendlyGroups { get; set; }
+
+        public SpecialityGroup()
+        {
+            Specialities = new List<Speciality>();
+            FriendlyGroups = new List<SpecialityGroup>();
+        }
     }
 }

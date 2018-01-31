@@ -258,7 +258,7 @@
             }
         </table>
         <div class="en-card_content">
-            @Html.ActionLink("Edit specialities", "Specialities", new { Model.Enrollee.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+            @Html.ActionLink("Edit application", "Application", new { enrolleeId = Model.Enrollee.EnrolleeId, applicationId = Model.Enrollee.Applications[0].ApplicationId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
         </div>
     </div>
 
