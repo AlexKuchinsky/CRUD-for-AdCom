@@ -352,35 +352,7 @@ function DropdownsAndTable() {
         }
     }
 
-    function loadTable(url) {
-        updateParameters();
-        var onSuccess = function (data) {
-            var table = $('#proposed_specialities');
-            table.empty();
-            table.html(data);
-        };
-
-        var onError = function (errorData) {
-            alert('Артём, тут ошибка, хватит говнокодить:' + errorData.responseText);
-        };
-
-        $.ajax({
-            url: url,
-            method: "post",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "MainSpecialityId": parameters.mainSpeciality,
-                "EducationPlaceId": parameters.educationPlace,
-                "FinancingTypeId": parameters.financingType,
-                "SpecialityId": parameters.speciality,
-                "EducationFormId": parameters.educationForm,
-                "EducationDurationId": parameters.educationDuration
-            }),
-            dataType: "html",
-            success: onSuccess,
-            error: onError
-        });
-    }
+    
 
     edPlaceEl = $('#educationPlace')[0];
     finTypeEl = $('#financingType')[0];
@@ -405,6 +377,198 @@ function DropdownsAndTable() {
 }
 
 
+
+//function AddButtonClick() {
+//    var specialityId = $(this).parents('tr').first().data('id')[0];
+//    var onSuccess = function (data) {
+//        $('#proposed_specialities').find('table').append(data);
+//    };
+
+//    var onError = function (errorData) {
+//        alert('Ошибка' + errorData.responseText);
+//    };
+
+//    $.ajax({
+//        url: '/Admin/LoadSpeciality',
+//        method: "post",
+//        contentType: "application/json",
+//        data: JSON.stringify({
+//            "SpecialityId": specialityId
+//        }),
+//        dataType: "html",
+//        success: onSuccess,
+//        error: onError
+//    });
+//};
+
+
+//function SpecialtyAddButton() {
+//    $('#proposed_specialities').on('click', '.en-js-spec_add_button', function () {
+//        var specialityId = $(this).parents('tr').first().data('id')[0];
+//        var onSuccess = function (data) {
+//            $('#proposed_specialities table').append(data);
+//        };
+
+//        var onError = function (errorData) {
+//            alert('Ошибка' + errorData.responseText);
+//        };
+
+//        $.ajax({
+//            url: '/Admin/LoadSpeciality',
+//            method: "post",
+//            contentType: "application/json",
+//            data: JSON.stringify({
+//                "SpecialityId": specialityId
+//            }),
+//            dataType: "html",
+//            success: onSuccess,
+//            error: onError
+//        }); 
+//    });
+//}
+
+$(function () {
+    $("#sortable").sortable({
+        start: function (event, ui) {
+        },
+        update: function (event, ui) {
+            UpdatePriority($(ui.item).parents('.en-js-specialities_container').first());
+        },
+        items: '.en-speciality:not(.not_drop)'
+    });
+    $("#sortable").disableSelection();
+});
+
+function UpdatePriority() {
+    $('.en-js-specialities_container').children('.en-speciality')
+        .find('.en-speciality_priority')
+        .text(function (index, oldtext) {
+            return $(this).closest('.en-speciality').prevAll('.en-speciality').length + 1;
+        });
+}
+
+function SpecialityDeleteButton() {
+    $('#selected_specialities').on('click', '.en-js-spec_del_button', function () {
+        $(this).parents('.en-speciality').first().remove();
+        UpdatePriority();
+    });
+}
+
+function SpecialityAddButton() {
+    $('#selected_specialities').on('click', '.en-js-spec_add_button', function () {
+        var onSuccess = function (data) {
+            $('.en-js-specialities_container').append(data);
+            UpdatePriority();
+            InitDropdowns($(".en-speciality[data-id='0']").last()[0]);
+        };
+
+        var onError = function (errorData) {
+            alert('Ошибка' + errorData.responseText);
+        };
+
+        $.ajax({
+            url: '/Admin/LoadEmptySpeciality',
+            method: "post",
+            dataType: "html",
+            success: onSuccess,
+            error: onError
+        });
+    });
+};
+
+function InitDropdowns(section) {
+    var parameters;
+    var edPlaceEl = $(section).find('.en-js-edPlace')[0];
+    var finTypeEl = $(section).find('.en-js-finType')[0];
+    var specEl = $(section).find('.en-js-NCSQspec')[0];
+    var edFormEl = $(section).find('.en-js-edForm')[0];
+    var edDurEl = $(section).find('.en-js-edDur')[0];
+
+    function updateParameters() {
+        parameters = {
+            group: $('.en_speciality').first().data('group'),
+            educationPlace: edPlaceEl.value,
+            financingType: finTypeEl.value,
+            speciality: specEl.value,
+            educationForm: edFormEl.value,
+            educationDuration: edDurEl.value
+        };
+    }
+
+    function setRelation(thisEl, nextEl, url) {
+        thisEl.clear = function () {
+            while (thisEl.firstChild) {
+                thisEl.removeChild(thisEl.firstChild);
+            }
+            if (nextEl && nextEl.clear) nextEl.clear();
+        };
+        
+        thisEl.load = function () {         
+            thisEl.clear();
+            updateParameters();
+            loadDropdown(thisEl, url);
+            if (nextEl && nextEl.load) {
+                nextEl.load();
+            }
+        };
+        
+        if (nextEl) {
+            thisEl.onchange = function () {                
+                nextEl.load();
+            };
+        }
+    } 
+
+    function loadDropdown(element, url) {
+        var onSuccess = function (data) {
+            if (data.length > 1) {
+                element.options[0] = new Option("-Not selected-", null);
+                for (var i = 0; i < data.length; i++) {
+                    element.options[i + 1] = new Option(data[i].Text, data[i].Value);
+                    element.options[i + 1].title = data[i].Title;
+                }
+            }
+            else if (data.length === 1) {
+                element.options[0] = new Option(data[0].Text, data[0].Value);
+                if (element.loadNext) {
+                    element.loadNext();
+                }
+            }
+            else {
+                element.options[0] = new Option("-Not exist-", null);
+            }
+        };
+
+        var onError = function (errorData) {
+            alert('Error' + errorData.responseText);
+        };
+
+        $.ajax({
+            url: url,
+            method: "post",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "GroupId": parameters.group,
+                "EducationPlaceId": parameters.educationPlace,
+                "FinancingTypeId": parameters.financingType,
+                "SpecialityId": parameters.speciality,
+                "EducationFormId": parameters.educationForm,
+                "EducationDurationId": parameters.educationDuration
+            }),
+            dataType: "json",
+            success: onSuccess,
+            error: onError
+        });
+    }
+
+    setRelation(edPlaceEl, finTypeEl, '/Admin/LoadEducationPlaceOptions');
+    setRelation(finTypeEl, edFormEl, '/Admin/LoadFinancingTypeOptions');
+    setRelation(edFormEl, edDurEl, '/Admin/LoadEducationFormOptions');
+    setRelation(edDurEl, specEl, '/Admin/LoadEducationDurationOptions');
+    setRelation(specEl, null, '/Admin/LoadNCSQSpecialityOptions');
+
+    edPlaceEl.load();
+}
 
 
 

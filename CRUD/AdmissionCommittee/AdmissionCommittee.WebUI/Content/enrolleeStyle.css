@@ -137,12 +137,6 @@
     width:170px;
 }
 
-.en-block_spec {
-    width: 130px;
-    margin: 10px 0 5px 20px;
-    display:inline-block;
-}
-
 .en-add_subj_but {
     width: 40px;
     height: 40px;
@@ -165,11 +159,16 @@
     position: absolute;
 }
 
+.en-specialities_container {
+    margin: 15px 20px 15px 20px;
+}
+
 .en-speciality {
+    padding: 10px 20px 10px 20px;
     background-color: white;
     margin: 0 0 15px 0;
-    overflow:auto;
-    min-height: 70px;
+    overflow: auto;
+    min-height: 80px;
 }
 
 .en-text_overflow {
@@ -177,24 +176,34 @@
     word-wrap: normal;
 }
 
-.en-table_td_speciality {
-    width: 250px;  
+.en-specialty_element {
+    margin: 10px 20px 5px 0;
+    display: inline-block;
 }
 
-.en-table_td_qualification {
-    width: 250px;
+.en-specialty_dropdown {
+    width: 130px;
 }
 
-.en-table_td_form {
-    width: 100px;
+.en-speciality_priority {
+    font-family: "Helvetica","Arial",sans-serif;
+    font-size: 20px;
+    font-weight:bold;
+    color: #909090;
 }
 
-.en-table_td_duration {
-    width: 150px;
+.en-spec_add_button{
+    margin:0 auto;
+    display:block;
 }
 
-.en-table_td_subjects {
-    width: 150px;
+.en-spec_main_title {
+    margin: 0 0 0 -6px;
+    font-family: "Helvetica","Arial",sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #909090;
+    position:absolute;
 }
 /*tree class*/
 .en-tree_container {

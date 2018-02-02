@@ -225,6 +225,7 @@
     <Content Include="Views\Shared\PartialEnrolleeTable.cshtml" />
     <Content Include="Views\Admin\Application.cshtml" />
     <Content Include="Views\Shared\PartialProposedSpecialities.cshtml" />
+    <Content Include="Views\Shared\PartialSelectedSpeciality.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

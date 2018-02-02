@@ -1,129 +1,37 @@
-﻿@using AdmissionCommittee.WebUI.Models;
+﻿@using AdmissionCommittee.Domain.Entities
+@using AdmissionCommittee.WebUI.Models
 @model ApplicationEditViewModel
 
 @{
     ViewBag.Title = "Specialities";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Model.Application.Specialities.OrderBy(sp => sp.Priority);
 }
-@*<script type="text/javascript"
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
-</script>
 
-<script type="text/javascript"
-        src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js">
-</script>*@
+
 <div class="en-card mdl-shadow--2dp">
     <div class="en-full_width">
         <div class="en-header_big">Application</div>
     </div>
-    <div class="en-padding_textfields">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-            @Html.DropDownListFor(m => m.Application.EducationPlaceId, new SelectList(Model.EducationPlaces, "EducationPlaceId", "Name", Model.Application.EducationPlaceId), "Any", new { @class = "mdl-textfield__input", @id = "educationPlace" })
-            <label class="mdl-textfield__label en-textfield_label">Education place</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-            @Html.DropDownListFor(m => m.Application.FinancingType, new SelectList(Model.FinancingTypes, "FinancingTypeId", "Type", Model.Application.FinancingTypeId), new { @class = "mdl-textfield__input", @id = "financingType" })
-            <label class="mdl-textfield__label en-textfield_label">Financing type</label>
-        </div>
-    </div>
 </div>
 <div class="en-card mdl-shadow--2dp">
     <div class="en-header_middle">Selected specialities</div>
-    <table class="mdl-data-table en-full_width" id="selected_specialities">
-        <thead>
-            <tr>
-                <th class="mdl-data-table__cell--non-numeric">Specialty</th>
-                <th class="mdl-data-table__cell--non-numeric">Qualification</th>
-                <th class="mdl-data-table__cell--non-numeric">Form</th>
-                <th class="mdl-data-table__cell--non-numeric">Duration</th>
-                <th class="mdl-data-table__cell--non-numeric">Subjects</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Application.Specialities.Count() == 0)
+    <div id="selected_specialities" class="en-specialities_container">
+        <div id="sortable" class="en-js-specialities_container">
+            @for (int i = 0; i < Model.Application.Specialities.Count(); i++)
             {
-                <tr>
-                    <td colspan="4" class="mdl-data-table__cell--non-numeric ">
-                        Specialties not found
-                    </td>
-                </tr>
+                @Html.Partial("PartialSelectedSpeciality", Model.Application.Specialities[i])
             }
-            else
-            {
-                for (int i = 0; i < Model.Application.Specialities.Count(); i++)
-                {
-                    <tr class="selected_speciality" data-id="@Model.Application.Specialities[i].SpecialityId">
-                        <td class="mdl-data-table__cell--non-numeric en-table_td_speciality">
-                            <div class="en-text_overflow">
-                                <div>@Model.Application.Specialities[i].NCSQSpeciality.Cipher</div>
-                                <div>@Model.Application.Specialities[i].NCSQSpeciality.Name</div>
-                            </div>
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric en-table_td_qualification">
-                            @Model.Application.Specialities[i].NCSQSpeciality.Qualification
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric en-table_td_form">
-                            @Model.Application.Specialities[i].EducationForm.Name
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric en-table_td_duration">
-                            @Model.Application.Specialities[i].EducationDuration.Duration
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric en-table_td_subjects">
-                            <div>
-                                @for (int j = 0; j < Model.Application.Specialities[i].SpecialitySubjects.Count(); j++)
-                                {
-                                    if (Model.Application.Specialities[i].SpecialitySubjects[j].Priority <= 2)
-                                    {
-                                        <div>@Model.Application.Specialities[i].SpecialitySubjects[j].Subject.Name</div>
-                                    }
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>     
-    </table>
-    <script>
-        var fixHelper = function (e, ui) {
-            ui.children().each(function () {
-                $(this).width($(this).width());
-            });
-            return ui;
-        };
+        </div>
+        <button class="mdl-button mdl-js-button mdl-button--accent mdl-button--raised en-spec_add_button en-js-spec_add_button">
+            Add speciality
+        </button> 
+    </div>
 
-        $("#selected_specialities tbody").sortable({
-            helper: fixHelper
-        }).disableSelection();
+    <script>
+        SpecialityDeleteButton();
+
+        SpecialityAddButton();
+         
     </script>
 </div>
-
-<div class="en-card mdl-shadow--2dp">
-    <div class="en-header_middle">Proposed specialities</div>
-    <div class="en-padding_textfields">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-            @Html.DropDownList("SpecialityId", new SelectList(new List<object>()), "-Any", new { @class = "mdl-textfield__input", @id = "speciality" })
-            <label class="mdl-textfield__label en-textfield_label">Speciality</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-            @Html.DropDownList("EducationFormId", new SelectList(new List<object>()), "-Any-", new { @class = "mdl-textfield__input", @id = "educationForm" })
-            <label class="mdl-textfield__label en-textfield_label">Form</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-block_spec">
-            @Html.DropDownList("EducationDurationId", new SelectList(new List<object>()), "-Any-", new { @class = "mdl-textfield__input", @id = "educationDuration" })
-            <label class="mdl-textfield__label en-textfield_label">Duration</label>
-        </div>
-        <div class="en-block_spec">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
-                Reset
-            </button>
-        </div>    
-    </div>
-    <div id="proposed_specialities">
-    </div>
-</div>
-<script>
-    $(document).ready(function () {
-        DropdownsAndTable();
-    })
-</script>

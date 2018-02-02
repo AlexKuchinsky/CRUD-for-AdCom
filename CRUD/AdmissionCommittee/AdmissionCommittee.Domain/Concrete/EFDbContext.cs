@@ -7,13 +7,13 @@ namespace AdmissionCommittee.Domain.Concrete
     {    
         public DbSet<Address> Address { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationToSpeciality> ApplicationToSpecialities { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<EducationDuration> EducationDurations { get; set; }
         public DbSet<EducationForm> EducationForms { get; set; }
         public DbSet<EducationPlace> EducationPlaces { get; set; }
         public DbSet<Enrollee> Enrollees { get; set; }
         public DbSet<FinancingType> FinancingTypes { get; set; }
-        //public DbSet<GroupFriendship> GroupFriendships { get; set; }
         public DbSet<NCSQSpeciality> NCSQSpecialities { get; set; }
         public DbSet<Speciality> Specialities { get; set; }
         public DbSet<SpecialityAvailableDate> SpecialityAvailableDates { get; set; }
@@ -30,13 +30,13 @@ namespace AdmissionCommittee.Domain.Concrete
         {
             modelBuilder.Entity<Address>().ToTable("Addresses");
             modelBuilder.Entity<Application>().ToTable("Applications");
+            modelBuilder.Entity<ApplicationToSpeciality>().ToTable("ApplicationToSpecialities");
             modelBuilder.Entity<Color>().ToTable("Colors");
             modelBuilder.Entity<EducationDuration>().ToTable("EducationDurations");
             modelBuilder.Entity<EducationForm>().ToTable("EducationForms");
             modelBuilder.Entity<EducationPlace>().ToTable("EducationPlaces");
             modelBuilder.Entity<Enrollee>().ToTable("Enrollees");
             modelBuilder.Entity<FinancingType>().ToTable("FinancingTypes");
-            //modelBuilder.Entity<GroupFriendship>().ToTable("GroupFriendships");
             modelBuilder.Entity<NCSQSpeciality>().ToTable("NCSQSpecialities");
             modelBuilder.Entity<Speciality>().ToTable("Specialities");
             modelBuilder.Entity<SpecialityAvailableDate>().ToTable("SpecialityAvailableDates");
@@ -54,6 +54,8 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasKey(ad => ad.EnrolleeId);
             modelBuilder.Entity<Application>().
                 HasKey(app => app.ApplicationId);
+            modelBuilder.Entity<ApplicationToSpeciality>().
+                HasKey(apps => apps.ApplicationToSpecialityId);
             modelBuilder.Entity<Color>().
                 HasKey(c => c.ColorId);
             modelBuilder.Entity<EducationDuration>().
@@ -66,8 +68,6 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasKey(en => en.EnrolleeId);
             modelBuilder.Entity<FinancingType>().
                 HasKey(ft => ft.FinancingTypeId);
-            //modelBuilder.Entity<GroupFriendship>().
-            //    HasKey(gf => gf.GroupFriendshipId);
             modelBuilder.Entity<NCSQSpeciality>().
                 HasKey(ns => ns.NCSQSpecialityId);
             modelBuilder.Entity<Speciality>().
@@ -106,18 +106,18 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasMany(en => en.Applications).
                 WithRequired(app => app.Enrollee).
                 HasForeignKey(app => app.EnrolleeId);
+            modelBuilder.Entity<Application>().
+                HasMany(app => app.Specialities).
+                WithRequired(apps => apps.Application).
+                HasForeignKey(apps => apps.ApplicationId);
+            modelBuilder.Entity<ApplicationToSpeciality>().
+                HasRequired(apps => apps.Speciality).
+                WithMany(sp => sp.Applications).
+                HasForeignKey(apps => apps.SpecialityId);
             modelBuilder.Entity<SubjectMark>().
                 HasRequired(sm => sm.Subject).
                 WithMany().
                 HasForeignKey(sm => sm.SubjectId);
-            modelBuilder.Entity<Application>().
-                HasRequired(app => app.FinancingType).
-                WithMany().
-                HasForeignKey(app => app.FinancingTypeId);
-            modelBuilder.Entity<Application>().
-                HasRequired(app => app.EducationPlace).
-                WithMany().
-                HasForeignKey(app => app.EducationPlaceId);
             modelBuilder.Entity<Speciality>().
                 HasRequired(sp => sp.EducationForm).
                 WithMany().
@@ -176,15 +176,7 @@ namespace AdmissionCommittee.Domain.Concrete
                 HasForeignKey(gf => gf.ReceivingGroupId);
 
             //many-to-many
-            modelBuilder.Entity<Application>().
-                HasMany(app => app.Specialities).
-                WithMany(sp => sp.Applications).
-                Map(m =>
-                {
-                    m.MapLeftKey("ApplicationId");
-                    m.MapRightKey("SpecialityId");
-                    m.ToTable("ApplicationToSpecialities");
-                });
+            
 
             modelBuilder.Entity<SpecialityGroup>().
                 HasMany(sg => sg.FriendlyGroups).

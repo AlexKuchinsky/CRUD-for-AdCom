@@ -7,7 +7,7 @@ namespace AdmissionCommittee.WebUI.Models
 {
 	public class AjaxSpecialityDataModel
 	{
-        public int? MainSpecialityId { get; set; }
+        public int? GroupId { get; set; }
 
         public int? EducationPlaceId { get; set; }
 

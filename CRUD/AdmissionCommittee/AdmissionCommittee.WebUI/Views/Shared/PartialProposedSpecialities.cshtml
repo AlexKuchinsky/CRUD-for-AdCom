@@ -14,24 +14,30 @@
     {
         for (int i = 0; i < Model.Count(); i++)
         {
-            <tr>
-                <td class="mdl-data-table__cell--non-numeric en-table_td_speciality">
-                    <div class="en-text_overflow">
+            <tr class="proposed_speciality" data-id="@Model[i].SpecialityId">
+                <td class="mdl-data-table__cell--non-numeric">
+                    <div class="en-text_overflow en-table_td_speciality">
                         <div>@Model[i].NCSQSpeciality.Cipher</div>
                         <div>@Model[i].NCSQSpeciality.Name</div>
                     </div>
                 </td>
-                <td class="mdl-data-table__cell--non-numeric en-table_td_qualification">
-                    @Model[i].NCSQSpeciality.Qualification
+                <td class="mdl-data-table__cell--non-numeric">
+                    <div class="en-text_overflow en-table_td_qualification">
+                        @Model[i].NCSQSpeciality.Qualification
+                    </div>
                 </td>
-                <td class="mdl-data-table__cell--non-numeric en-table_td_form">
-                    @Model[i].EducationForm.Name
+                <td class="mdl-data-table__cell--non-numeric">
+                    <div class="en-table_td_form">
+                        @Model[i].EducationForm.Name
+                    </div>
                 </td>
-                <td class="mdl-data-table__cell--non-numeric en-table_td_duration">
-                    @Model[i].EducationDuration.Duration
+                <td class="mdl-data-table__cell--non-numeric">
+                    <div class="en-table_td_duration">
+                        @Model[i].EducationDuration.Duration
+                    </div>
                 </td>
-                <td class="mdl-data-table__cell--non-numeric en-table_td_subjects">
-                    <div>
+                <td class="mdl-data-table__cell--non-numeric">
+                    <div class="en-table_td_subjects">
                         @for (int j = 0; j < Model[i].SpecialitySubjects.Count(); j++)
                         {
                             if (Model[i].SpecialitySubjects[j].Priority <= 2)
@@ -41,7 +47,17 @@
                         }
                     </div>
                 </td>
+                <td>
+                    <div class="en-table_td_button">
+                        <button class="mdl-button mdl-js-button mdl-button--icon en-js-spec_add_button" onclick="AddButtonClick()">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>                
+                </td>
             </tr>
         }
     }
 </table>
+<script>
+    
+</script>

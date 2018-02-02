@@ -10,15 +10,9 @@ namespace AdmissionCommittee.Domain.Entities
     {
         public int ApplicationId { get; set; }
 
-        public int FinancingTypeId { get; set; }
-        public virtual FinancingType FinancingType { get; set; }
-
-        public int EducationPlaceId { get; set; }
-        public virtual EducationPlace EducationPlace { get; set; }
-
         public int EnrolleeId { get; set; }
         public virtual Enrollee Enrollee { get; set; }
 
-        public virtual IList<Speciality> Specialities { get; set; }
+        public virtual IList<ApplicationToSpeciality> Specialities { get; set; }
     }
 }

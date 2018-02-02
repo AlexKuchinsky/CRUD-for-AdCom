@@ -37,7 +37,7 @@ namespace AdmissionCommittee.Domain.Entities
         public int ColorId { get; set; }
         public virtual Color Color { get; set; }
 
-        public virtual IList<Application> Applications { get; set; }
+        public virtual IList<ApplicationToSpeciality> Applications { get; set; }
 
         public virtual IList<SpecialitySubject> SpecialitySubjects { get; set; }
     }

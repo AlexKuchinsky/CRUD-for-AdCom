@@ -11,9 +11,11 @@ namespace AdmissionCommittee.Domain.Entities
         public int ApplicationToSpecialityId { get; set; }
 
         public int ApplicationId { get; set; }
-        public Application Application { get; set; }
+        public virtual Application Application { get; set; }
 
         public int SpecialityId { get; set; }
-        public Speciality Speciality { get; set; }
+        public virtual Speciality Speciality { get; set; }
+
+        public int Priority { get; set; }
     }
 }

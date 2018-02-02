@@ -1,0 +1,45 @@
+﻿@using AdmissionCommittee.Domain.Entities
+@model ApplicationToSpeciality
+
+@if (Model != null)
+{
+    <div class="en-speciality mdl-shadow--6dp @(Model.Priority == 1 ? "not_drop" : "")" data-id="@(Model.Speciality.SpecialityId)" data-group="@(Model.Speciality.SpecialityGroupId)">
+        @if(Model.Priority == 1)
+        {
+            <div class="en-spec_main_title">
+                MAIN
+            </div>
+        }
+        <div class="en-specialty_element en-speciality_priority">
+            @Model.Priority
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-specialty_element en-specialty_dropdown">
+            @Html.DropDownList("Education place", new SelectList(new List<object>()), "-Not selected-", new { @class = "mdl-textfield__input en-js-edPlace"})
+            <label class="mdl-textfield__label en-textfield_label">Education place</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-specialty_element en-specialty_dropdown">
+            @Html.DropDownList("Financihg type", new SelectList(new List<object>()), "-Not selected-", new { @class = "mdl-textfield__input en-js-finType"})
+            <label class="mdl-textfield__label en-textfield_label">Financing type</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-specialty_element en-specialty_dropdown">
+            @Html.DropDownList("EducationFormId", new SelectList(new List<object>()), "-Not selected-", new { @class = "mdl-textfield__input en-js-edForm"})
+            <label class="mdl-textfield__label en-textfield_label">Form</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-specialty_element en-specialty_dropdown">
+            @Html.DropDownList("EducationDurationId", new SelectList(new List<object>()), "-Not selected-", new { @class = "mdl-textfield__input en-js-edDur"})
+            <label class="mdl-textfield__label en-textfield_label">Duration</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label en-specialty_element en-specialty_dropdown">
+            @Html.DropDownList("SpecialityId", new SelectList(new List<object>()), "-Not selected-", new { @class = "mdl-textfield__input en-js-NCSQspec"})
+            <label class="mdl-textfield__label en-textfield_label">Speciality</label>
+        </div>
+        @if (Model.Priority != 1)
+        {
+            <div class="en-specialty_element">
+                <button class="mdl-button mdl-js-button mdl-button--icon en-js-spec_del_button">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+        }       
+    </div>
+}
