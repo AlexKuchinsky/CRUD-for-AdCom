@@ -34,6 +34,11 @@ namespace AdmissionCommittee.Domain.Concrete
             get { return context.Specialities; }
         }
 
+        public IQueryable<Application> Applications
+        {
+            get { return context.Applications; }
+        }
+
         //public IEnumerable<TreeNode> TreeNodes
         //{
         //    get { return context.TreeNodes; }

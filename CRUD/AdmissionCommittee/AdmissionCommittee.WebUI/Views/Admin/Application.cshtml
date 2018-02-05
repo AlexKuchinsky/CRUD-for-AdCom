@@ -18,9 +18,16 @@
     <div class="en-header_middle">Selected specialities</div>
     <div id="selected_specialities" class="en-specialities_container">
         <div id="sortable" class="en-js-specialities_container">
-            @for (int i = 0; i < Model.Application.Specialities.Count(); i++)
+            @if (Model.Application.Specialities.Count > 0)
             {
-                @Html.Partial("PartialSelectedSpeciality", Model.Application.Specialities[i])
+                for (int i = 0; i < Model.Application.Specialities.Count; i++)
+                {
+                    @Html.Partial("PartialSelectedSpeciality", Model.Application.Specialities[i])
+                }
+            }
+            else
+            {
+                @Html.Partial("PartialSelectedSpeciality", new ApplicationToSpeciality() { Speciality = new Speciality(), Priority = 1})
             }
         </div>
         <button class="mdl-button mdl-js-button mdl-button--accent mdl-button--raised en-spec_add_button en-js-spec_add_button">
@@ -34,4 +41,11 @@
         SpecialityAddButton();
          
     </script>
+</div>
+
+<div class="en-card mdl-shadow--2dp">
+    <div class="en-card_content">
+        <input type="submit" value="Save" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+        @Html.ActionLink("Cancel and return to List", "Edit", new { Model.Application.EnrolleeId}, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+    </div>
 </div>

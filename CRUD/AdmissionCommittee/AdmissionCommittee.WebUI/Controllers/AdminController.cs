@@ -60,49 +60,49 @@ namespace SportsStore.WebUI.Controllers
         {
             return View("Edit", new EnrolleeEditViewModel()
             {
-                Enrollee = new Enrollee(),
+                Enrollee = new Enrollee()
+                {
+                    Applications = new List<Application>()
+                    {
+                        new Application()
+                    }
+                },
                 Subjects = repository.Subjects
             });
         }
 
         public ViewResult Application(int enrolleeId, int applicationId)
         {
+            Application application = repository.Applications
+                .FirstOrDefault(app => app.ApplicationId == applicationId) ?? new Application()
+                {
+                    Specialities = new List<ApplicationToSpeciality>()
+                };
+            
             var model = new ApplicationEditViewModel()
             {
-                Application = repository.Enrollees
-                    .FirstOrDefault(en => en.EnrolleeId == enrolleeId).Applications
-                    .FirstOrDefault(app => app.ApplicationId == applicationId),
-                EducationPlaces = repository.EducationPlaces,
-                FinancingTypes = repository.FinancingTypes
+                Application = application
+                //EducationPlaces = repository.EducationPlaces,
+                //FinancingTypes = repository.FinancingTypes
             };
             return View(model);
         }
 
-        //[HttpPost]
-        //public ActionResult Edit(EnrolleeEditViewModel model)
-        //{
-        //    if(model.Enrollee.SpecialtyInfo.UniversityId == 0 ||
-        //       model.Enrollee.SpecialtyInfo.FacultyId == 0 ||
-        //       model.Enrollee.SpecialtyInfo.SpecialtyId == 0 ||
-        //       model.Enrollee.SpecialtyInfo.SpecializationId == 0 ||
-        //       model.Enrollee.SpecialtyInfo.FormOfStudyId == 0 ||
-        //       model.Enrollee.SpecialtyInfo.PaymentId == 0)
-        //    {
-        //        ModelState.AddModelError("Enrollee.SpecialtyInfo", "Select specialty");
-        //    }
-        //    if (ModelState.IsValid)
-        //    {
-        //        model.Enrollee.SpecialtyInfoId = repository.GetSpecialtyInfoId(model.Enrollee.SpecialtyInfo);
-        //        repository.SaveEnrollee(model.Enrollee);
-        //        TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        model.Subjects = repository.Subjects;
-        //        return View(model);
-        //    }
-        //}    
+        [HttpPost]
+        public ActionResult Edit(EnrolleeEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.SaveEnrollee(model.Enrollee);
+                //TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                model.Subjects = repository.Subjects;
+                return View(model);
+            }
+        }
 
         [HttpPost]
         public ActionResult Delete(int enrolleeId)
@@ -186,7 +186,7 @@ namespace SportsStore.WebUI.Controllers
         //    return SelectByGroup(specialities, parameters.MainSpecialityId);
         //}
 
-        public IEnumerable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
+        public IQueryable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
         {
             var specialities = repository.Specialities;
             if(parameters.GroupId != null)
@@ -213,6 +213,10 @@ namespace SportsStore.WebUI.Controllers
             {
                 specialities = specialities.Where(sp => sp.NCSQSpecialityId == parameters.SpecialityId);
             }
+            if(parameters.SelectedSpecialities != null)
+            {
+                specialities = specialities.Where(sp => !parameters.SelectedSpecialities.Contains(sp.SpecialityId));
+            }
             return specialities;
         }
 
@@ -226,13 +230,6 @@ namespace SportsStore.WebUI.Controllers
                     Value = group.Key.EducationPlaceId,
                     Label = group.Key.Name
                 });
-            //var specialitySet = new HashSet<NCSQSpeciality>(SelectSpecialities(parameters).Select(sp => sp.NCSQSpeciality));
-            //var options = specialitySet.Select(sp => new
-            //{
-            //    Text = sp.Name,
-            //    Value = sp.NCSQSpecialityId,
-            //    Label = sp.Cipher + " " + sp.Name
-            //});
             return Json(options, JsonRequestBehavior.AllowGet);
         }
 
@@ -288,8 +285,12 @@ namespace SportsStore.WebUI.Controllers
             return Json(options, JsonRequestBehavior.AllowGet);
         }
 
-        
-
+        [HttpPost]
+        public JsonResult UpdateSpecialityDataID(AjaxSpecialityDataModel parameters)
+        {
+            var specialityId = SelectSpecialities(parameters).FirstOrDefault()?.SpecialityId ?? 0;
+            return Json(new { Id = specialityId }, JsonRequestBehavior.AllowGet);
+        }
        
 
         //[HttpPost]

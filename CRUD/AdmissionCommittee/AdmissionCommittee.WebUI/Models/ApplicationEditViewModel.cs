@@ -10,8 +10,8 @@ namespace AdmissionCommittee.WebUI.Models
     {
         public Application Application { get; set; }
 
-        public IEnumerable<EducationPlace> EducationPlaces { get; set; }
+        //public IEnumerable<EducationPlace> EducationPlaces { get; set; }
 
-        public IEnumerable<FinancingType> FinancingTypes { get; set; }
+        //public IEnumerable<FinancingType> FinancingTypes { get; set; }
     }
 }

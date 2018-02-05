@@ -12,6 +12,8 @@ namespace AdmissionCommittee.Domain.Entities
 
         public string Name { get; set; }
 
+        public int MaxNumOfSpec { get; set; }
+
         public virtual IList<Speciality> Specialities { get; set; }
 
         public virtual IList<SpecialityGroup> FriendlyGroups { get; set; }

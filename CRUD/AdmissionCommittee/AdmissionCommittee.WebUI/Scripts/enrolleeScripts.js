@@ -270,162 +270,7 @@ function submitTree() {
         }
     };
 }
-///////////////////////////////////////////////////////////////////////
-function DropdownsAndTable() {
-    var parameters;
-
-    function setRelation(thisEl, nextEl, url) {
-        thisEl.clearNext = function () {
-            while (nextEl.firstChild) {
-                nextEl.removeChild(nextEl.firstChild);
-            }
-            if (nextEl.clearNext) nextEl.clearNext();
-        };
-
-        thisEl.loadNext = function () {
-            loadDropdown(nextEl, url);
-            if (nextEl.loadNext) {
-                nextEl.loadNext();
-            }
-        };
-
-        thisEl.onchange = function () {
-            thisEl.clearNext();
-            updateParameters();         
-            thisEl.loadNext();
-            loadTable('/Admin/LoadProposedSpecialities');
-        };
-    }
-
-    function updateParameters() {
-        parameters = {
-            mainSpeciality: $('.selected_speciality').first().data('id'),
-            educationPlace: $('#educationPlace')[0].value,
-            financingType: $('#financingType')[0].value,
-            speciality: $('#speciality')[0].value,
-            educationForm: $('#educationForm')[0].value,
-            educationDuration: $('#educationDuration')[0].value
-        };
-    }
-
-    function loadDropdown(element, url) {
-        var onSuccess = function (data) {
-            if (data.length > 1) {
-                element.options[0] = new Option("-Any-", null);
-                for (var i = 0; i < data.length; i++) {
-                    element.options[i + 1] = new Option(data[i].Text, data[i].Value);
-                    element.options[i + 1].title = data[i].Title;
-                }
-            }
-            else if (data.length === 1) {
-                element.options[0] = new Option(data[0].Text, data[0].Value);
-                if (element.loadNext) {
-                    element.loadNext();
-                }
-            }
-            else {
-                element.options[0] = new Option("-Not exist-", null);
-            }
-        };
-
-        var onError = function (errorData) {
-            alert('Ошибка' + errorData.responseText);
-        };
-
-        if (parameters.educationPlace > 0 && parameters.financingType > 0) {
-            $.ajax({
-                url: url,
-                method: "post",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "MainSpecialityId": parameters.mainSpeciality,
-                    "EducationPlaceId": parameters.educationPlace,
-                    "FinancingTypeId": parameters.financingType,
-                    "SpecialityId": parameters.speciality,
-                    "EducationFormId": parameters.educationForm,
-                    "EducationDurationId": parameters.educationDuration
-                }),
-                dataType: "json",
-                success: onSuccess,
-                error: onError
-            });
-        }
-    }
-
-    
-
-    edPlaceEl = $('#educationPlace')[0];
-    finTypeEl = $('#financingType')[0];
-    specEl = $('#speciality')[0];
-    edFormEl = $('#educationForm')[0];
-    edDurEl = $('#educationDuration')[0];
-    setRelation(edPlaceEl, specEl, '/Admin/LoadSpecialityOptions');
-    setRelation(finTypeEl, specEl, '/Admin/LoadSpecialityOptions');
-    $('#educationPlace, #financingType').change(function () {
-        if (edPlaceEl.value > 0 && finTypeEl.value > 0) {
-            edPlaceEl.clearNext();
-            edPlaceEl.loadNext();
-            loadTable('/Admin/LoadProposedSpecialities');
-        }
-    });
-    setRelation(specEl, edFormEl, '/Admin/LoadEducationFormOptions');
-    setRelation(edFormEl, edDurEl, '/Admin/LoadEducationDurationOptions');
-
-    $('#educationDuration')[0].onchange = function () {
-        loadTable('/Admin/LoadProposedSpecialities');
-    };
-}
-
-
-
-//function AddButtonClick() {
-//    var specialityId = $(this).parents('tr').first().data('id')[0];
-//    var onSuccess = function (data) {
-//        $('#proposed_specialities').find('table').append(data);
-//    };
-
-//    var onError = function (errorData) {
-//        alert('Ошибка' + errorData.responseText);
-//    };
-
-//    $.ajax({
-//        url: '/Admin/LoadSpeciality',
-//        method: "post",
-//        contentType: "application/json",
-//        data: JSON.stringify({
-//            "SpecialityId": specialityId
-//        }),
-//        dataType: "html",
-//        success: onSuccess,
-//        error: onError
-//    });
-//};
-
-
-//function SpecialtyAddButton() {
-//    $('#proposed_specialities').on('click', '.en-js-spec_add_button', function () {
-//        var specialityId = $(this).parents('tr').first().data('id')[0];
-//        var onSuccess = function (data) {
-//            $('#proposed_specialities table').append(data);
-//        };
-
-//        var onError = function (errorData) {
-//            alert('Ошибка' + errorData.responseText);
-//        };
-
-//        $.ajax({
-//            url: '/Admin/LoadSpeciality',
-//            method: "post",
-//            contentType: "application/json",
-//            data: JSON.stringify({
-//                "SpecialityId": specialityId
-//            }),
-//            dataType: "html",
-//            success: onSuccess,
-//            error: onError
-//        }); 
-//    });
-//}
+////////////////////////////////////////////////////////////////
 
 $(function () {
     $("#sortable").sortable({
@@ -449,8 +294,10 @@ function UpdatePriority() {
 
 function SpecialityDeleteButton() {
     $('#selected_specialities').on('click', '.en-js-spec_del_button', function () {
-        $(this).parents('.en-speciality').first().remove();
-        UpdatePriority();
+        if (confirm("Remove this speciality?")) {
+            $(this).parents('.en-speciality').first().remove();
+            UpdatePriority();
+        }     
     });
 }
 
@@ -459,7 +306,6 @@ function SpecialityAddButton() {
         var onSuccess = function (data) {
             $('.en-js-specialities_container').append(data);
             UpdatePriority();
-            //InitDropdowns($(".en-speciality[data-id='0']").last()[0]);
         };
 
         var onError = function (errorData) {
@@ -478,7 +324,7 @@ function SpecialityAddButton() {
 
 function InitDropdowns(section, userParameters) {
     var parameters = {
-        group:"",
+        group: $('.en_speciality').first().data('group'),
         educationPlace: "",
         financingType: "",
         speciality: "",
@@ -529,14 +375,58 @@ function InitDropdowns(section, userParameters) {
                 nextEl.load();
             }
         };
-        
-        if (nextEl) {
-            thisEl.onchange = function () {  
-                userParameters = null;
+
+        thisEl.onchange = function () {
+            userParameters = null;    
+            if (nextEl) {
                 nextEl.load();
-            };
-        }
+            }
+            else {
+                updateDataId();
+            }
+        };
+        
     } 
+
+    function updateDataId() {
+        updateParameters();
+        if (parameters.educationPlace > 0 &&
+            parameters.financingType > 0 &&
+            parameters.educationForm > 0 &&
+            parameters.educationDuration > 0 &&
+            parameters.speciality > 0) {
+            var onSuccess = function (data) {
+                if (data.Id > 0) {
+                    section.dataset.id = data.Id;
+                } else {
+                    section.dataset.id = 0;
+                }
+            };
+
+            var onError = function (errorData) {
+                alert('Error' + errorData.responseText);
+            };
+
+            $.ajax({
+                url: '/Admin/UpdateSpecialityDataId',
+                method: "post",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "GroupId": parameters.group,
+                    "EducationPlaceId": parameters.educationPlace,
+                    "FinancingTypeId": parameters.financingType,
+                    "SpecialityId": parameters.speciality,
+                    "EducationFormId": parameters.educationForm,
+                    "EducationDurationId": parameters.educationDuration
+                }),
+                dataType: "json",
+                success: onSuccess,
+                error: onError
+            });
+        } else {
+            section.dataset.id = 0;
+        }
+    }
 
     function loadDropdown(element, url) {
         var onSuccess = function (data) {
@@ -544,7 +434,7 @@ function InitDropdowns(section, userParameters) {
                 element.options[0] = new Option("-Not selected-", null);
                 for (var i = 0; i < data.length; i++) {
                     element.options[i + 1] = new Option(data[i].Text, data[i].Value);
-                    element.options[i + 1].title = data[i].Title;
+                    element.options[i + 1].title = data[i].Label;
                 }
             }
             else if (data.length === 1) {
@@ -559,6 +449,7 @@ function InitDropdowns(section, userParameters) {
             if (userParameters) {
                 element.value = userParameters[element.typeValue];
             }
+            updateDataId();
         };
 
         var onError = function (errorData) {
@@ -575,12 +466,23 @@ function InitDropdowns(section, userParameters) {
                 "FinancingTypeId": parameters.financingType,
                 "SpecialityId": parameters.speciality,
                 "EducationFormId": parameters.educationForm,
-                "EducationDurationId": parameters.educationDuration
+                "EducationDurationId": parameters.educationDuration,
+                "SelectedSpecialities": GetSelectedSpecIds()
             }),
             dataType: "json",
             success: onSuccess,
             error: onError
         });
+    }
+
+    function GetSelectedSpecIds() {
+        var ids = [];
+        $(section).siblings('.en-speciality').each(function (i, spec) {
+            if (spec.dataset.id > 0) {
+                ids.push(spec.dataset.id);
+            }
+        });
+        return ids;
     }
 
     setRelation(edPlaceEl, finTypeEl, '/Admin/LoadEducationPlaceOptions');
@@ -590,7 +492,6 @@ function InitDropdowns(section, userParameters) {
     setRelation(specEl, null, '/Admin/LoadNCSQSpecialityOptions');
 
     edPlaceEl.load();
-    //userParameters = null;
 }
 
 

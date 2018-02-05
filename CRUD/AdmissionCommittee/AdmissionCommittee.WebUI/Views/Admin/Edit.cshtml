@@ -28,37 +28,37 @@
             <div class="en-header_middle">Main information</div>
             <div class="en-padding_textfields">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.LastName, null, new { @class = "mdl-textfield__input", @id = "lastname", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.LastName, null, new { @class = "mdl-textfield__input", @id = "lastname", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="lastname">Last name</label>
                     <span class="mdl-textfield__error">Please enter last name!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.FirstName, null, new { @class = "mdl-textfield__input", @id = "firstname", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.FirstName, null, new { @class = "mdl-textfield__input", @id = "firstname", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="firstname">First name</label>
                     <span class="mdl-textfield__error">Please enter first name!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Patronymic, null, new { @class = "mdl-textfield__input", @id = "patron", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.Patronymic, null, new { @class = "mdl-textfield__input", @id = "patron", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="patron">Patronymic</label>
                     <span class="mdl-textfield__error">Please enter patronymic!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.PassportNumber, null, new { @class = "mdl-textfield__input", @id = "passport", @pattern = "([A-Z]|[a-z]){2}\\d{7}" })
+                    @Html.TextBoxFor(m => m.Enrollee.PassportNumber, null, new { @class = "mdl-textfield__input", @id = "passport", @pattern = "([A-Z]|[a-z]){2}\\d{7}", @required = "" })
                     <label class="mdl-textfield__label" for="passport">Passport number</label>
                     <span class="mdl-textfield__error">Please enter passport number!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.DateOfBirth, Model.Enrollee.DateOfBirth.ToShortDateString(), new { @class = "mdl-textfield__input", @id = "birthday", @pattern = "\\d{2}\\.\\d{2}\\.\\d{4}" })
+                    @Html.TextBoxFor(m => m.Enrollee.DateOfBirth, Model.Enrollee.DateOfBirth.ToShortDateString(), new { @class = "mdl-textfield__input", @id = "birthday", @pattern = "\\d{2}\\.\\d{2}\\.\\d{4}", @required = "" })
                     <label class="mdl-textfield__label" for="birthday">Date of birth</label>
                     <span class="mdl-textfield__error">Please enter date in format "DD.MM.YYYY"!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Phone, null, new { @class = "mdl-textfield__input", @id = "phone", @pattern = "\\+\\d{3} \\d{2} \\d{7}" })
+                    @Html.TextBoxFor(m => m.Enrollee.Phone, null, new { @class = "mdl-textfield__input", @id = "phone", @pattern = "\\+\\d{3} \\d{2} \\d{7}", @required = "" })
                     <label class="mdl-textfield__label" for="patron">Phone</label>
                     <span class="mdl-textfield__error">Please enter phone in format: "+111 22 3344555"!</span>
                 </div>
@@ -153,42 +153,43 @@
             <div class="en-header_middle">Address</div>
             <div class="en-padding_textfields">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.Country, null, new { @class = "mdl-textfield__input", @id = "country", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.Country, null, new { @class = "mdl-textfield__input", @id = "country", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="country">Country</label>
                     <span class="mdl-textfield__error">Please enter country!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.Region, null, new { @class = "mdl-textfield__input", @id = "region", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.Region, null, new { @class = "mdl-textfield__input", @id = "region", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="region">Region</label>
                     <span class="mdl-textfield__error">Please enter region!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.City, null, new { @class = "mdl-textfield__input", @id = "city", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.City, null, new { @class = "mdl-textfield__input", @id = "city", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="city">City</label>
                     <span class="mdl-textfield__error">Please enter city!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.Street, null, new { @class = "mdl-textfield__input", @id = "street", @pattern = "(\\D)+" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.Street, null, new { @class = "mdl-textfield__input", @id = "street", @pattern = "(\\D)+", @required = "" })
                     <label class="mdl-textfield__label" for="street">Street</label>
                     <span class="mdl-textfield__error">Please enter street!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.BuildingNumber, null, new { @class = "mdl-textfield__input", @id = "buildnum", @pattern = "\\d+(\\w)*" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.BuildingNumber, null, new { @class = "mdl-textfield__input", @id = "buildnum", @pattern = "\\d+(\\w)*", @required = "" })
                     <label class="mdl-textfield__label" for="buildnum">Building number</label>
                     <span class="mdl-textfield__error">Please enter building number!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.ApartmentNumber, null, new { @class = "mdl-textfield__input", @id = "apartnum", @pattern = "\\d*" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.ApartmentNumber, null, new { @class = "mdl-textfield__input", @id = "apartnum", @pattern = "\\d+", @required = "" })
                     <label class="mdl-textfield__label" for="apartnum">Apartment number</label>
+                    <span class="mdl-textfield__error">Please enter apartment number!</span>
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.Address.PostalCode, null, new { @class = "mdl-textfield__input", @id = "postal", @pattern = "\\d{6}" })
+                    @Html.TextBoxFor(m => m.Enrollee.Address.PostalCode, null, new { @class = "mdl-textfield__input", @id = "postal", @pattern = "\\d{6}", @required = "" })
                     <label class="mdl-textfield__label" for="postal">Postal code</label>
                     <span class="mdl-textfield__error">Please enter postal code!</span>
                 </div>
@@ -225,10 +226,11 @@
                 <th class="mdl-data-table__cell--non-numeric">Form</th>
                 <th class="mdl-data-table__cell--non-numeric">Qualiphication</th>
             </tr>
-            @if (Model.Enrollee.Applications[0].Specialities.Count() == 0)
+            @if (Model.Enrollee.Applications[0].Specialities == null || 
+                Model.Enrollee.Applications[0].Specialities.Count() == 0)
                 {
                 <tr>
-                    <td colspan="4" class="mdl-data-table__cell--non-numeric ">
+                    <td colspan="5" class="mdl-data-table__cell--non-numeric ">
                         Specialities not selected
                     </td>
                 </tr>

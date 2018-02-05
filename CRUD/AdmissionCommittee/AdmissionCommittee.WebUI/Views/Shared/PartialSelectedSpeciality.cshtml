@@ -45,13 +45,18 @@
     <script>
         if (@Model.Speciality.SpecialityId != 0){
             var userParameters = {
-                group: @Model.Speciality.SpecialityGroupId,
                 educationPlace: @Model.Speciality.EducationPlaceId,
                 financingType: @Model.Speciality.FinancingTypeId,
                 speciality: @Model.Speciality.NCSQSpecialityId,
                 educationForm: @Model.Speciality.EducationFormId,
-                educationDuration: @Model.Speciality.EducationDurationId
+                educationDuration: @Model.Speciality.EducationDurationId,
             };
+
+            if(@Model.Priority == 1){
+                userParameters.group = null;
+            }else{
+                userParameters.group = @Model.Speciality.SpecialityGroupId;
+            }
             InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0], userParameters);
         }
         else {

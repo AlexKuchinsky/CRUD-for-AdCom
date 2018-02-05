@@ -18,5 +18,7 @@ namespace AdmissionCommittee.WebUI.Models
         public int? EducationFormId { get; set; }
 
         public int? EducationDurationId { get; set; }
+
+        public int[] SelectedSpecialities { get; set; }
     }
 }

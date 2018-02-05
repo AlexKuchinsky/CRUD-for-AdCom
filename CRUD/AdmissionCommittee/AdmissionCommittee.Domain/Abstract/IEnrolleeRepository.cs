@@ -10,7 +10,7 @@ namespace AdmissionCommittee.Domain.Abstract
         IQueryable<EducationPlace> EducationPlaces { get; }
         IQueryable<FinancingType> FinancingTypes { get; }
         IQueryable<Speciality> Specialities { get; }
-
+        IQueryable<Application> Applications { get; }
         //IEnumerable<TreeNode> TreeNodes { get; }
 
         //IEnumerable<TreeData> TreeData { get; }
