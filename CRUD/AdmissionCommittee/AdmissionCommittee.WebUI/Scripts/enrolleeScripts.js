@@ -459,7 +459,7 @@ function SpecialityAddButton() {
         var onSuccess = function (data) {
             $('.en-js-specialities_container').append(data);
             UpdatePriority();
-            InitDropdowns($(".en-speciality[data-id='0']").last()[0]);
+            //InitDropdowns($(".en-speciality[data-id='0']").last()[0]);
         };
 
         var onError = function (errorData) {
@@ -476,23 +476,38 @@ function SpecialityAddButton() {
     });
 };
 
-function InitDropdowns(section) {
-    var parameters;
+function InitDropdowns(section, userParameters) {
+    var parameters = {
+        group:"",
+        educationPlace: "",
+        financingType: "",
+        speciality: "",
+        educationForm: "",
+        educationDuration: ""
+    };
     var edPlaceEl = $(section).find('.en-js-edPlace')[0];
     var finTypeEl = $(section).find('.en-js-finType')[0];
     var specEl = $(section).find('.en-js-NCSQspec')[0];
     var edFormEl = $(section).find('.en-js-edForm')[0];
     var edDurEl = $(section).find('.en-js-edDur')[0];
 
+    edPlaceEl.typeValue = "educationPlace";
+    finTypeEl.typeValue = "financingType";
+    specEl.typeValue = "speciality";
+    edFormEl.typeValue = "educationForm";
+    edDurEl.typeValue = "educationDuration";
+
     function updateParameters() {
-        parameters = {
-            group: $('.en_speciality').first().data('group'),
-            educationPlace: edPlaceEl.value,
-            financingType: finTypeEl.value,
-            speciality: specEl.value,
-            educationForm: edFormEl.value,
-            educationDuration: edDurEl.value
-        };
+        if (!userParameters) {
+            parameters = {
+                group: $('.en_speciality').first().data('group'),
+                educationPlace: edPlaceEl.value,
+                financingType: finTypeEl.value,
+                speciality: specEl.value,
+                educationForm: edFormEl.value,
+                educationDuration: edDurEl.value
+            };
+        }    
     }
 
     function setRelation(thisEl, nextEl, url) {
@@ -507,13 +522,17 @@ function InitDropdowns(section) {
             thisEl.clear();
             updateParameters();
             loadDropdown(thisEl, url);
+            if (userParameters) {
+                parameters[thisEl.typeValue] = userParameters[thisEl.typeValue];
+            }       
             if (nextEl && nextEl.load) {
                 nextEl.load();
             }
         };
         
         if (nextEl) {
-            thisEl.onchange = function () {                
+            thisEl.onchange = function () {  
+                userParameters = null;
                 nextEl.load();
             };
         }
@@ -536,6 +555,9 @@ function InitDropdowns(section) {
             }
             else {
                 element.options[0] = new Option("-Not exist-", null);
+            }
+            if (userParameters) {
+                element.value = userParameters[element.typeValue];
             }
         };
 
@@ -568,6 +590,7 @@ function InitDropdowns(section) {
     setRelation(specEl, null, '/Admin/LoadNCSQSpecialityOptions');
 
     edPlaceEl.load();
+    //userParameters = null;
 }
 
 

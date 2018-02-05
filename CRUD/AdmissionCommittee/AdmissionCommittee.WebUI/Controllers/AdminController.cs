@@ -188,7 +188,7 @@ namespace SportsStore.WebUI.Controllers
 
         public IEnumerable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
         {
-            IEnumerable<Speciality> specialities = repository.Specialities;
+            var specialities = repository.Specialities;
             if(parameters.GroupId != null)
             {
                 specialities = specialities.Where(sp => sp.SpecialityGroupId == parameters.GroupId);

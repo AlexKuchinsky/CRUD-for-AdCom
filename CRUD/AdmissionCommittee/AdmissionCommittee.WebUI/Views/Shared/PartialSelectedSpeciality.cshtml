@@ -42,4 +42,20 @@
             </div>
         }       
     </div>
+    <script>
+        if (@Model.Speciality.SpecialityId != 0){
+            var userParameters = {
+                group: @Model.Speciality.SpecialityGroupId,
+                educationPlace: @Model.Speciality.EducationPlaceId,
+                financingType: @Model.Speciality.FinancingTypeId,
+                speciality: @Model.Speciality.NCSQSpecialityId,
+                educationForm: @Model.Speciality.EducationFormId,
+                educationDuration: @Model.Speciality.EducationDurationId
+            };
+            InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0], userParameters);
+        }
+        else {
+            InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0]);
+        }
+    </script>
 }

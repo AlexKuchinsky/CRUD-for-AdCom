@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
-using AdmissionCommittee.Domain.Entities;
+﻿using AdmissionCommittee.Domain.Entities;
+using System.Linq;
 
 namespace AdmissionCommittee.Domain.Abstract
 {
     public interface IEnrolleeRepository
     {
-        IEnumerable<Subject> Subjects { get; }
-
-        IEnumerable<Enrollee> Enrollees { get; }
+        IQueryable<Subject> Subjects { get; }
+        IQueryable<Enrollee> Enrollees { get; }
+        IQueryable<EducationPlace> EducationPlaces { get; }
+        IQueryable<FinancingType> FinancingTypes { get; }
+        IQueryable<Speciality> Specialities { get; }
 
         //IEnumerable<TreeNode> TreeNodes { get; }
 
@@ -17,11 +19,7 @@ namespace AdmissionCommittee.Domain.Abstract
 
         Enrollee DeleteEnrollee(int enrolleeID);
 
-        IEnumerable<EducationPlace> EducationPlaces { get; }
-
-        IEnumerable<FinancingType> FinancingTypes { get; }
-
-        IEnumerable<Speciality> Specialities { get; }
+        
 
         void DatabaseTest();
     }

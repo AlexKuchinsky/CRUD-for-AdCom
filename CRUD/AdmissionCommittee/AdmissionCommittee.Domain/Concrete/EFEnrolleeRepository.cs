@@ -9,27 +9,27 @@ namespace AdmissionCommittee.Domain.Concrete
     {
         private EFDbContext context = new EFDbContext();
 
-        public IEnumerable<Enrollee> Enrollees
+        public IQueryable<Enrollee> Enrollees
         {
             get { return context.Enrollees; }
         }
 
-        public IEnumerable<Subject> Subjects
+        public IQueryable<Subject> Subjects
         {
             get { return context.Subjects; }
         }
 
-        public IEnumerable<EducationPlace> EducationPlaces
+        public IQueryable<EducationPlace> EducationPlaces
         {
             get { return context.EducationPlaces; }
         }
 
-        public IEnumerable<FinancingType> FinancingTypes
+        public IQueryable<FinancingType> FinancingTypes
         {
             get { return context.FinancingTypes; }
         }
 
-        public IEnumerable<Speciality> Specialities
+        public IQueryable<Speciality> Specialities
         {
             get { return context.Specialities; }
         }
