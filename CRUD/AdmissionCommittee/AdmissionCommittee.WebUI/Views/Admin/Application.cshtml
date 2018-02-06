@@ -8,6 +8,9 @@
     Model.Application.Specialities.OrderBy(sp => sp.Priority);
 }
 
+<div class="en-fixed_count_spec mdl-shadow--4dp">
+    <div class="en-spec_count en-js-spec_count"></div>
+</div>
 
 <div class="en-card mdl-shadow--2dp">
     <div class="en-full_width">
@@ -49,3 +52,4 @@
         @Html.ActionLink("Cancel and return to List", "Edit", new { Model.Application.EnrolleeId}, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
     </div>
 </div>
+

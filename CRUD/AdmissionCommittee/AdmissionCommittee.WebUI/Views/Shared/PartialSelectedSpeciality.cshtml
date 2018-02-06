@@ -3,7 +3,7 @@
 
 @if (Model != null)
 {
-    <div class="en-speciality mdl-shadow--6dp @(Model.Priority == 1 ? "not_drop" : "")" data-id="@(Model.Speciality.SpecialityId)" data-group="@(Model.Speciality.SpecialityGroupId)">
+    <div class="en-speciality mdl-shadow--6dp @(Model.Priority == 1 ? "en-main_speciality" : "")" data-id="@(Model.Speciality.SpecialityId)">
         @if(Model.Priority == 1)
         {
             <div class="en-spec_main_title">
@@ -43,7 +43,8 @@
         }       
     </div>
     <script>
-        if (@Model.Speciality.SpecialityId != 0){
+        var isMain = @Model.Priority == 1 ? true : false;
+        if (@Model.Speciality.SpecialityId != 0) {
             var userParameters = {
                 educationPlace: @Model.Speciality.EducationPlaceId,
                 financingType: @Model.Speciality.FinancingTypeId,
@@ -57,10 +58,10 @@
             }else{
                 userParameters.group = @Model.Speciality.SpecialityGroupId;
             }
-            InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0], userParameters);
+            InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0], userParameters, isMain);
         }
         else {
-            InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0]);
+            InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0], null, isMain);
         }
     </script>
 }

@@ -11,20 +11,20 @@ namespace SportsStore.WebUI.Controllers
 {
     public class AdminController : Controller
     {
-        private IEnrolleeRepository repository;
+        private IEnrolleeRepository _repository;
         public int PageSize = 100;
 
         public AdminController(IEnrolleeRepository repo)
         {
-            repository = repo;
+            _repository = repo;
         }
 
         public ViewResult Index(int page = 1)
         {
-            //repository.DatabaseTest();
+            //_repository.DatabaseTest();
             EnrolleesListViewModel model = new EnrolleesListViewModel
             {
-                Enrollees = repository.Enrollees
+                Enrollees = _repository.Enrollees
                     .OrderBy(p => p.EnrolleeId)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
@@ -32,7 +32,7 @@ namespace SportsStore.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.Enrollees.Count()
+                    TotalItems = _repository.Enrollees.Count()
                 },
             };
             return View(model);
@@ -40,18 +40,18 @@ namespace SportsStore.WebUI.Controllers
 
         public ViewResult Edit(int enrolleeId)
         {
-            Enrollee enrollee = repository.Enrollees.FirstOrDefault(p => p.EnrolleeId == enrolleeId);
+            Enrollee enrollee = _repository.Enrollees.FirstOrDefault(p => p.EnrolleeId == enrolleeId);
             var model = new EnrolleeEditViewModel
             {
                 Enrollee = enrollee,
-                Subjects = repository.Subjects
+                Subjects = _repository.Subjects
             };
             return View(model);
         }
 
         public ViewResult Show(int enrolleeId)
         {
-            Enrollee enrollee = repository.Enrollees
+            Enrollee enrollee = _repository.Enrollees
                     .FirstOrDefault(p => p.EnrolleeId == enrolleeId);
             return View(enrollee);
         }
@@ -67,23 +67,23 @@ namespace SportsStore.WebUI.Controllers
                         new Application()
                     }
                 },
-                Subjects = repository.Subjects
+                Subjects = _repository.Subjects
             });
         }
 
         public ViewResult Application(int enrolleeId, int applicationId)
         {
-            Application application = repository.Applications
+            Application application = _repository.Applications
                 .FirstOrDefault(app => app.ApplicationId == applicationId) ?? new Application()
                 {
                     Specialities = new List<ApplicationToSpeciality>()
                 };
-            
+
             var model = new ApplicationEditViewModel()
             {
                 Application = application
-                //EducationPlaces = repository.EducationPlaces,
-                //FinancingTypes = repository.FinancingTypes
+                //EducationPlaces = _repository.EducationPlaces,
+                //FinancingTypes = _repository.FinancingTypes
             };
             return View(model);
         }
@@ -93,13 +93,13 @@ namespace SportsStore.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                repository.SaveEnrollee(model.Enrollee);
+                _repository.SaveEnrollee(model.Enrollee);
                 //TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
                 return RedirectToAction("Index");
             }
             else
             {
-                model.Subjects = repository.Subjects;
+                model.Subjects = _repository.Subjects;
                 return View(model);
             }
         }
@@ -107,7 +107,7 @@ namespace SportsStore.WebUI.Controllers
         [HttpPost]
         public ActionResult Delete(int enrolleeId)
         {
-            Enrollee deletedEnrollee = repository.DeleteEnrollee(enrolleeId);
+            Enrollee deletedEnrollee = _repository.DeleteEnrollee(enrolleeId);
             if (deletedEnrollee != null)
             {
                 TempData["message"] = string.Format("{0} was deleted",
@@ -120,13 +120,13 @@ namespace SportsStore.WebUI.Controllers
         //public JsonResult LoadSpecialities(AjaxSpecialityDataModel parameters)
         //{      
         //    if(parameters.MainSpecialityId > 0) {
-        //        var mainGroup = repository.Specialities
+        //        var mainGroup = _repository.Specialities
         //            .FirstOrDefault(sp => sp.SpecialityId == parameters.MainSpecialityId)
         //            .SpecialityGroup;
         //        var availableGroupIds = mainGroup.FriendlyGroups
         //            .Select(gr => gr.SpecialityGroupId)
         //            .Concat(new[] { mainGroup.SpecialityGroupId});
-        //        var speciality = repository.Specialities
+        //        var speciality = _repository.Specialities
         //            .Where(sp => 
         //                sp.EducationPlaceId == parameters.EducationPlaceId &&
         //                sp.FinancingTypeId == parameters.FinancingTypeId && 
@@ -134,7 +134,7 @@ namespace SportsStore.WebUI.Controllers
         //    }
         //    else
         //    {
-        //        var options = repository.Specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId
+        //        var options = _repository.Specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId
         //            && sp.FinancingTypeId == parameters.FinancingTypeId);
         //    }
         //}
@@ -143,7 +143,7 @@ namespace SportsStore.WebUI.Controllers
         //{
         //    if (mainSpecialityId != null)
         //    {
-        //        var mainGroup = repository.Specialities
+        //        var mainGroup = _repository.Specialities
         //            .FirstOrDefault(sp => sp.SpecialityId == mainSpecialityId)
         //            .SpecialityGroup;
         //        var availableGroupIds = mainGroup.FriendlyGroups
@@ -162,7 +162,7 @@ namespace SportsStore.WebUI.Controllers
         //    {
         //        return SelectByGroup(specialities, parameters.MainSpecialityId);
         //    }
-        //    specialities = repository.Specialities.Where(sp => 
+        //    specialities = _repository.Specialities.Where(sp => 
         //        sp.EducationPlaceId == parameters.EducationPlaceId &&
         //        sp.FinancingTypeId == parameters.FinancingTypeId);
 
@@ -188,19 +188,19 @@ namespace SportsStore.WebUI.Controllers
 
         public IQueryable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
         {
-            var specialities = repository.Specialities;
-            if(parameters.GroupId != null)
+            var specialities = _repository.Specialities;
+            if (parameters.GroupId != null)
             {
                 specialities = specialities.Where(sp => sp.SpecialityGroupId == parameters.GroupId);
             }
             if (parameters.EducationPlaceId != null)
             {
                 specialities = specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId);
-            }           
-            if(parameters.FinancingTypeId != null)
+            }
+            if (parameters.FinancingTypeId != null)
             {
                 specialities = specialities.Where(sp => sp.FinancingTypeId == parameters.FinancingTypeId);
-            }       
+            }
             if (parameters.EducationFormId != null)
             {
                 specialities = specialities.Where(sp => sp.EducationFormId == parameters.EducationFormId);
@@ -213,13 +213,14 @@ namespace SportsStore.WebUI.Controllers
             {
                 specialities = specialities.Where(sp => sp.NCSQSpecialityId == parameters.SpecialityId);
             }
-            if(parameters.SelectedSpecialities != null)
+            if (parameters.SelectedSpecialities != null)
             {
                 specialities = specialities.Where(sp => !parameters.SelectedSpecialities.Contains(sp.SpecialityId));
             }
             return specialities;
         }
 
+        [HttpPost]
         public JsonResult LoadEducationPlaceOptions(AjaxSpecialityDataModel parameters)
         {
             var options = SelectSpecialities(parameters)
@@ -230,7 +231,7 @@ namespace SportsStore.WebUI.Controllers
                     Value = group.Key.EducationPlaceId,
                     Label = group.Key.Name
                 });
-            return Json(options, JsonRequestBehavior.AllowGet);
+            return Json(options);
         }
 
         [HttpPost]
@@ -243,7 +244,7 @@ namespace SportsStore.WebUI.Controllers
                 Value = ft.FinancingTypeId,
                 Label = ft.Type
             });
-            return Json(options, JsonRequestBehavior.AllowGet);
+            return Json(options);
         }
 
         [HttpPost]
@@ -256,7 +257,7 @@ namespace SportsStore.WebUI.Controllers
                 Value = sp.EducationFormId,
                 Label = sp.IsInternal ? "Full-time" : "Correspondence"
             });
-            return Json(options, JsonRequestBehavior.AllowGet);
+            return Json(options);
         }
 
         [HttpPost]
@@ -269,7 +270,7 @@ namespace SportsStore.WebUI.Controllers
                 Value = sp.EducationDurationId,
                 Label = sp.Duration
             });
-            return Json(options, JsonRequestBehavior.AllowGet);
+            return Json(options);
         }
 
         [HttpPost]
@@ -282,23 +283,23 @@ namespace SportsStore.WebUI.Controllers
                 Value = sp.NCSQSpecialityId,
                 Label = sp.Cipher + " " + sp.Name
             });
-            return Json(options, JsonRequestBehavior.AllowGet);
+            return Json(options);
         }
 
         [HttpPost]
-        public JsonResult UpdateSpecialityDataID(AjaxSpecialityDataModel parameters)
+        public JsonResult UpdateSpecialityDataId(AjaxSpecialityDataModel parameters)
         {
+            var speciality = SelectSpecialities(parameters).FirstOrDefault();
             var specialityId = SelectSpecialities(parameters).FirstOrDefault()?.SpecialityId ?? 0;
-            return Json(new { Id = specialityId }, JsonRequestBehavior.AllowGet);
+            return Json(new { Id = specialityId });
         }
-       
 
-        //[HttpPost]
-        //public PartialViewResult LoadSpeciality(int specialityId)
-        //{
-        //    var speciality = repository.Specialities.FirstOrDefault(sp => sp.SpecialityId == specialityId);
-        //    return PartialView("PArtialSelectedSpeciality", speciality);
-        //}
+        [HttpPost]
+        public JsonResult UpdateGroupData(int specialityId)
+        {
+            SpecialityGroup group = _repository.Specialities.FirstOrDefault(sp => sp.SpecialityId == specialityId).SpecialityGroup;
+            return Json(new { Id = group.SpecialityGroupId, Count = group.MaxNumOfSpec });
+        }
 
         [HttpPost]
         public PartialViewResult LoadEmptySpeciality()
@@ -308,17 +309,19 @@ namespace SportsStore.WebUI.Controllers
                 Priority = 0
             });
         }
+
+
         //[HttpPost]
         //public JsonResult LoadNode(int? id)
         //{
-        //    var children = repository.TreeNodes.
+        //    var children = _repository.TreeNodes.
         //            Where(node => node.ParentId == id)
         //            .Select(child => new
         //            {
         //                Id = child.NodeId,
         //                Name = child.Data.Name,
         //                FullName = child.Data.FullName,
-        //                NumChildren = repository.TreeNodes.Where(node => node.ParentId == child.NodeId).Count()
+        //                NumChildren = _repository.TreeNodes.Where(node => node.ParentId == child.NodeId).Count()
         //            });
         //    return Json(children, JsonRequestBehavior.AllowGet);         
         //}
@@ -326,7 +329,7 @@ namespace SportsStore.WebUI.Controllers
         //[HttpPost]
         //public JsonResult LoadDropdown(int? parentId)
         //{
-        //    var children = repository.TreeNodes.
+        //    var children = _repository.TreeNodes.
         //        Where(node => node.ParentId == parentId).
         //        Select(node => new
         //        {
