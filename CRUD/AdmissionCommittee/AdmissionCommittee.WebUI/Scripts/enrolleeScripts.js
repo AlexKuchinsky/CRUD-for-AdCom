@@ -285,25 +285,14 @@ $(function () {
     $('#sortable').disableSelection();
 });
 
-function UpdatePriority() {
-    $('.en-js-specialities_container').children('.en-speciality')
-        .find('.en-speciality_priority')
-        .text(function (index, oldtext) {
-            return $(this).closest('.en-speciality').prevAll('.en-speciality').length + 1;
-        });
-}
-
 function SpecialityDeleteButton() {
     $('#selected_specialities').on('click', '.en-js-spec_del_button', function (eventObj) {
         if (confirm('Remove this speciality?')) {
             $(eventObj.target).parents('.en-speciality').first().remove();
             UpdatePriority();
         }     
-        UpdateCountSpecBlock($('.en-speciality').length, group.countElement);
-        if ($('.en-speciality').length < group.countElement && group.countElement !== 0) {
-            $('.en-js-spec_add_button').css('display', 'block');
-            //eventObj.target.style.display = 'block';
-        }             
+        UpdateCountSpecBlock();
+        CheckAddButton();
     });
 }
 
@@ -312,10 +301,8 @@ function SpecialityAddButton() {
         var onSuccess = function (data) {
             $('.en-js-specialities_container').append(data);
             UpdatePriority();
-            UpdateCountSpecBlock($('.en-speciality').length, group.countElement);
-            if ($('.en-speciality').length >= group.countElement && group.countElement !== 0) {
-                eventObj.target.style.display = 'none';
-            }             
+            UpdateCountSpecBlock();
+            CheckAddButton();            
         };
 
         var onError = function (errorData) {
@@ -332,11 +319,29 @@ function SpecialityAddButton() {
     });
 }
 
-function UpdateCountSpecBlock(currentNum, maxNum) {
-    $('.en-js-spec_count').text(currentNum + ' / ' + maxNum);
+function CheckAddButton() {
+    if ($('.en-speciality').length < group.countElement && group.countElement > 0) {
+        $('.en-js-spec_add_button').css('display', 'block');
+    } else {
+        $('.en-js-spec_add_button').css('display', 'none');
+    }
 }
 
-function updateDataGroup(callback) {
+function UpdatePriority() {
+    $('.en-js-specialities_container').children('.en-speciality')
+        .find('.en-speciality_priority')
+        .text(function (index, oldtext) {
+            return $(this).closest('.en-speciality').prevAll('.en-speciality').length + 1;
+        });
+}
+
+function UpdateCountSpecBlock() {
+    var currentNum = $('.en-speciality').length;
+    var maxNum = group.countElement;
+    $('.en-js-spec_count').text(currentNum + ' / ' + (maxNum === 0 ? '*' : maxNum));
+}
+
+function UpdateDataGroup(callback) {
     var onSuccess = function (data) {
         group.id = data.Id;
         group.countElement = data.Count;
@@ -346,7 +351,13 @@ function updateDataGroup(callback) {
     var onError = function (errorData) {
         alert('Error update dataGroup' + errorData.responseText);
     };
-    var specialityId = $('.en-speciality.en-main_speciality').data('id');
+    var specialityId = $('.en-speciality.en-main_speciality')[0].dataset.id;
+    if (specialityId === 0) {
+        group.id = 0;
+        group.countElement = 0;
+        if (callback) callback();
+        return;
+    }
     $.ajax({
         url: '/Admin/UpdateGroupData',
         method: 'post',
@@ -384,22 +395,22 @@ function InitDropdowns(thisSection, thisUserParam, thisIsMain) {
     edFormEl.typeOfValue = 'educationForm';
     edDurEl.typeOfValue = 'educationDuration';
 
-    setRelation(edPlaceEl, finTypeEl, '/Admin/LoadEducationPlaceOptions');
-    setRelation(finTypeEl, edFormEl, '/Admin/LoadFinancingTypeOptions');
-    setRelation(edFormEl, edDurEl, '/Admin/LoadEducationFormOptions');
-    setRelation(edDurEl, specEl, '/Admin/LoadEducationDurationOptions');
-    setRelation(specEl, null, '/Admin/LoadNCSQSpecialityOptions');
+    SetRelation(edPlaceEl, finTypeEl, '/Admin/LoadEducationPlaceOptions');
+    SetRelation(finTypeEl, edFormEl, '/Admin/LoadFinancingTypeOptions');
+    SetRelation(edFormEl, edDurEl, '/Admin/LoadEducationFormOptions');
+    SetRelation(edDurEl, specEl, '/Admin/LoadEducationDurationOptions');
+    SetRelation(specEl, null, '/Admin/LoadNCSQSpecialityOptions');
 
     edPlaceEl.load(function () {
         userParameters = null;
-        updateDataId(function () {
-            updateDataGroup(function () {
-                UpdateCountSpecBlock($('.en-speciality').length, group.countElement);
+        UpdateDataId(function () {
+            UpdateDataGroup(function () {
+                UpdateCountSpecBlock();
             });
         }); 
     });
 
-    function updateParameters() {
+    function UpdateParameters() {
         parameters = {
             educationPlace: edPlaceEl.value,
             financingType: finTypeEl.value,
@@ -409,69 +420,8 @@ function InitDropdowns(thisSection, thisUserParam, thisIsMain) {
         };   
     }
 
-    function setRelation(thisEl, nextEl, url) {
-        thisEl.clear = function () {
-            while (thisEl.firstChild) {
-                thisEl.removeChild(thisEl.firstChild);
-            }
-            if (nextEl && nextEl.clear) nextEl.clear();
-        };
-        
-        thisEl.load = function (callback) {         
-            thisEl.clear();      
-
-            loadDropdown(thisEl, url, function () {
-                if (userParameters) {
-                    parameters[thisEl.typeOfValue] = userParameters[thisEl.typeOfValue];
-                    thisEl.value = userParameters[thisEl.typeOfValue];
-                } else {
-                    updateParameters();
-                }
-
-                if (nextEl && nextEl.load) {
-                    nextEl.load(callback);
-                } else {
-                    if (callback) callback();
-                }
-            });     
-        };
-
-        if (isMain) {
-            var oldValue;
-            thisEl.onfocus = function () {
-                oldValue = thisEl.value;
-            };
-
-            thisEl.onchange = function () {
-                var otherSpec = $('.en-speciality:not(.en-main_speciality)');
-                if (otherSpec.length === 0 || confirm('If you change this field other specialities will be deleted. Are you sure you want to do this?')) {
-                    if (nextEl) {
-                        otherSpec.remove();
-                        nextEl.load(function () {
-                            updateDataId(function () {
-                                updateDataGroup();
-                            });                    
-                        });
-                    } 
-                } else {
-                    thisEl.value = oldValue;
-                }
-            };
-        } else {
-            thisEl.onchange = function () {
-                if (nextEl) {
-                    nextEl.load(function () {
-                        updateDataId();
-                    });
-                } else {
-                    updateDataId();
-                }   
-            };
-        }         
-    } 
-
-    function updateDataId(callback) {
-        if (!userParameters) updateParameters();
+    function UpdateDataId(callback) {
+        if (!userParameters) UpdateParameters();
         if (parameters.educationPlace > 0 &&
             parameters.financingType > 0 &&
             parameters.educationForm > 0 &&
@@ -496,7 +446,7 @@ function InitDropdowns(thisSection, thisUserParam, thisIsMain) {
                 method: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    'GroupId': group.id,
+                    'GroupId': isMain ? '' : group.id,
                     'EducationPlaceId': parameters.educationPlace,
                     'FinancingTypeId': parameters.financingType,
                     'SpecialityId': parameters.speciality,
@@ -509,11 +459,80 @@ function InitDropdowns(thisSection, thisUserParam, thisIsMain) {
             });
         } else {
             section.dataset.id = 0;
+            if (callback) callback();
         }
     }
 
-    function loadDropdown(element, url, callback) {
-        if(!userParameters) updateParameters();
+    function SetRelation(thisEl, nextEl, url) {
+        thisEl.clear = function () {
+            while (thisEl.firstChild) {
+                thisEl.removeChild(thisEl.firstChild);
+            }
+            if (nextEl && nextEl.clear) nextEl.clear();
+        };
+        
+        thisEl.load = function (callback) {         
+            thisEl.clear();      
+
+            LoadDropdown(thisEl, url, function () {
+                if (userParameters) {
+                    parameters[thisEl.typeOfValue] = userParameters[thisEl.typeOfValue];
+                    thisEl.value = userParameters[thisEl.typeOfValue];
+                } else {
+                    UpdateParameters();
+                }
+
+                if (nextEl && nextEl.load) {
+                    nextEl.load(callback);
+                } else {
+                    if (callback) callback();
+                }
+            });     
+        };
+
+        if (isMain) {
+            var oldValue;
+            thisEl.onfocus = function () {
+                oldValue = thisEl.value;
+            };
+
+            thisEl.onchange = function () {
+                var otherSpec = $('.en-speciality:not(.en-main_speciality)');
+                if (otherSpec.length === 0 || confirm('If you change this field other specialities will be deleted. Are you sure you want to do this?')) {
+                    otherSpec.remove();
+                    NextElementlOrCallback(nextEl, function () {
+                        UpdateDataId(function () {
+                            UpdateDataGroup(function () {
+                                UpdateCountSpecBlock();
+                                CheckAddButton();
+                            });
+                        });
+                    });
+                } else {
+                    thisEl.value = oldValue;
+                }
+            };
+        } else {
+            thisEl.onchange = function () {
+                NextElementlOrCallback(nextEl, function () {
+                    UpdateDataId();
+                });  
+            };
+        }         
+    } 
+
+    function NextElementlOrCallback(nextEl, callback) {
+        if (nextEl) {
+            nextEl.load(function () {
+                callback();
+            });
+        } else {
+            callback();
+        }
+    }
+
+    function LoadDropdown(element, url, callback) {
+        if(!userParameters) UpdateParameters();
         var onSuccess = function (data) {
             if (data.length > 1) {
                 element.options[0] = new Option('-Not selected-', null);
@@ -533,14 +552,13 @@ function InitDropdowns(thisSection, thisUserParam, thisIsMain) {
         var onError = function (errorData) {
             alert('Error load dropdown' + errorData.responseText);
         };
-        var groupId = isMain ? "" : group.id;
 
         $.ajax({
             url: url,
             method: 'post',
             contentType: 'application/json',
             data: JSON.stringify({
-                'GroupId': groupId,
+                'GroupId': isMain ? "" : group.id,
                 'EducationPlaceId': parameters.educationPlace,
                 'FinancingTypeId': parameters.financingType,
                 'SpecialityId': parameters.speciality,

@@ -76,16 +76,11 @@ namespace SportsStore.WebUI.Controllers
             Application application = _repository.Applications
                 .FirstOrDefault(app => app.ApplicationId == applicationId) ?? new Application()
                 {
+                    EnrolleeId = enrolleeId,
                     Specialities = new List<ApplicationToSpeciality>()
                 };
 
-            var model = new ApplicationEditViewModel()
-            {
-                Application = application
-                //EducationPlaces = _repository.EducationPlaces,
-                //FinancingTypes = _repository.FinancingTypes
-            };
-            return View(model);
+            return View(application);
         }
 
         [HttpPost]
@@ -94,7 +89,6 @@ namespace SportsStore.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 _repository.SaveEnrollee(model.Enrollee);
-                //TempData["message"] = string.Format("{0} has been saved", model.Enrollee.LastName + " " + model.Enrollee.FirstName);
                 return RedirectToAction("Index");
             }
             else
@@ -116,108 +110,10 @@ namespace SportsStore.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public JsonResult LoadSpecialities(AjaxSpecialityDataModel parameters)
-        //{      
-        //    if(parameters.MainSpecialityId > 0) {
-        //        var mainGroup = _repository.Specialities
-        //            .FirstOrDefault(sp => sp.SpecialityId == parameters.MainSpecialityId)
-        //            .SpecialityGroup;
-        //        var availableGroupIds = mainGroup.FriendlyGroups
-        //            .Select(gr => gr.SpecialityGroupId)
-        //            .Concat(new[] { mainGroup.SpecialityGroupId});
-        //        var speciality = _repository.Specialities
-        //            .Where(sp => 
-        //                sp.EducationPlaceId == parameters.EducationPlaceId &&
-        //                sp.FinancingTypeId == parameters.FinancingTypeId && 
-        //                availableGroupIds.Contains(sp.SpecialityGroupId));
-        //    }
-        //    else
-        //    {
-        //        var options = _repository.Specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId
-        //            && sp.FinancingTypeId == parameters.FinancingTypeId);
-        //    }
-        //}
-
-        //public IEnumerable<Speciality> SelectByGroup(IEnumerable<Speciality> specialities, int? mainSpecialityId)
-        //{
-        //    if (mainSpecialityId != null)
-        //    {
-        //        var mainGroup = _repository.Specialities
-        //            .FirstOrDefault(sp => sp.SpecialityId == mainSpecialityId)
-        //            .SpecialityGroup;
-        //        var availableGroupIds = mainGroup.FriendlyGroups
-        //            .Select(gr => gr.SpecialityGroupId)
-        //            .Concat(new[] { mainGroup.SpecialityGroupId });
-        //        return specialities.Where(sp => availableGroupIds.Contains(sp.SpecialityGroupId));
-        //    }
-        //    return specialities;
-        //}
-
-        //public IEnumerable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
-        //{
-        //    IEnumerable<Speciality> specialities = new List<Speciality>();
-
-        //    if(parameters.EducationPlaceId == null || parameters.FinancingTypeId == null)
-        //    {
-        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
-        //    }
-        //    specialities = _repository.Specialities.Where(sp => 
-        //        sp.EducationPlaceId == parameters.EducationPlaceId &&
-        //        sp.FinancingTypeId == parameters.FinancingTypeId);
-
-        //    if(parameters.SpecialityId == null)
-        //    {
-        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
-        //    }
-        //    specialities = specialities.Where(sp =>sp.SpecialityId == parameters.SpecialityId);
-
-        //    if(parameters.EducationFormId == null)
-        //    {
-        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
-        //    }
-        //    specialities = specialities.Where(sp => sp.EducationFormId == parameters.EducationFormId);
-
-        //    if(parameters.EducationDurationId != null)
-        //    {
-        //        return SelectByGroup(specialities, parameters.MainSpecialityId);
-        //    }
-        //    specialities = specialities.Where(sp => sp.EducationDurationId == parameters.EducationDurationId);
-        //    return SelectByGroup(specialities, parameters.MainSpecialityId);
-        //}
-
-        public IQueryable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
+        [HttpPost]
+        public ActionResult EditApplication(Application application)
         {
-            var specialities = _repository.Specialities;
-            if (parameters.GroupId != null)
-            {
-                specialities = specialities.Where(sp => sp.SpecialityGroupId == parameters.GroupId);
-            }
-            if (parameters.EducationPlaceId != null)
-            {
-                specialities = specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId);
-            }
-            if (parameters.FinancingTypeId != null)
-            {
-                specialities = specialities.Where(sp => sp.FinancingTypeId == parameters.FinancingTypeId);
-            }
-            if (parameters.EducationFormId != null)
-            {
-                specialities = specialities.Where(sp => sp.EducationFormId == parameters.EducationFormId);
-            }
-            if (parameters.EducationDurationId != null)
-            {
-                specialities = specialities.Where(sp => sp.EducationDurationId == parameters.EducationDurationId);
-            }
-            if (parameters.SpecialityId != null)
-            {
-                specialities = specialities.Where(sp => sp.NCSQSpecialityId == parameters.SpecialityId);
-            }
-            if (parameters.SelectedSpecialities != null)
-            {
-                specialities = specialities.Where(sp => !parameters.SelectedSpecialities.Contains(sp.SpecialityId));
-            }
-            return specialities;
+
         }
 
         [HttpPost]
@@ -310,6 +206,39 @@ namespace SportsStore.WebUI.Controllers
             });
         }
 
+        public IQueryable<Speciality> SelectSpecialities(AjaxSpecialityDataModel parameters)
+        {
+            var specialities = _repository.Specialities;
+            if (parameters.GroupId != null)
+            {
+                specialities = specialities.Where(sp => sp.SpecialityGroupId == parameters.GroupId);
+            }
+            if (parameters.EducationPlaceId != null)
+            {
+                specialities = specialities.Where(sp => sp.EducationPlaceId == parameters.EducationPlaceId);
+            }
+            if (parameters.FinancingTypeId != null)
+            {
+                specialities = specialities.Where(sp => sp.FinancingTypeId == parameters.FinancingTypeId);
+            }
+            if (parameters.EducationFormId != null)
+            {
+                specialities = specialities.Where(sp => sp.EducationFormId == parameters.EducationFormId);
+            }
+            if (parameters.EducationDurationId != null)
+            {
+                specialities = specialities.Where(sp => sp.EducationDurationId == parameters.EducationDurationId);
+            }
+            if (parameters.SpecialityId != null)
+            {
+                specialities = specialities.Where(sp => sp.NCSQSpecialityId == parameters.SpecialityId);
+            }
+            if (parameters.SelectedSpecialities != null)
+            {
+                specialities = specialities.Where(sp => !parameters.SelectedSpecialities.Contains(sp.SpecialityId));
+            }
+            return specialities;
+        }
 
         //[HttpPost]
         //public JsonResult LoadNode(int? id)

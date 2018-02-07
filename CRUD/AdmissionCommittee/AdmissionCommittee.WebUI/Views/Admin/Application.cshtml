@@ -1,11 +1,10 @@
 ﻿@using AdmissionCommittee.Domain.Entities
-@using AdmissionCommittee.WebUI.Models
-@model ApplicationEditViewModel
+@model Application
 
 @{
     ViewBag.Title = "Specialities";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    Model.Application.Specialities.OrderBy(sp => sp.Priority);
+    Model.Specialities.OrderBy(sp => sp.Priority);
 }
 
 <div class="en-fixed_count_spec mdl-shadow--4dp">
@@ -21,11 +20,11 @@
     <div class="en-header_middle">Selected specialities</div>
     <div id="selected_specialities" class="en-specialities_container">
         <div id="sortable" class="en-js-specialities_container">
-            @if (Model.Application.Specialities.Count > 0)
+            @if (Model.Specialities.Count > 0)
             {
-                for (int i = 0; i < Model.Application.Specialities.Count; i++)
+                for (int i = 0; i < Model.Specialities.Count; i++)
                 {
-                    @Html.Partial("PartialSelectedSpeciality", Model.Application.Specialities[i])
+                    @Html.Partial("PartialSelectedSpeciality", Model.Specialities[i])
                 }
             }
             else
@@ -49,7 +48,7 @@
 <div class="en-card mdl-shadow--2dp">
     <div class="en-card_content">
         <input type="submit" value="Save" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-        @Html.ActionLink("Cancel and return to List", "Edit", new { Model.Application.EnrolleeId}, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+        @Html.ActionLink("Cancel and return to List", "Edit", new { Model.EnrolleeId}, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
     </div>
 </div>
 
