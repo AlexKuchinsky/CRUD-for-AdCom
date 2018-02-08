@@ -327,6 +327,51 @@ function CheckAddButton() {
     }
 }
 
+function ApplicationSaveButton(enrolleeId, applicationId) {
+    $(document.body).on('click', '.en-js-app_save_button', function (eventObj) {
+        var specialities = [];
+
+        var onSuccess = function (data) {
+            if (data) {
+                alert('success');
+            } else {
+                alert('Error save application in database');
+            }
+        };
+
+        var onError = function () {
+            alert('Error send data' + errorData.responseText);
+        };
+
+        $('.en-speciality').each(function (index, spec) {
+            if (spec.dataset.id === 0) {
+                alert('Check the correctness of the entered data');
+                return;
+            } else {
+                specialities.push({
+                    'Priority': +$(spec).find('.en-speciality_priority').text(),
+                    'SpecialityId': +spec.dataset.id,
+                    'ApplicationId': +applicationId
+                });
+            }
+        });
+
+        $.ajax({
+            url: '/Admin/EditApplication',
+            method: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'ApplicationId': applicationId,
+                'EnrolleeId': enrolleeId,
+                'Specialities': specialities
+            }),
+            dataType: 'json',
+            success: onSuccess,
+            error: onError
+        });
+    });
+}
+
 function UpdatePriority() {
     $('.en-js-specialities_container').children('.en-speciality')
         .find('.en-speciality_priority')

@@ -17,6 +17,8 @@ namespace AdmissionCommittee.Domain.Abstract
 
         void SaveEnrollee(Enrollee enrollee);
 
+        bool SaveApplication(Application application);
+
         Enrollee DeleteEnrollee(int enrolleeID);
 
         

@@ -76,7 +76,6 @@ namespace AdmissionCommittee.Domain.Concrete
             var er6 = context.EducationPlaces.ToList();
             var er7 = context.Enrollees.ToList();
             var er8 = context.FinancingTypes.ToList();
-            //var er9 = context.GroupFriendships.ToList();
             var er10 = context.NCSQSpecialities.ToList();
             var er11 = context.Specialities.ToList();
             var er12 = context.SpecialityAvailableDates.ToList();
@@ -86,7 +85,7 @@ namespace AdmissionCommittee.Domain.Concrete
             var er16 = context.SubjectMarks.ToList();
             var er17 = context.Subjects.ToList();
             var er18 = context.SubjectThresholds.ToList();
-            //var er19 = context.ApplicationToSpecialities.ToList();
+            var er19 = context.ApplicationToSpecialities.ToList();
         }
 
         public void SaveEnrollee(Enrollee enrollee)
@@ -132,6 +131,34 @@ namespace AdmissionCommittee.Domain.Concrete
                 context.SaveChanges();
             }
             return dbEntry;
+        }
+
+        public bool SaveApplication(Application application)
+        {
+            foreach(var speciality in application.Specialities)
+            {
+                Speciality dbSpec = context.Specialities.Find(speciality.SpecialityId);
+                if(dbSpec == null)
+                {
+                    return false;
+                }
+            }
+
+            var deletedSpec = context.ApplicationToSpecialities
+                .Where(appsp => appsp.ApplicationId == application.ApplicationId);
+
+            context.ApplicationToSpecialities.RemoveRange(deletedSpec);
+
+            foreach(var speciality in application.Specialities)
+            {
+                if(speciality.ApplicationToSpecialityId == 0)
+                {
+                    context.ApplicationToSpecialities.Add(speciality);
+                }
+            }
+
+            context.SaveChanges();
+            return true;
         }
     }
 }

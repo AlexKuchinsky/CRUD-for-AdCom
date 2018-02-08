@@ -3,8 +3,6 @@ using System.Web.Mvc;
 using AdmissionCommittee.Domain.Abstract;
 using AdmissionCommittee.Domain.Entities;
 using AdmissionCommittee.WebUI.Models;
-using System.Collections;
-using System;
 using System.Collections.Generic;
 
 namespace SportsStore.WebUI.Controllers
@@ -111,9 +109,17 @@ namespace SportsStore.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditApplication(Application application)
+        public JsonResult EditApplication(Application application)
         {
-
+            bool isSuccess = _repository.SaveApplication(application);
+            if(isSuccess)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(false);
+            }
         }
 
         [HttpPost]
