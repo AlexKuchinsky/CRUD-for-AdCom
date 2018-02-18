@@ -178,8 +178,10 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <Content Include="Scripts\enrolleeScripts.js" />
+    <Content Include="Scripts\en-script-application.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\en-script-enrollee.js" />
+    <Content Include="Scripts\en-script-index.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
@@ -226,6 +228,7 @@
     <Content Include="Views\Admin\Application.cshtml" />
     <Content Include="Views\Shared\PartialProposedSpecialities.cshtml" />
     <Content Include="Views\Shared\PartialSelectedSpeciality.cshtml" />
+    <Content Include="Views\Shared\PartialSelectedApplicationView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

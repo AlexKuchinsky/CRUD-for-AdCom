@@ -53,11 +53,11 @@
                 educationDuration: @Model.Speciality.EducationDurationId,
             };
 
-            if(@Model.Priority == 1){
+            @*if(@Model.Priority == 1){
                 userParameters.group = null;
             }else{
                 userParameters.group = @Model.Speciality.SpecialityGroupId;
-            }
+            }*@
             InitDropdowns($(".en-speciality[data-id='@Model.Speciality.SpecialityId']").last()[0], userParameters, isMain);
         }
         else {

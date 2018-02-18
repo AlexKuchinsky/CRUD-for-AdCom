@@ -9,6 +9,8 @@ namespace AdmissionCommittee.Domain.Entities
 {
     public class Address
     {
+        public int? AddressId { get; set; }
+
         public int EnrolleeId { get; set; }
 
         public virtual Enrollee Enrollee { get; set; }

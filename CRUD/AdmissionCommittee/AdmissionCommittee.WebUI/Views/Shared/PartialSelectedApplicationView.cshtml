@@ -1,0 +1,58 @@
+﻿@using AdmissionCommittee.Domain.Entities
+@model Application
+
+<div class="en-card mdl-shadow--6dp en-application" data-id="@Model.ApplicationId" data-group="@(Model?.Specialities[0].Speciality.SpecialityGroupId ?? 0)">
+    <div class="en-header_middle">
+        Application
+        <div class="en-app_del_button">
+            <button class="mdl-button mdl-js-button mdl-button--icon en-js-app_del_button" type="button">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+    </div>
+    
+    <table class="mdl-data-table en-full_width">
+        <tr>
+            <th>Priority</th>
+            <th class="mdl-data-table__cell--non-numeric">Place</th>
+            <th class="mdl-data-table__cell--non-numeric">Speciality</th>
+            <th class="mdl-data-table__cell--non-numeric">Form</th>
+            <th class="mdl-data-table__cell--non-numeric">Qualiphication</th>
+        </tr>
+        @if (Model.Specialities == null ||
+                    Model.Specialities.Count() == 0)
+        {
+            <tr>
+                <td colspan="5" class="mdl-data-table__cell--non-numeric ">
+                    Specialities not selected
+                </td>
+            </tr>
+        }
+        else
+        {
+            for (int i = 0; i < Model.Specialities.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        @Model.Specialities[i].Speciality.EducationPlace.Name
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        @Model.Specialities[i].Speciality.NCSQSpeciality.Name
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        @Model.Specialities[i].Speciality.EducationForm.Name
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        @Model.Specialities[i].Speciality.NCSQSpeciality.Qualification
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <div class="en-card_content">
+        @Html.ActionLink("Edit application", "Application", new { enrolleeId = Model.Enrollee.EnrolleeId, applicationId = Model.ApplicationId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+    </div>
+</div>

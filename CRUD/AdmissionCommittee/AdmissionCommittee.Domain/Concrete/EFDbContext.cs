@@ -1,6 +1,6 @@
 ﻿using AdmissionCommittee.Domain.Entities;
 using System.Data.Entity;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace AdmissionCommittee.Domain.Concrete
 {
     public class EFDbContext : DbContext
@@ -48,6 +48,12 @@ namespace AdmissionCommittee.Domain.Concrete
             modelBuilder.Entity<SubjectThresholds>().ToTable("SubjectThresholds");
             //modelBuilder.Entity<TreeNode>().ToTable("Tree");
             //modelBuilder.Entity<TreeData>().ToTable("TreeData");
+
+            modelBuilder.Entity<Enrollee>().Property(en => en.EnrolleeId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<Address>().Property(add => add.AddressId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             //primary keys   
             modelBuilder.Entity<Address>().

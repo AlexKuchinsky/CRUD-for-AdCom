@@ -171,6 +171,13 @@
     min-height: 80px;
 }
 
+.en-application {
+    background-color: white;
+    margin: 0 0 15px 0;
+    overflow: auto;
+    min-height: 80px;
+}
+
 .en-text_overflow {
     white-space: normal;
     word-wrap: normal;
@@ -192,9 +199,15 @@
     color: #909090;
 }
 
-.en-spec_add_button{
+.en-center_button{
     margin:0 auto;
     display:block;
+}
+
+.en-add_app_button {
+    width:150px;
+    margin: 0 auto;
+    display: block;
 }
 
 .en-spec_main_title {
@@ -223,6 +236,10 @@
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-size: 20px;
     color: white;
+}
+
+.en-app_del_button{
+    float:right;
 }
 /*tree class*/
 .en-tree_container {

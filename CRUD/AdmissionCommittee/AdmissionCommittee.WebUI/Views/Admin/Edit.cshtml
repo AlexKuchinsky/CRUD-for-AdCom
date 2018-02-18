@@ -6,6 +6,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<script src="~/Scripts/en-script-enrollee.js"></script>
+
 <div class="en-card mdl-shadow--2dp">
     @if (Model.Enrollee.FirstName != null)
     {
@@ -217,57 +219,33 @@
     </div>
 
     <div class="en-card mdl-shadow--2dp">
-        <div class="en-header_middle">Specialties</div>
-        <table class="mdl-data-table en-full_width">
-            <tr>
-                <th>Priority</th>
-                <th class="mdl-data-table__cell--non-numeric">Place</th>
-                <th class="mdl-data-table__cell--non-numeric">Speciality</th>
-                <th class="mdl-data-table__cell--non-numeric">Form</th>
-                <th class="mdl-data-table__cell--non-numeric">Qualiphication</th>
-            </tr>
-            @if (Model.Enrollee.Applications[0].Specialities == null || 
-                Model.Enrollee.Applications[0].Specialities.Count() == 0)
-                {
-                <tr>
-                    <td colspan="5" class="mdl-data-table__cell--non-numeric ">
-                        Specialities not selected
-                    </td>
-                </tr>
-            }
-            else
+        <div class="en-specialities_container en-selected_applications">
+            @if (Model.Enrollee.Applications != null)
             {
-                for (int i = 0; i < Model.Enrollee.Applications[0].Specialities.Count; i++)
+                for (int j = 0; j < Model.Enrollee.Applications.Count; j++)
                 {
-                    <tr>
-                        <td>
-                            @(i+1)
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric">
-                            @Model.Enrollee.Applications[0].Specialities[i].Speciality.EducationPlace.Name
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric">
-                            @Model.Enrollee.Applications[0].Specialities[i].Speciality.NCSQSpeciality.Name
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric">
-                            @Model.Enrollee.Applications[0].Specialities[i].Speciality.EducationForm.Name
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric">
-                            @Model.Enrollee.Applications[0].Specialities[i].Speciality.NCSQSpeciality.Qualification
-                        </td>
-                    </tr>
+                    @Html.Partial("PartialSelectedApplicationView", Model.Enrollee.Applications[j])
                 }
-            }
-        </table>
-        <div class="en-card_content">
-            @Html.ActionLink("Edit application", "Application", new { enrolleeId = Model.Enrollee.EnrolleeId, applicationId = Model.Enrollee.Applications[0].ApplicationId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+            }           
+            <div>
+                @Html.ActionLink("Add application", "Application", new {
+               enrolleeId = Model.Enrollee.EnrolleeId,
+               applicationId = 0,
+               groupId = (Model.Enrollee.Applications?.Count ?? 0) == 0 ? 0 : (Model.Enrollee.Applications[0].Specialities?.Count ?? 0) == 0 ? 0 : Model.Enrollee.Applications[0].Specialities[0].Speciality.SpecialityGroupId },
+               new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent en-add_app_button" })
+            </div>
+            @*<button class="mdl-button mdl-js-button mdl-button--accent mdl-button--raised en-center_button en-js-app_add_button" type="button">
+                Add application
+            </button>*@
         </div>
     </div>
+    
 
     <div class="en-card mdl-shadow--2dp">
         <div class="en-card_content">
             <input type="submit" value="Save" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
             @Html.ActionLink("Cancel and return to List", "Index", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary en-js-send_email">Send e-mail</button>
         </div>      
     </div>
 }

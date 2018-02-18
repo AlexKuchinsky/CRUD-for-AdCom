@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using System.Linq;
 
 namespace AdmissionCommittee.Domain.Entities
 {
     public class Enrollee
     {
-        public int EnrolleeId { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? EnrolleeId { get; set; }
 
         public string FirstName { get; set; }
 

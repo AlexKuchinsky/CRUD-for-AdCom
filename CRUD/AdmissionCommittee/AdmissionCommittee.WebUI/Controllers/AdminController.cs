@@ -4,6 +4,10 @@ using AdmissionCommittee.Domain.Abstract;
 using AdmissionCommittee.Domain.Entities;
 using AdmissionCommittee.WebUI.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Net.Mail;
+using System.Net;
+using System;
 
 namespace SportsStore.WebUI.Controllers
 {
@@ -62,14 +66,14 @@ namespace SportsStore.WebUI.Controllers
                 {
                     Applications = new List<Application>()
                     {
-                        new Application()
+                        //new Application()
                     }
                 },
                 Subjects = _repository.Subjects
             });
         }
 
-        public ViewResult Application(int enrolleeId, int applicationId)
+        public ViewResult Application(int enrolleeId, int applicationId, int groupId)
         {
             Application application = _repository.Applications
                 .FirstOrDefault(app => app.ApplicationId == applicationId) ?? new Application()
@@ -79,6 +83,34 @@ namespace SportsStore.WebUI.Controllers
                 };
 
             return View(application);
+        }
+
+        [HttpPost]
+        public JsonResult SendEmail(string toEmail)
+        {
+            try
+            {
+                var from = new MailAddress("glotovartemalex@gmail.com", "Artem Glotov");
+                var to = new MailAddress(toEmail);
+                var message = new MailMessage(from, to);
+                message.IsBodyHtml = true;
+                message.Subject = "Priemka2018";
+                message.Body = "Hello, it's Artem Glotov! This email was sent by programm. It's <a href='https://vk.com/artemglotov'>my VK</a>. Here's a couple of memes to laugh :)";
+                message.Attachments.Add(new Attachment("D://basa.jpeg"));
+                message.Attachments.Add(new Attachment("D://kasper.jpg"));
+
+                using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Credentials = new NetworkCredential("glotovartemalex@gmail.com", "lost4815162342");
+                    smtpClient.Send(message);
+                }
+                return Json(true);
+            }
+            catch(Exception ex)
+            {
+                return Json(false);
+            }
         }
 
         [HttpPost]
@@ -113,6 +145,20 @@ namespace SportsStore.WebUI.Controllers
         {
             bool isSuccess = _repository.SaveApplication(application);
             if(isSuccess)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json(false);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteApplication(int applicationId)
+        {
+            bool isSuccess = _repository.DeleteApplication(applicationId);
+            if (isSuccess)
             {
                 return Json(true);
             }

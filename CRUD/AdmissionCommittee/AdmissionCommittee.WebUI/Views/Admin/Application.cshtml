@@ -7,6 +7,8 @@
     Model.Specialities.OrderBy(sp => sp.Priority);
 }
 
+<script src="~/Scripts/en-script-application.js"></script>
+
 <div class="en-fixed_count_spec mdl-shadow--4dp">
     <div class="en-spec_count en-js-spec_count"></div>
 </div>
@@ -16,45 +18,42 @@
         <div class="en-header_big">Application</div>
     </div>
 </div>
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(m => m.ApplicationId);
-    <div class="en-card mdl-shadow--2dp">
-        <div class="en-header_middle">Selected specialities</div>
-        <div id="selected_specialities" class="en-specialities_container">
-            <div id="sortable" class="en-js-specialities_container">
-                @if (Model.Specialities.Count > 0)
-                {
-                    for (int i = 0; i < Model.Specialities.Count; i++)
-                    {
-                        @Html.Partial("PartialSelectedSpeciality", Model.Specialities[i])
-                    }
-                }
-                else
-                {
-                    @Html.Partial("PartialSelectedSpeciality", new ApplicationToSpeciality() { Speciality = new Speciality(), Priority = 1 })
-                }
-            </div>
-            <button class="mdl-button mdl-js-button mdl-button--accent mdl-button--raised en-spec_add_button en-js-spec_add_button" type="button">
-                Add speciality
-            </button>
-        </div>
 
-        <script>
+<div class="en-card mdl-shadow--2dp">
+    <div class="en-header_middle">Selected specialities</div>
+    <div id="selected_specialities" class="en-specialities_container">
+        <div id="sortable" class="en-js-specialities_container">
+            @if (Model.Specialities != null && Model.Specialities.Count > 0)
+            {
+                for (int i = 0; i < Model.Specialities.Count; i++)
+                {
+                    @Html.Partial("PartialSelectedSpeciality", Model.Specialities[i])
+                }
+            }
+            else
+            {
+                @Html.Partial("PartialSelectedSpeciality", new ApplicationToSpeciality() { Speciality = new Speciality(), Priority = 1 })
+            }
+        </div>
+        <button class="mdl-button mdl-js-button mdl-button--accent mdl-button--raised en-center_button en-js-spec_add_button" type="button" style="display:none">
+            Add speciality
+        </button>
+    </div>
+
+    <script>
             SpecialityDeleteButton();
 
             SpecialityAddButton();
 
             ApplicationSaveButton(@Model.EnrolleeId, @Model.ApplicationId);
-        </script>
-    </div>
+    </script>
+</div>
 
-    <div class="en-card mdl-shadow--2dp">
-        <div class="en-card_content">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent en-js-app_save_button">Save</button>
-            @Html.ActionLink("Cancel", "Edit", new { Model.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
-        </div>
+<div class="en-card mdl-shadow--2dp">
+    <div class="en-card_content">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent en-js-app_save_button" type="button">Save</button>
+        @Html.ActionLink("Cancel", "Edit", new { Model.EnrolleeId }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" })
     </div>
-}
+</div>
 
 

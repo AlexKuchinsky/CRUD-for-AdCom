@@ -1,7 +1,12 @@
 ﻿using AdmissionCommittee.Domain.Abstract;
 using AdmissionCommittee.Domain.Entities;
 using System.Linq;
+using iTextSharp;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System.Collections.Generic;
+using System;
+using System.Data.Entity.Infrastructure;
 
 namespace AdmissionCommittee.Domain.Concrete
 {
@@ -90,28 +95,38 @@ namespace AdmissionCommittee.Domain.Concrete
 
         public void SaveEnrollee(Enrollee enrollee)
         {
-            if (enrollee.EnrolleeId == 0)
+            if (enrollee.EnrolleeId == null)
             {
+                var address = enrollee.Address;
+                enrollee.Address = null;
                 context.Enrollees.Add(enrollee);
+                context.SaveChanges();
+                if(enrollee.EnrolleeId != null)
+                {
+                    address.EnrolleeId = (int)enrollee.EnrolleeId;
+                    context.Address.Add(address);
+                    context.SaveChanges();
+                }
             }
             else
             {
-                Enrollee dbEntry = context.Enrollees.Find(enrollee.EnrolleeId);
-                if (dbEntry != null)
+                Enrollee dbEnrollee = context.Enrollees.Find(enrollee.EnrolleeId);
+                if (dbEnrollee != null)
                 {
-                    dbEntry.FirstName = enrollee.FirstName;
-                    dbEntry.LastName = enrollee.LastName;
-                    dbEntry.Patronymic = enrollee.Patronymic;
-                    dbEntry.PassportNumber = enrollee.PassportNumber;
-                    dbEntry.DateOfBirth = enrollee.DateOfBirth;
-                    dbEntry.Address.Country = enrollee.Address.Country;
-                    dbEntry.Address.City = enrollee.Address.City;
-                    dbEntry.Address.Region = enrollee.Address.Region;
-                    dbEntry.Address.Street = enrollee.Address.Street;
-                    dbEntry.Address.BuildingNumber = enrollee.Address.BuildingNumber;
-                    dbEntry.Address.ApartmentNumber = enrollee.Address.ApartmentNumber;
-                    dbEntry.Address.PostalCode = enrollee.Address.PostalCode;
-                    dbEntry.Phone = enrollee.Phone;
+                    dbEnrollee.FirstName = enrollee.FirstName;
+                    dbEnrollee.LastName = enrollee.LastName;
+                    dbEnrollee.Patronymic = enrollee.Patronymic;
+                    dbEnrollee.PassportNumber = enrollee.PassportNumber;
+                    dbEnrollee.DateOfBirth = enrollee.DateOfBirth;
+                    dbEnrollee.Phone = enrollee.Phone;
+                    dbEnrollee.Address.Country = enrollee.Address.Country;
+                    dbEnrollee.Address.Region = enrollee.Address.Region;
+                    dbEnrollee.Address.City = enrollee.Address.City;                 
+                    dbEnrollee.Address.Street = enrollee.Address.Street;
+                    dbEnrollee.Address.BuildingNumber = enrollee.Address.BuildingNumber;
+                    dbEnrollee.Address.ApartmentNumber = enrollee.Address.ApartmentNumber;
+                    dbEnrollee.Address.PostalCode = enrollee.Address.PostalCode;
+                    
                     //for(int i = 0; i < dbEntry.Marks.Count; i++)
                     //{
                     //    dbEntry.Marks[i].SubjectId = enrollee.Marks[i].SubjectId;
@@ -122,9 +137,9 @@ namespace AdmissionCommittee.Domain.Concrete
             context.SaveChanges();
         }
 
-        public Enrollee DeleteEnrollee(int enrolleeID)
+        public Enrollee DeleteEnrollee(int enrolleeId)
         {
-            Enrollee dbEntry = context.Enrollees.Find(enrolleeID);
+            Enrollee dbEntry = context.Enrollees.Find(enrolleeId);
             if (dbEntry != null)
             {
                 context.Enrollees.Remove(dbEntry);
@@ -135,6 +150,15 @@ namespace AdmissionCommittee.Domain.Concrete
 
         public bool SaveApplication(Application application)
         {
+            if(application.ApplicationId == 0)
+            {
+                context.Applications.Add(application);
+                //int applicationId = context.Applications.FirstOrDefault(app => app.EnrolleeId == application.EnrolleeId).ApplicationId;
+                //application.ApplicationId = applicationId;
+            }
+
+
+            //check that all selected specialities exist in database
             foreach(var speciality in application.Specialities)
             {
                 Speciality dbSpec = context.Specialities.Find(speciality.SpecialityId);
@@ -160,5 +184,18 @@ namespace AdmissionCommittee.Domain.Concrete
             context.SaveChanges();
             return true;
         }
+
+        public bool DeleteApplication(int applicationId)
+        {
+            Application dbApplication = context.Applications.Find(applicationId);
+            if (dbApplication != null)
+            {
+                context.Applications.Remove(dbApplication);
+                context.SaveChanges();
+            }
+            return true;
+        }
+
+        
     }
 }
