@@ -1,17 +1,27 @@
-USE ECLearning;
+USE ECLearning
 GO
 
 CREATE PROCEDURE GetSequenceOfNum @from INT, @to INT AS
 BEGIN
-	DECLARE @count INT = @from;
-	DECLARE @numTable TABLE ( Number INT NOT NULL);
-
-	WHILE @count <= @to
-	BEGIN
-		INSERT INTO @numTable (Number) SELECT @count;
-		SET @count = @count + 1;
-	END
-
-	SELECT * FROM @numTable
+	WITH e1(num) AS
+	(
+		SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL 
+		SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL 
+		SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+	), -- 10
+	e2(num) AS 
+	(
+		SELECT a.num*100+b.num*10+c.num AS num 
+		FROM e1 AS a 
+		CROSS JOIN e1 AS b 
+		CROSS JOIN e1 AS c 
+	), -- 10*10*10
+	e3(num) AS
+	(
+		SELECT a.num*1000+b.num AS num 
+		FROM e2 AS a 
+		CROSS JOIN e2 AS b 
+	) --1000*1000
+	SELECT * FROM e3 WHERE num BETWEEN @from AND @to ORDER BY num
 END
 GO
