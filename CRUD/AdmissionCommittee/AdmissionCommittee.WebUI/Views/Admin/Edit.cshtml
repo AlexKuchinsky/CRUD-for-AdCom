@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    @Html.TextBoxFor(m => m.Enrollee.PassportNumber, null, new { @class = "mdl-textfield__input", @id = "passport", @pattern = "([A-Z]|[a-z]){2}\\d{7}", @required = "" })
+                    @Html.TextBoxFor(m => m.Enrollee.PassportNumber, null, new { @class = "mdl-textfield__input en-js-passport", @id = "passport", @pattern = "([A-Z]|[a-z]){2}\\d{7}", @required = "" })
                     <label class="mdl-textfield__label" for="passport">Passport number</label>
                     <span class="mdl-textfield__error">Please enter passport number!</span>
                 </div>

@@ -91,26 +91,49 @@ $(document).ready(function () {
         });
     });
 
-    //$('.en-selected_applications').on('click', '.en-js-app_loadpdf_button', function (eventObj) {
-    //    var appId = $(eventObj.target).parents('.en-application').first()[0].dataset.id;
+    $('.en-js-passport')[0].oninput = function (event) {
+        var inputChar = event.data.toUpperCase()
+        //manipulation with char
+        var convert = {
+            'А': 'A',
+            'Ф': 'A',
+            'F': 'A',
+            'И': 'B',
+            'В': 'B',
+            'D': 'B',
+            'Ь': 'M',
+            'М': 'M',
+            'V': 'M',
+            'Y': 'H',
+            'Н': 'H',
+            'R': 'K',
+            'К': 'K',
+            'Л': 'K',
+            'Р': 'P',
+            'З': 'P',
+            'С': 'C',
+            'Щ': 'O',
+            'О': 'O',
+            'J': 'O',
+            'Ш': 'I'
+        }
 
-    //    var onError = function () {
-    //        alert('Error load pdf application' + errorData.responseText);
-    //        return;
-    //    }
+        var resultChar = inputChar in convert ? convert[inputChar] : inputChar;
+        event.target.value = event.target.value.substring(0, event.target.value.length - 1) + resultChar;
+    };
 
-    //    $.ajax({
-    //        url: '/Admin/LoadPDF',
-    //        method: 'post',
-    //        contentType: 'application/json',
-    //        data: JSON.stringify({
-    //            'applicationId': appId
-    //        }),
-    //        dataType: 'pdf',
-    //        success: onSuccess,
-    //        error: onError
-    //    });
-    //});
+    //$('.en-js-passport')[0].onkeypress = function (e) {
+    //    // спец. сочетание - не обрабатываем
+    //    if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+    //    var char = getChar(e);
+
+    //    if (!char) return; // спец. символ - не обрабатываем
+
+    //    this.value = char.toUpperCase();
+
+    //    return false;
+    //};
 
 
 });

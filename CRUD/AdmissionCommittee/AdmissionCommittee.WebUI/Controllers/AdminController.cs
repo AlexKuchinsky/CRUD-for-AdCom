@@ -103,7 +103,7 @@ namespace SportsStore.WebUI.Controllers
                 using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
                 {
                     smtpClient.EnableSsl = true;
-                    smtpClient.Credentials = new NetworkCredential("glotovartemalex@gmail.com", "lost4815162342");
+                    smtpClient.Credentials = new NetworkCredential("glotovartemalex@gmail.com", "notpassword");
                     smtpClient.Send(message);
                 }
                 return Json(true);

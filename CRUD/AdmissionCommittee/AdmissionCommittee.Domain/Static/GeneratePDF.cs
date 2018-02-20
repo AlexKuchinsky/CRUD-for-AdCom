@@ -16,8 +16,6 @@ namespace AdmissionCommittee.Domain.Static
                 PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
                 document.Open();
                 var boldfont = new Font(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false), 20, Font.BOLD);
-                
-
 
                 var appstr = new Paragraph(new Phrase("Application",boldfont));
                 appstr.Alignment = 1;
