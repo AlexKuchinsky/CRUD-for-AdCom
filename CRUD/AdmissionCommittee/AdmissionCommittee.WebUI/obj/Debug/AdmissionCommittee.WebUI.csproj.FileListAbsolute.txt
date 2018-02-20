@@ -96,3 +96,5 @@ D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\En
 C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\obj\Debug\AdmissionCommittee.WebUI.csprojResolveAssemblyReference.cache
 C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\obj\Debug\AdmissionCommittee.WebUI.dll
 C:\Users\Pavel\Desktop\123\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\obj\Debug\AdmissionCommittee.WebUI.pdb
+D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\itextsharp.dll
+D:\GITHUB\CRUD-for-AdCom\CRUD\AdmissionCommittee\AdmissionCommittee.WebUI\bin\itextsharp.xml

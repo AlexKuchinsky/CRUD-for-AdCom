@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using AdmissionCommittee.Domain.Abstract;
 using AdmissionCommittee.Domain.Entities;
+using AdmissionCommittee.Domain.Static;
 using AdmissionCommittee.WebUI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -111,6 +112,14 @@ namespace SportsStore.WebUI.Controllers
             {
                 return Json(false);
             }
+        }
+
+        public FileResult LoadPDF(int applicationId)
+        {
+            Application application = _repository.Applications
+                .FirstOrDefault(app => app.ApplicationId == applicationId);
+            var pdf = GeneratePDF.ByApplication(application, application.Enrollee);
+            return File(pdf, "application/pdf", "Application" + application.Enrollee.LastName + ".pdf");
         }
 
         [HttpPost]

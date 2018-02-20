@@ -31,7 +31,7 @@
 
 $(document).ready(function () {
     //delete app
-    $('.en-selected_applications').on('click', '.en-application', function (eventObj) {
+    $('.en-selected_applications').on('click', '.en-js-app_del_button', function (eventObj) {
         if (confirm('Are you sure?')) {
             var appId = $(eventObj.target).parents('.en-application').first()[0].dataset.id;
 
@@ -90,4 +90,27 @@ $(document).ready(function () {
             error: onError
         });
     });
+
+    //$('.en-selected_applications').on('click', '.en-js-app_loadpdf_button', function (eventObj) {
+    //    var appId = $(eventObj.target).parents('.en-application').first()[0].dataset.id;
+
+    //    var onError = function () {
+    //        alert('Error load pdf application' + errorData.responseText);
+    //        return;
+    //    }
+
+    //    $.ajax({
+    //        url: '/Admin/LoadPDF',
+    //        method: 'post',
+    //        contentType: 'application/json',
+    //        data: JSON.stringify({
+    //            'applicationId': appId
+    //        }),
+    //        dataType: 'pdf',
+    //        success: onSuccess,
+    //        error: onError
+    //    });
+    //});
+
+
 });

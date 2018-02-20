@@ -4,9 +4,12 @@
 <div class="en-card mdl-shadow--6dp en-application" data-id="@Model.ApplicationId" data-group="@(Model?.Specialities[0].Speciality.SpecialityGroupId ?? 0)">
     <div class="en-header_middle">
         Application
-        <div class="en-app_del_button">
+        <div class="en-app_buttons">
             <button class="mdl-button mdl-js-button mdl-button--icon en-js-app_del_button" type="button">
                 <i class="material-icons">delete</i>
+            </button>
+            <button class="mdl-button mdl-js-button mdl-button--icon en-js-app_loadpdf_button" onclick="location.href='@Url.Action("LoadPDF", "Admin",new { applicationId = Model.ApplicationId})'" type="button">
+                <i class="material-icons">print</i>
             </button>
         </div>
     </div>

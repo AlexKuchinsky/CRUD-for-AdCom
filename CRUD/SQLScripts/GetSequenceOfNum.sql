@@ -11,17 +11,25 @@ BEGIN
 	), -- 10
 	e2(num) AS 
 	(
-		SELECT a.num*100+b.num*10+c.num AS num 
+		SELECT a.num*10+b.num AS num 
 		FROM e1 AS a 
 		CROSS JOIN e1 AS b 
-		CROSS JOIN e1 AS c 
-	), -- 10*10*10
+	), -- 10*10
 	e3(num) AS
 	(
-		SELECT a.num*1000+b.num AS num 
-		FROM e2 AS a 
+		SELECT a.num*100+b.num AS num 
+		FROM e1 AS a 
 		CROSS JOIN e2 AS b 
-	) --1000*1000
-	SELECT * FROM e3 WHERE num BETWEEN @from AND @to ORDER BY num
+	), -- 10*100
+	e4(num) AS
+	(
+		SELECT a.num*1000+b.num AS num 
+		FROM e3 AS a 
+		CROSS JOIN e3 AS b 
+	) -- 1000*1000
+	SELECT * FROM e4 
+	ORDER BY num
+	OFFSET @from ROWS
+    FETCH NEXT (@to - @from + 1) ROWS ONLY
 END
 GO
