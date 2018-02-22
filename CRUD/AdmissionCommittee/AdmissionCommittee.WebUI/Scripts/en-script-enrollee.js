@@ -91,10 +91,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.en-js-passport')[0].oninput = function (event) {
-        var inputChar = event.data.toUpperCase()
-        //manipulation with char
-        var convert = {
+var convert = {
             'А': 'A',
             'Ф': 'A',
             'F': 'A',
@@ -118,6 +115,9 @@ $(document).ready(function () {
             'Ш': 'I'
         }
 
+    $('.en-js-passport')[0].oninput = function (event) {
+        var inputChar = event.data.toUpperCase()
+        //manipulation with char
         var resultChar = inputChar in convert ? convert[inputChar] : inputChar;
         event.target.value = event.target.value.substring(0, event.target.value.length - 1) + resultChar;
     };

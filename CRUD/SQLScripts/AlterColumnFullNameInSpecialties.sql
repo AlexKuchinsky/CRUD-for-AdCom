@@ -1,0 +1,5 @@
+USE ECLearning
+GO
+
+ALTER TABLE [devAG].[Specialties]
+ALTER COLUMN FullName NVARCHAR(100);
